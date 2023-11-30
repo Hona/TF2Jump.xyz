@@ -1,10 +1,24 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using TempusHub.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddUserSecrets<App>();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddCascadingAuthenticationState();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie()
+    .AddSteam(x =>
+    {
+        x.ApplicationKey = builder.Configuration["Authentication:Steam:ApiKey"];
+    });
 
 var app = builder.Build();
 
@@ -21,7 +35,22 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.MapGet("/Account/Login", (HttpContext context, string returnUrl = "/") =>
+{
+    if (context.User.Identity is { IsAuthenticated: false })
+    {
+        return context.ChallengeAsync("Steam", 
+            new AuthenticationProperties { RedirectUri = returnUrl });
+    }
+    
+    context.Response.Redirect(returnUrl);
+    return Task.CompletedTask;
+});
 
 app.Run();
