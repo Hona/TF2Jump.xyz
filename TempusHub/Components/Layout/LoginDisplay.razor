@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Authentication
+@using System.Security.Claims
+@using AspNet.Security.OpenId.Steam
+
+@rendermode InteractiveServer
+
+@inject NavigationManager NavigationManager
+
+<div>
+    <AuthorizeView>
+        <Authorized>
+            <FluentButton id="userDropdown" 
+                          Appearance="Appearance.Lightweight" 
+                          IconStart="Icon.FromImageUrl(context.User.FindFirstValue(SteamClaimTypes.Avatar))"
+                          OnClick="() => open = !open">
+                @context.User.Identity!.Name
+            </FluentButton>
+            <FluentMenu Anchor="userDropdown" @bind-Open="open" >
+                <FluentMenuItem >
+                    Menu item 1
+                </FluentMenuItem>
+                <FluentMenuItem 
+                               Checked="true">
+                    Menu item 2 Checked
+                </FluentMenuItem>
+                <FluentMenuItem
+                               Disabled="true">
+                    Menu item 3 Disabled
+                </FluentMenuItem>
+                <FluentMenuItem >
+                    <span slot="start"><FluentIcon Value="@(new Icons.Regular.Size24.ClipboardPaste())" Color="Color.Neutral" Slot="start" /></span>
+                    Menu item 4 with Icon
+                </FluentMenuItem>
+            </FluentMenu>
+        </Authorized>
+        <NotAuthorized>
+            <FluentButton OnClick="@HandleSignInClick" Appearance="Appearance.Lightweight">Sign in</FluentButton>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
+
+@code
+{
+    bool open;
+    
+    private void HandleSignInClick(MouseEventArgs args)
+    {
+        Console.WriteLine("asdfasdf");
+        NavigationManager.NavigateTo("Account/Login?ReturnUrl=" + NavigationManager.ToBaseRelativePath(NavigationManager.Uri), forceLoad:true);
+    }
+}
