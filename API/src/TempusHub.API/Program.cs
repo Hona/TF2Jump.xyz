@@ -1,5 +1,6 @@
 using System.Reflection;
-using TempusHub.Kernel;
+using TempusHub.API.Common;
+using TempusHub.API.Kernel;
 
 var appAssembly = Assembly.GetExecutingAssembly();
 var builder = WebApplication.CreateBuilder(args);

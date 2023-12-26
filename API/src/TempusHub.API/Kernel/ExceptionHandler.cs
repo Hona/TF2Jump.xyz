@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace TempusHub.Kernel;
+namespace TempusHub.API.Kernel;
 
 public static class ExceptionHandler
 {

@@ -1,4 +1,4 @@
-﻿namespace TempusHub.Common;
+﻿namespace TempusHub.API.Common;
 
 public interface IModule
 {

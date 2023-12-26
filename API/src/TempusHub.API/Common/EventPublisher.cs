@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace TempusHub.Common;
+namespace TempusHub.API.Common;
 
 public class EventPublisher(IPublisher mediator) : SaveChangesInterceptor
 {

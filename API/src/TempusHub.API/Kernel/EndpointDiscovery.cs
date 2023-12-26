@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
+using TempusHub.API.Common;
 
-namespace TempusHub.Kernel;
+namespace TempusHub.API.Kernel;
 
 public static class EndpointDiscovery
 {
