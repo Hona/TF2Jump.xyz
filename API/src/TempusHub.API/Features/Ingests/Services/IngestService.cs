@@ -11,6 +11,7 @@ public interface IIngestService
 public class IngestService(IIngestRepository ingestRepository, ILogger<IngestService> logger, IServiceProvider sp) : IIngestService
 {
     private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
+
     public async Task<Result<Ingest>> IngestTempusApiAsync(CancellationToken cancellationToken = default)
     {
         logger.LogInformation("Ingest begun, waiting for lock");
