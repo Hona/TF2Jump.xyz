@@ -1,4 +1,5 @@
-﻿using TempusApi;
+﻿using System.Collections.Concurrent;
+using TempusApi;
 using TempusApi.Enums;
 using TempusApi.Models.Responses;
 using TempusHub.API.Features.Maps;
@@ -21,6 +22,19 @@ public class IngestMapsTask(ITempusClient tempusClient, ILogger<IngestMapsTask> 
             ZoneType.Bonus,
             ZoneType.Trick
         };
+        
+        var fullMaps = new Dictionary<long, FullMapOverview2>();
+
+        foreach (var mapDownloadChunk in maps.Chunk(5))
+        {
+            var tasks = mapDownloadChunk.Select(x => tempusClient.GetFullMapOverview2Async(x.Id, cancellationToken));
+            var results = await Task.WhenAll(tasks);
+            
+            foreach (var fullMap in results)
+            {
+                fullMaps[fullMap.MapInfo.Id] = fullMap;
+            }
+        }
 
         for (var mapIndex = 0; mapIndex < maps.Count; mapIndex++)
         {
@@ -28,7 +42,7 @@ public class IngestMapsTask(ITempusClient tempusClient, ILogger<IngestMapsTask> 
                 maps[mapIndex].Name, mapIndex + 1, maps.Count);
             
             var shortMapInfo = maps[mapIndex];
-            var fullMap = await tempusClient.GetFullMapOverview2Async(shortMapInfo.Id, cancellationToken);
+            var fullMap = fullMaps[shortMapInfo.Id];
 
             var map = new Map()
             {
