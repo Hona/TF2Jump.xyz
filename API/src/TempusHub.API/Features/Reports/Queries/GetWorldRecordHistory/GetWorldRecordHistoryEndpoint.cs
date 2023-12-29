@@ -39,13 +39,13 @@ public sealed class GetWorldRecordHistoryEndpoint : IEndpoint
                 zr.ZoneId,
                 zr.Duration,
                 zr.PlayerId,
-                BestDurationToDate = dbContext.ZoneRecords
-                    .Where(innerZr => innerZr.ZoneId == zr.ZoneId && innerZr.Date <= zr.Date && innerZr.Class == @class)
-                    .Min(innerZr => (TimeSpan?)innerZr.Duration)
+                IsWorldRecord = !dbContext.ZoneRecords
+                    .Any(innerZr => innerZr.ZoneId == zr.ZoneId && innerZr.Class == @class && innerZr.Date < zr.Date && innerZr.Duration < zr.Duration)
             })
-            .Where(zr => zr.Duration == zr.BestDurationToDate)
+            .Where(zr => zr.IsWorldRecord)
             .OrderBy(zr => zr.Date)
-            .Select(zr => new WorldRecordHistoryResponse(zr.Id, zr.Date, zr.ZoneId, zr.Duration, zr.PlayerId));
+            .Select(zr => new WorldRecordHistoryResponse(zr.Id, zr.Date, zr.ZoneId, zr.Duration, zr.PlayerId))
+            .AsNoTracking();
 
         var worldRecordHistory = await query.ToListAsync(cancellationToken: cancellationToken);
 
