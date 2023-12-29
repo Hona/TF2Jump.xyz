@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json.Serialization;
 using TempusApi;
 using TempusHub.API.Common;
 using TempusHub.API.Kernel;
@@ -19,6 +20,15 @@ builder.Services.AddExceptionHandler<ExceptionHandler.KnownExceptionsHandler>();
 builder.Services.AddHostedService<DevelopmentMigrationHostedService>();
 
 builder.Services.ConfigureModules(appAssembly);
+
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 var app = builder.Build();
 
