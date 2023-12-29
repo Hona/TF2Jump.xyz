@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddExceptionHandler<ExceptionHandler.KnownExceptionsHandler>();
 
-builder.Services.AddHostedService<DevelopmentMigrationHostedService>();
+builder.Services.AddHostedService<MigrationHostedService>();
 
 builder.Services.ConfigureModules(appAssembly);
 
