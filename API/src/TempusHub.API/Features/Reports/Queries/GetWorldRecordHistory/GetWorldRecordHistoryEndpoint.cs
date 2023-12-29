@@ -53,45 +53,27 @@ public sealed class GetWorldRecordHistoryEndpoint : IEndpoint
         {
             var player = await tempusClient.GetPlayerInfoAsync(worldRecordHistoryResponse.PlayerId, cancellationToken);
             worldRecordHistoryResponse.PlayerName = player.Name;
-            
-            /*
-             *
-             * A Steam ID can be converted to Steam Community ID for use on the Steam Community website.
-
-Let X, Y and Z constants be defined by the SteamID: STEAM_X:Y:Z.
-
-There are 2 methods of conversion:
-
-For 32-bit systems
-Using the formula W=Z*2+Y, a SteamID can be converted to the following link:
-http or https://steamcommunity.com/path/[letter:1:W]
-The account type letter can be found in the table above. The path can be found in the same place after the slash symbol.
-Example: http://steamcommunity.com/profiles/[U:1:132276035]
-Example: http://steamcommunity.com/gid/[g:1:4]
-             */
-            
-            //worldRecordHistoryResponse.SteamProfileUrl = player.Steamid;
-            try
-            {
-                var steamId = player.Steamid;
-                var steamIdParts = steamId.Split(':');
-                var steamIdUniverse = steamIdParts[0];
-                var steamIdInstance = steamIdParts[1];
-                var steamIdAccountId = steamIdParts[2];
-                var steamIdCommunityId = (long.Parse(steamIdAccountId) * 2) + long.Parse(steamIdInstance);
-                var steamIdCommunityUrl = $"https://steamcommunity.com/profiles/{steamIdCommunityId}";
-                worldRecordHistoryResponse.SteamProfileUrl = steamIdCommunityUrl;
-            }
-            catch (Exception e)
-            {
-                worldRecordHistoryResponse.SteamProfileUrl = player.Steamid;
-
-            }
-            
+            worldRecordHistoryResponse.SteamProfileUrl = GetSteamProfileUrl(player.Steamid);
         }
         
-        
         return Results.Ok(worldRecordHistory);
+    }
+
+    private static string GetSteamProfileUrl(string steamId3)
+    {
+        try
+        {
+            var steamIdParts = steamId3.Split(':');
+            var steamIdInstance = steamIdParts[1];
+            var steamIdAccountId = steamIdParts[2];
+            var steamIdCommunityId = (long.Parse(steamIdAccountId) * 2) + long.Parse(steamIdInstance);
+            var steamIdCommunityUrl = $"https://steamcommunity.com/profiles/{steamIdCommunityId}";
+            return steamIdCommunityUrl;
+        }
+        catch (Exception e)
+        {
+            return steamId3;
+        }
     }
 
 }
