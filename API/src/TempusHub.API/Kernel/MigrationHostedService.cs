@@ -1,18 +1,12 @@
 ﻿namespace TempusHub.API.Kernel;
 
-public class DevelopmentMigrationHostedService(IServiceProvider sp, IWebHostEnvironment env, ILogger<DevelopmentMigrationHostedService> logger) : IHostedService
+public class MigrationHostedService(IServiceProvider sp, IWebHostEnvironment env, ILogger<MigrationHostedService> logger) : IHostedService
 {
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        if (!env.IsDevelopment())
-        {
-            return;
-        }
-        
-        logger.LogInformation("Running migrations in development");
+        logger.LogInformation("Running migrations");
         using var scope = sp.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        //await dbContext.Database.EnsureDeletedAsync(cancellationToken);
         await dbContext.Database.EnsureCreatedAsync(cancellationToken);
         await dbContext.Database.MigrateAsync(cancellationToken);
     }
