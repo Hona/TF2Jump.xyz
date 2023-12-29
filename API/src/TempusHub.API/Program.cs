@@ -1,4 +1,6 @@
 using System.Reflection;
+using System.Text.Json.Serialization;
+using SteamWebAPI2.Utilities;
 using TempusApi;
 using TempusHub.API.Common;
 using TempusHub.API.Kernel;
@@ -10,6 +12,8 @@ builder.Services.AddEfCore(builder.Configuration);
 builder.Services.AddMediatR(configure => configure.RegisterServicesFromAssemblyContaining<Program>());
 builder.Services.AddSingleton<ITempusClient, TempusClient>();
 builder.Services.AddHttpClient<TempusClient>();
+
+builder.Services.AddSingleton(new SteamWebInterfaceFactory(builder.Configuration["SteamApiKey"]));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
