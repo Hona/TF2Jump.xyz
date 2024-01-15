@@ -1,0 +1,29 @@
+<div class="layout-breadcrumb  flex align-items-center relative h-3rem">
+    <nav >
+        <ol class="relative z-2">
+            <ng-template ngFor let-item let-last="last" [ngForOf]="breadcrumbs$ | async">
+                <li>{{item.label}}</li>
+                <li *ngIf="!last" class="layout-breadcrumb-chevron"> / </li>
+            </ng-template>
+        </ol>
+    </nav>
+    <ul class="breadcrumb-menu flex align-items-center justify-content-end lg:hidden absolute right-0 top-0 z-4 h-3rem w-screen">
+        <li class="w-full m-0 ml-3">
+            <div class="breadcrumb-search  flex justify-content-end" [ngClass]="{'breadcrumb-search-active': searchActive}">
+                <button pButton icon="pi pi-search" class="breadcrumb-searchbutton p-button-text p-button-secondary text-color-secondary p-button-rounded flex-shrink-0" type="button" (click)="activateSearch()"></button>
+                <div class="search-input-wrapper">
+                    <span class="p-input-icon-right">
+                        <input #searchinput type="text" pInputText placeholder="Search" (blur)="deactivateSearch()" (keydown.escape)="deactivateSearch()"/>
+                        <i class="pi pi-search"></i>
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="right-panel-button relative">
+            <button pButton  type="button" label="Today" style="width:5.7rem" icon="pi pi-bookmark" 
+            class="layout-rightmenu-button hidden md:block font-normal" styleClass="font-normal" (click)="onSidebarButtonClick()"></button>
+            <button pButton type="button" icon="pi pi-bookmark" styleClass="font-normal" class="layout-rightmenu-button flex md:hidden" (click)="onSidebarButtonClick()"></button>
+        </li>
+    </ul>
+</div>
+

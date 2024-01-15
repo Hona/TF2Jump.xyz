@@ -1,0 +1,30 @@
+.chip-remove-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+
+    i {
+        font-size: 9px;
+    }
+}
+
+:host ::ng-deep {
+    .p-fileupload {
+        padding: 0;
+
+        .p-fileupload-buttonbar {
+            display: none;
+        }
+
+        .p-fileupload-content {
+            border: 0 none;
+        }
+
+        .p-fileupload-row {
+            display: none;
+        }
+
+        .p-progressbar {
+            display: none;
+        }    
+    }
+}

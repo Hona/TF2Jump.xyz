@@ -1,0 +1,283 @@
+@media screen and (min-width: $breakpoint) {
+    .layout-container {
+        &.layout-drawer {
+            .layout-topbar {
+                .topbar-menubutton {
+                    display: none;
+                }
+            }
+
+            .layout-sidebar {
+                height: 100%;
+                top: 0;
+                transition: width 0.3s cubic-bezier(0, 0, 0.2, 1);
+                width: 6rem;
+                z-index: 999;
+                background: var(--surface-ground);
+                padding-bottom: 3rem;
+                .layout-menu-container {
+                    overflow: hidden;
+                }
+
+                .sidebar-header {
+                    display: flex;
+                    justify-content: center;
+                    gap: 1rem;
+                    padding: 1.5rem 0rem;
+                    height: 5.71rem;
+                    .app-logo {
+                        text-align: center;
+                        .app-logo-small {
+                            display: inline;
+                            order: 1;
+                        }
+
+                        .app-logo-normal {
+                            display: flex;
+                            align-items: center;
+                            width: 0;
+                            transition: width 0.1s cubic-bezier(0, 0, 0.2, 1);
+                            transition-delay: 50ms;
+                            max-width: 0;
+                            height: 0;
+                            img {
+                                width: 0;
+                                transition: width 0.1s cubic-bezier(0, 0, 0.2, 1);
+                                transition-delay: 50ms;
+                                max-width: 0;
+                            }
+                        }
+                    }
+
+                    .layout-sidebar-anchor {
+                        display: none;
+                        width: 1.25rem;
+                        height: 1.25rem;
+                        border-radius: 50%;
+                        border: 2px solid var(--primary-color);
+                        background-color: transparent;
+                        transition: background-color var(--transition-duration), transform 0.3s;
+                    }
+                }
+
+                .layout-menu-container {
+                    overflow: hidden;
+                }
+
+                .layout-menu {
+                    transition: all 0.4s;
+                    padding: 0 1rem;
+                    .layout-root-menuitem {
+                        > .layout-menuitem-root-text {
+                            opacity: 0;
+                            white-space: nowrap;
+                            transition: all 0.1s;
+
+                            > span {
+                                margin-right: auto;
+                            }
+
+                            .layout-menuitem-icon {
+                                font-size: 1rem;
+                            }
+
+                            > .layout-menuitem-root-icon {
+                                display: block;
+                                margin-right: 0.125rem;
+                                font-size: 1.25rem;
+                            }
+                        }
+                    }
+
+                    ul {
+                        margin: 0 auto;
+                        padding: 0;
+                        list-style-type: none;
+                        width: 3rem;
+                        a {
+                            border: none;
+                            width: 3rem;
+                            padding: 0.5rem 1rem;
+                            span {
+                                opacity: 0;
+                                white-space: nowrap;
+                                transition: all 0.1s;
+                            }
+
+                            .layout-menuitem-icon {
+                                font-size: 1rem;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &.layout-drawer {
+                .layout-content-wrapper {
+                    margin-left: 5.25rem;
+                    transition: margin-left 0.3s cubic-bezier(0, 0, 0.2, 1);
+                    overflow-x: hidden;
+                }
+            }
+
+            &.layout-sidebar-active {
+                .layout-sidebar {
+                    width: 22rem;
+                    padding-bottom: 0rem;
+                    .layout-menu-container {
+                        overflow: auto;
+                    }
+
+                    .sidebar-header {
+                        padding: 1.5rem 2rem;
+                        justify-content: space-between;
+                        height: 5.71rem;
+                        .app-logo {
+                            text-align: left;
+                            .app-logo-normal {
+                                height: auto;
+                                width: 100%;
+                                max-width: none;
+                                img {
+                                    &:first-child{
+                                        width: 32px;
+                                        max-width: none;
+                                    }
+                                    &:last-child{
+                                        width: 142px;
+                                        max-width: none;
+                                    }
+                                }
+                            }
+
+                            .app-logo-small {
+                                display: none;
+                            }
+                        }
+
+                        .layout-sidebar-anchor {
+                            display: block;
+                            animation: px-fadein 0.15s linear;
+                        }
+                    }
+
+                    .layout-menu {
+                        padding: 0 1rem;
+
+                        li {
+                            border-radius: 8px;
+                            a {
+                                border-left: 8px solid transparent;
+                            }
+                        }
+                        li.active-menuitem {
+                            background-color: var(--root-menu-item-hover-bg);
+                            > a {
+                                border-left-color: var(--primary-color);
+                                background-color: var(--root-menu-item-hover-bg);
+                                .layout-submenu-toggler {
+                                    transform: rotate(-180deg);
+                                }
+                            }
+                        }
+                        a {
+                            user-select: none;
+
+                            &.active-menuitem {
+                                > .layout-submenu-toggler {
+                                    transform: rotate(-180deg);
+                                }
+                            }
+                        }
+                        .layout-root-menuitem {
+                            > div {
+                                padding-left: 1.5rem;
+                                margin-bottom: 0.5rem;
+                                font-size: 12px;
+                                opacity: 1;
+                                > .layout-menuitem-text {
+                                    font-size: 0.857rem;
+                                    opacity: 1;
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                }
+                            }
+                        }
+
+                        ul {
+                            width: auto;
+                            li {
+                                width: auto;
+                            }
+                            a {
+                                width: auto;
+
+                                .layout-submenu-toggler {
+                                    display: block;
+                                }
+
+                                span {
+                                    opacity: 1;
+                                    white-space: nowrap;
+                                    transition: all 0.3s;
+                                }
+                            }
+                            ul {
+                                overflow: hidden;
+                                border-radius: var(--border-radius);
+
+                                li {
+                                    a {
+                                        padding-left: 2.5rem;
+                                    }
+
+                                    li {
+                                        a {
+                                            padding-left: 3rem;
+                                        }
+
+                                        li {
+                                            a {
+                                                padding-left: 3.5rem;
+                                            }
+
+                                            li {
+                                                a {
+                                                    padding-left: 4rem;
+                                                }
+
+                                                li {
+                                                    a {
+                                                        padding-left: 5.5rem;
+                                                    }
+
+                                                    li {
+                                                        a {
+                                                            padding-left: 5rem;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            &.layout-sidebar-anchored {
+                .sidebar-header {
+                    .layout-sidebar-anchor {
+                        background-color: var(--primary-color);
+                    }
+                }
+
+                .layout-content-wrapper {
+                    margin-left: 22rem;
+                }
+            }
+        }
+    }
+}

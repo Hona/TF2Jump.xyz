@@ -1,0 +1,23 @@
+<div [id]="card.id" class="flex surface-card flex-column w-full border-1 surface-border p-3 gap-5 hover:surface-ground cursor-pointer border-round">
+    <div class="flex justify-content-between align-items-center">
+        <span class="text-900 font-semibold">{{card.title ? card.title : 'Untitled'}}</span>
+        <div>
+            <button pButton pRipple type="button" icon="pi pi-ellipsis-v" class="p-button-rounded p-button-text p-button-secondary p-trigger" (click)="menu.toggle($event)"></button>
+            <p-tieredMenu #menu [model]="menuItems" appendTo="body" [popup]="true"></p-tieredMenu>
+        </div>
+    </div>
+    <div *ngIf="card.description" style="word-break: break-word" class="text-700">{{card.description}}</div>
+    <p-progressBar *ngIf="card.taskList.tasks.length" [value]="card.progress" [showValue]="false" [style]="{'height':'.5rem'}"></p-progressBar>
+    
+    <div class="flex align-items-center justify-content-between flex-column md:flex-row gap-4 md:gap-0">
+        <p-avatarGroup>
+            <p-avatar *ngFor="let assignee of card.assignees | slice:0:3" image="assets/demo/images/avatar/{{assignee.image}}" shape="circle" styleClass="border-2 surface-border"></p-avatar>
+            <p-avatar *ngIf="card.assignees && card.assignees.length > 3" label="+ {{card.assignees.length - 3}}" shape="circle" styleClass="border-2 surface-border mb-1 surface-ground"></p-avatar>
+        </p-avatarGroup>
+        <div *ngIf="card.attachments || card.dueDate" class="flex align-items-center gap-3">
+            <span class="text-900 font-semibold" *ngIf="card.taskList.tasks.length"><i class="pi pi-check-square text-700 mr-2"></i>{{generateTaskInfo()}}</span>
+            <span class="text-900 font-semibold" *ngIf="card.attachments"><i class="pi pi-paperclip text-700 mr-2"></i>{{card.attachments}}</span>
+            <span class="text-900 font-semibold" *ngIf="card.dueDate"><i class="pi pi-clock text-700 mr-2"></i>{{parseDate(card.dueDate)}}</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,112 @@
+<div class="grid">
+    <div *ngFor="let metric of metrics" class="col-12 md:col-6 lg:col-3">
+        <div class="card h-full">
+            <div class="flex align-items-center justify-content-between mb-3">
+                <span class="text-900 text-xl font-semibold">{{metric.title}}</span>
+                <div>
+                    <button pButton pRipple [icon]="metric.icon" class="p-button-text p-button-sm p-button-rounded" (click)="menu.toggle($event)"></button>
+                    <p-menu #menu [popup]="true" appendTo="body" [model]="menuitems"></p-menu>
+                </div>
+            </div>
+            <div>
+                <div [ngClass]="metric.color" class="border-round" style="height: 6px">
+                    <div [ngClass]="metric.fieldColor" class="h-full border-round" style="width:34%"></div>
+                </div>
+                <div class="flex align-item-center justify-content-between">
+                    <span class="text-900 mt-3 text-md font-medium">{{metric.files}}</span>
+                    <span class="text-900 mt-3 text-md font-medium">{{metric.fileSize}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 md:col-5 xl:col-3">
+        <div class="card">
+            <div class="text-900 text-xl font-semibold mb-3">Account Storage</div>
+            <p-chart type="doughnut" [plugins]="chartPlugins" id="country-chart" [data]="fileChart" [options]="fileChartOptions" [style]="{'width': '75%'}"></p-chart>
+            <div class="mt-5 flex gap-3">
+                <button pButton pRipple icon="pi pi-search" class="p-button-outlined flex-1" label="Details"></button>
+                <button pButton pRipple icon="pi pi-upload" class="flex-1" label="Upgrade"></button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="text-900 text-xl font-semibold mb-3">Categories</div>
+            <ul class="list-none p-0 m-0">
+                <li class="p-3 mb-3 flex align-items-center justify-content-between cursor-pointer border-round bg-indigo-50 text-indigo-900">
+                    <div class="flex align-items-center">
+                        <i class="pi pi-image text-2xl mr-3"></i>
+                        <span class="ext-lg font-medium">Images</span>
+                    </div>
+                    <span class="text-lg font-bold">85</span>
+                </li>
+                <li class="p-3 mb-3 flex align-items-center justify-content-between cursor-pointer border-round bg-purple-50 text-purple-900">
+                    <div class="flex align-items-center">
+                        <i class="pi pi-file text-2xl mr-3"></i>
+                        <span class="ext-lg font-medium">Documents</span>
+                    </div>
+                    <span class="text-lg font-bold">231</span>
+                </li>
+                <li class="p-3 flex align-items-center justify-content-between cursor-pointer border-round bg-teal-50 text-teal-900">
+                    <div class="flex align-items-center">
+                        <i class="pi pi-video text-2xl mr-3"></i>
+                        <span class="ext-lg font-medium">Videos</span>
+                    </div>
+                    <span class="text-lg font-bold">40</span>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="card p-0">
+            <app-file-uploader></app-file-uploader>
+        </div>
+    </div>
+    <div class="col-12 md:col-7 xl:col-9">
+        <div class="card">
+            <div class="text-900 text-xl font-semibold mb-3">Folders</div>
+            <div class="grid">
+                <div *ngFor="let folder of folders" class="col-12 md:col-6 xl:col-4">
+                    <div class="p-3 border-1 surface-border flex align-items-center justify-content-between hover:surface-100 cursor-pointer border-round">
+                        <div class="flex align-items-center">
+                            <i [ngClass]="folder.icon" class="text-2xl mr-3"></i>
+                            <span class="text-900 text-lg font-medium">{{folder.name}}</span>
+                        </div>
+                        <span class="text-600 text-lg font-semibold">{{folder.size}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="text-900 text-xl font-semibold mb-3">Recent Uploads</div>
+            <p-table responsiveLayout="scroll" #dt [value]="files" [rows]="8" [paginator]="true">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="name" style="min-width:12rem" class="white-space-nowrap">Name <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="date" style="min-width:12rem" class="white-space-nowrap">Date <p-sortIcon field="date"></p-sortIcon></th>
+                        <th pSortableColumn="fileSize" style="min-width:12rem" class="white-space-nowrap">File Size <p-sortIcon field="name"></p-sortIcon></th>
+                        <th style="width:10rem"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-file>
+                    <tr>
+                        <td>
+                            <div class="flex align-items-center">
+                                <i [class]="'text-xl text-primary mr-2 ' + file.icon"></i>
+                                <span>{{file.name}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span>{{file.date}}</span>
+                        </td>
+                        <td>
+                            <span>{{file.fileSize}}</span>
+                        </td>
+                        <td class="text-center">
+                            <button pButton pRipple icon="pi pi-times" class="p-button-danger p-button-text p-button-rounded mr-2"></button>
+                            <button pButton pRipple icon="pi pi-search" class="p-button-text p-button-rounded"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

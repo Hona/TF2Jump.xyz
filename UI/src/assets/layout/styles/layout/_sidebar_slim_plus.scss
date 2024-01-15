@@ -1,0 +1,167 @@
+@media screen and (min-width: $breakpoint) {
+    .layout-container {
+        &.layout-slim-plus {
+            .layout-topbar {
+                .topbar-menubutton {
+                    display: none;
+                }
+            }
+
+            .sidebar-header {
+                justify-content: center;
+                padding:  1.7rem 0;
+                .app-logo {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    .app-logo-normal {
+                        display: none;
+                    }
+            
+                    .app-logo-small {
+                        display: inline;
+                        align-items: center;
+                    }
+                }    
+            }
+           
+            .layout-sidebar {
+                width: 8rem;
+                overflow: visible;
+                z-index: 999;
+                .layout-menu-container {
+                    overflow: auto;
+
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+                }
+            }
+
+            .layout-content-wrapper {
+                margin-left: 8rem;
+            }
+
+            .layout-menu {
+                padding: 0 1rem;
+                ul {
+                    display: none;
+                }
+                
+                li.active-menuitem {
+                    > ul {
+                        display: block;
+                    }
+                }
+
+                .layout-root-menuitem {
+                    > .layout-menuitem-root-text {
+                        display: none;
+                    }
+
+                    > a {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 12px;
+                        text-align: center;
+                        cursor: pointer;
+                        border: none;
+                        outline: none;
+                        transition: background-color var(--transition-duration);
+                        width: auto;
+                        height: auto;
+                        margin: 0 auto 1rem auto;
+                        padding: 8px;
+
+                        .layout-submenu-toggler {
+                            display: none;
+                        }
+
+                        .layout-menuitem-icon {
+                            font-size: 1.5rem;
+                            color: var(--text-color);
+                        }
+
+                        .layout-menuitem-text {
+                            font-size: 0.875rem;
+                            display: block;
+                            margin-top: 0.25rem;
+                            color: var(--text-color);
+                        }
+
+
+                        &:hover {
+                            background-color: var(--root-menu-item-hover-bg);
+                        }
+                    }
+
+                    > ul {
+                        position: absolute;
+                        left: 8rem;
+                        top: 0;
+                        min-width: 15rem;
+                        background: var(--surface-ground);
+                        border-radius: var(--border-radius);
+                        box-shadow: var(--sidebar-shadow);
+                        padding: 0.5rem;
+                        max-height: 20rem;
+                        overflow: auto;
+                        z-index: 999;
+
+                        a {
+                            padding-right: 0.5rem;
+                            color: var(--text-color);
+                            border-radius: var(--border-radius);
+
+                            .layout-menuitem-icon {
+                                color: var(--text-color);
+                            }
+
+                            &:hover {
+                                background-color: var(--root-menu-item-hover-bg);
+                            }
+                        }
+
+                        li {
+                            a {
+                                padding-left: 0.5rem;
+                            }
+            
+                            li {
+                                a {
+                                    padding-left: 1rem;
+                                }
+            
+                                li {
+                                    a {
+                                        padding-left: 1.5rem;
+                                    }
+            
+                                    li {
+                                        a {
+                                            padding-left: 2rem;
+                                        }
+            
+                                        li {
+                                            a {
+                                                padding-left: 2.5rem;
+                                            }
+            
+                                            li {
+                                                a {
+                                                    padding-left: 3rem;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

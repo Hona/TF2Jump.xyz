@@ -1,0 +1,16 @@
+<div class="layout-container" [ngClass]="containerClass">
+    <div class="layout-content-wrapper">
+        <app-topbar></app-topbar>
+        <app-breadcrumb class="content-breadcrumb"></app-breadcrumb>
+        <div class="layout-content">
+            <router-outlet></router-outlet>
+        </div>
+        <div class="layout-mask"></div>
+    </div>
+    <app-profilemenu></app-profilemenu>
+<!--
+    Disable the theme customizer
+    <app-config></app-config>
+-->
+
+</div>

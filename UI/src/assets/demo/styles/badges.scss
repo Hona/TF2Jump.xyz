@@ -1,0 +1,109 @@
+.product-badge {
+    border-radius: var(--border-radius);
+    padding: .25em .5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+
+    &.status-instock {
+        background: var(--green-200);
+        color: var(--green-800);
+    }
+
+    &.status-outofstock {
+        background: var(--pink-200);
+        color: var(--pink-800);
+    }
+
+    &.status-lowstock {
+        background: var(--yellow-200);
+        color: var(--yellow-800);
+    }
+}
+
+.product-badge-text {
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+
+    &.status-instock {
+        color: var(--green-500);
+    }
+
+    &.status-outofstock {
+        color: var(--pink-500);
+    }
+
+    &.status-lowstock {
+        color: var(--yellow-500);
+    }
+}
+
+.customer-badge {
+    border-radius: var(--border-radius);
+    padding: .25em .5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+
+    &.status-qualified {
+        background: var(--green-200);
+        color: var(--green-800);
+    }
+
+    &.status-unqualified {
+        background: var(--pink-200);
+        color: var(--pink-800);
+    }
+
+    &.status-negotiation {
+        background: var(--yellow-200);
+        color: var(--yellow-800);
+    }
+
+    &.status-new {
+        background: var(--blue-200);
+        color: var(--blue-800);
+    }
+
+    &.status-renewal {
+        background: var(--purple-200);
+        color: var(--purple-800);
+    }
+
+    &.status-proposal {
+        background: var(--orange-200);
+        color: var(--orange-800);
+    }
+}
+
+.order-badge {
+    border-radius: var(--border-radius);
+    padding: .25em .5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+
+    &.order-delivered {
+        background: #C8E6C9;
+        color: #256029;
+    }
+
+    &.order-cancelled {
+        background: #FFCDD2;
+        color: #C63737;
+    }
+
+    &.order-pending {
+        background: #FEEDAF;
+        color: #8A5340;
+    }
+
+    &.order-returned {
+        background: #ECCFFF;
+        color: #694382;
+    }
+}

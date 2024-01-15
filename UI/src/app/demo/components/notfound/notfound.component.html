@@ -1,0 +1,26 @@
+<div [class]="'exception-body min-h-screen '+ (layoutService.config().colorScheme === 'light' ? 'layout-light':'layout-dark')"
+    style="background:var(--surface-ground)">
+    <div class="exception-container  min-h-screen flex align-items-center justify-content-center flex-column bg-auto md:bg-contain bg-no-repeat"
+        style="
+box-sizing: border-box;background:var(--exception-pages-image);background-repeat: no-repeat; background-size: contain;">
+        <div class="exception-panel text-center flex align-items-center justify-content-center flex-column"
+            style="margin-top: -200px;box-sizing: border-box;">
+            <h1 class="text-blue-500 mb-0" style="font-size: 140px;
+font-weight: 900;text-shadow: 0px 0px 50px rgba(#0F8BFD, 0.2);">404</h1>
+            <h3 class="text-blue-700" style=" font-size: 80px;
+font-weight: 900;
+margin-top: -90px;
+margin-bottom: 50px;">not found</h3>
+            <p class="text-3xl" style="max-width: 320px;">The page that you are looking for does not exist</p>
+            <button type="button" pButton label="Go back to home" style=" margin-top: 50px;"
+                [routerLink]="['/']"></button>
+        </div>
+        <div class="exception-footer absolute align-items-center flex" style="bottom:60px">
+            <img [src]="'assets/layout/images/logo-'+ (layoutService.config().colorScheme === 'light' ? 'dark' : 'light') + '.png'"
+                class="exception-logo" style="width: 34px;" />
+            <img [src]="'assets/layout/images/appname-'+ (layoutService.config().colorScheme === 'light' ? 'dark' : 'light') + '.png'"
+                class="exception-appname ml-3" style="  width: 72px;" />
+        </div>
+    </div>
+
+</div>

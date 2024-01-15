@@ -1,0 +1,62 @@
+:host {
+    ::-webkit-scrollbar {
+        height: 6px;              
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background-color: var(--gray-500);
+        border-radius: 20px;
+    }
+}
+
+:host ::ng-deep {
+    .p-button-label {
+        flex: 0;
+        white-space: nowrap;
+    }
+
+    .p-inplace {
+        .p-inplace-content {
+            .p-inputtext {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+    
+            .p-button {
+                border-top-left-radius: 0px;
+                border-bottom-left-radius: 0px;
+                width: 3rem;
+                height: 3rem;
+            }
+        }
+
+        .p-inplace-display {
+            padding: 0;
+        }    
+    }
+}
+
+.p-kanban-list {
+    cursor: pointer;
+    height: min-content;
+}
+
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+        0 8px 10px 1px rgba(0, 0, 0, 0.14),
+        0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+  
+.cdk-drag-placeholder {
+    opacity: 0.25;
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

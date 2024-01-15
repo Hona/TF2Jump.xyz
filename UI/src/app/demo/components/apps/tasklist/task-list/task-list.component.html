@@ -1,0 +1,26 @@
+<div>
+    <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3">{{title}}</div>
+    <ul class="list-none p-0 m-0">
+        <li *ngFor="let task of taskList" class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border">
+            <div class="flex align-items-center flex-1">
+                <p-checkbox [binary]="true" (onChange)="onCheckboxChange($event, task)" [(ngModel)]="task.completed" [inputId]="task.id.toString()"></p-checkbox>
+                <label for="task.id" style="word-break: break-word;" class="font-medium ml-2" [ngClass]="{'line-through': task.completed}">{{task.name}}</label>
+            </div>
+            <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
+                <div class="flex align-items-center">
+                    <span *ngIf="task.comments" class="flex align-items-center font-semibold mr-3"><i class="pi pi-comment mr-2"></i>{{task.comments}}</span>
+                    <span *ngIf="task.attachments" class="flex align-items-center font-semibold mr-3"><i class="pi pi-paperclip mr-2"></i>{{task.attachments}}</span>
+                    <span class="flex align-items-center font-semibold white-space-nowrap" *ngIf="task.startDate"><i class="pi pi-clock mr-2"></i>{{parseDate(task.startDate)}}</span>
+                </div>
+                <div class="flex align-items-center sm:justify-content-end">
+                    <p-avatarGroup styleClass="mr-3">
+                        <p-avatar *ngFor="let member of task.members | slice:0:4" image="assets/demo/images/avatar/{{member.image}}" size="large" shape="circle"></p-avatar>
+                        <p-avatar *ngIf="task && task.members && task.members.length > 4" label="+ {{task.members.length - 4}}" shape="circle" size="large" [style]="{'background-color':'#ffffff', 'color': '#212121', 'border':'2px solid var(--surface-border)'}"></p-avatar>
+                    </p-avatarGroup>
+                    <button pButton pRipple type="button" icon="pi pi-ellipsis-v" class="p-button-rounded p-button-text z-3 ml-auto sm:ml-0" (click)="toggleMenu($event, task)"></button>
+                    <p-menu #menu [popup]="true" [model]="menuItems" styleClass="w-8rem"></p-menu>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

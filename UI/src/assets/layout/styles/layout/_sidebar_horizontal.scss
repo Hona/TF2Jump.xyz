@@ -1,0 +1,170 @@
+@media screen and (min-width: $breakpoint) {
+    .layout-container {
+        &.layout-horizontal {
+            .layout-topbar {
+                .topbar-menubutton {
+                    display: none;
+                }
+                .layout-topbar-menu-section{
+                    width: calc(100% - 320px);
+                }
+                .topbar-breadcrumb{
+                    display: none;
+                }
+            }
+           
+            .layout-sidebar {
+                width: auto;
+                height: auto;
+                top: 0;
+                z-index: 999;
+                overflow: visible;
+                flex-direction: row;
+                position: static;
+
+                .layout-menu-container {
+                    overflow: auto;
+                    padding-bottom: 0;
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+                }
+
+                .sidebar-header{
+                    padding: 0;
+                    .app-logo {
+                        .app-logo-normal {
+                            display: none;
+                        }
+                
+                        .app-logo-small {
+                            display: inline;
+                        }
+                    }
+                }
+    
+            }
+
+            .layout-menu {
+                display: flex;
+                flex-wrap: nowrap;
+                flex-direction: row;
+                align-items: center;
+                height: 100%;
+                padding: 0 1rem;
+                > li { 
+                    margin-bottom: 0rem;
+                    &:first-child {
+                        margin-top: 0rem;
+                    }
+                }
+                ul {
+                    display: none;
+                }
+
+                .layout-root-menuitem {
+                    border-radius: var(--border-radius);
+
+                    > .layout-menuitem-root-text {
+                        display: none;
+                    }
+
+                    > a {
+                        display: flex;
+                        align-items: center;
+                        padding: .75rem;
+                        border-radius: 6px;
+                        border: none;
+                        cursor: pointer;
+                        outline: none;
+                        color: var(--text-color);
+                        transition: background-color var(--transition-duration);
+
+                        .layout-submenu-toggler {
+                            display: block;
+                            margin-left: auto;
+                            transition: transform 0.2s;
+                        }
+
+                        .layout-menuitem-icon {
+                            font-size: 1rem;
+                        }
+
+                        .layout-menuitem-text {
+                            font-size: 0.875rem;
+                            display: block;
+                            margin-left: .75rem;
+                            margin-right: .75rem;
+                            white-space: nowrap;
+                        }
+
+                        &:hover {
+                            background-color: var(--menuitem-hover-bg-color);
+                        }
+                    }
+
+                    > ul {
+                        position: absolute;
+                        left: auto;
+                        top: 5rem;
+                        min-width: 15rem;
+                        background: var(--surface-overlay);
+                        box-shadow: var(--sidebar-shadow);
+                        padding: .8rem;
+                        border-radius: var(--border-radius);
+                        max-height: 20rem;
+                        overflow: auto;
+                        z-index: 999;
+
+                        a {
+                            padding-right: .5rem;
+                            color: var(--text-color);
+                            border-radius: var(--border-radius);
+
+
+                            &:hover {
+                                background-color: var(--root-menu-item-hover-bg);
+                            }
+                        }
+
+                        li {
+                            a {
+                                padding-left: 0.5rem;
+                            }
+            
+                            li {
+                                a {
+                                    padding-left: 1rem;
+                                }
+            
+                                li {
+                                    a {
+                                        padding-left: 1.5rem;
+                                    }
+            
+                                    li {
+                                        a {
+                                            padding-left: 2rem;
+                                        }
+            
+                                        li {
+                                            a {
+                                                padding-left: 2.5rem;
+                                            }
+            
+                                            li {
+                                                a {
+                                                    padding-left: 3rem;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

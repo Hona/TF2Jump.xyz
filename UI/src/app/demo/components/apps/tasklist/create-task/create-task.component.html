@@ -1,0 +1,44 @@
+<p-toast></p-toast>
+<p-dialog [header]="dialogConfig.header || ''" [(visible)]="dialogConfig.visible" [modal]="true" [dismissableMask]="true" styleClass="mx-3 sm:mx-0 sm:w-full md:w-8 lg:w-6" contentStyleClass="border-round-bottom border-top-1 surface-border p-0">
+    <div class="p-4">
+        <div class="grid p-fluid formgrid">
+            <div class="col-12 field">
+                <label for="name" class="text-900 font-semibold">Task Name</label>
+                <input id="name" type="text" placeholder="Title" pInputText [(ngModel)]="task.name" />
+            </div>
+            <div class="col-12 field">
+                <label for="description" class="text-900 font-semibold">Description</label>
+                <p-editor [(ngModel)]="task.description" [style]="{'height':'150px'}"></p-editor>
+            </div>
+            <div class="col-6 field mt-0">
+                <label for="start" class="text-900 font-semibold">Start Date</label>
+                <p-calendar appendTo="body" dateFormat="yy-mm-dd" [showTime]="false" inputId="start" placeholder="Start Date" [(ngModel)]="task.startDate"></p-calendar>
+            </div>
+            <div class="col-6 field mt-0">
+                <label for="end" class="text-900 font-semibold">Due Date</label>
+                <p-calendar appendTo="body" dateFormat="yy-mm-dd" [showTime]="false" inputId="end" placeholder="Due Date" [(ngModel)]="task.endDate"></p-calendar>
+            </div>
+            <div class="col-12 field">
+                <label for="members" class="text-900 font-semibold">Add Team Member</label>
+                <p-autoComplete appendTo="body" inputId="members" [(ngModel)]="task.members" [suggestions]="filteredMembers" (completeMethod)="filterMembers($event)" field="name" [multiple]="true" placeholder="Choose team members" [inputStyle]="{'height': '2.5rem'}">
+                    <ng-template let-member pTemplate="selectedItem">
+                        <div class="flex align-items-center">
+                            <img src="assets/demo/images/avatar/{{member.image}}" [alt]="member.name" class="h-2rem w-2rem mr-2">
+                            <span class="text-900 font-medium">{{member.name}}</span>
+                        </div>
+                    </ng-template>
+                    <ng-template let-member pTemplate="item">
+                        <div class="flex align-items-center border-round">
+                            <img src="assets/demo/images/avatar/{{member.image}}" [alt]="member.name" class="h-2rem w-2rem mr-2">
+                            <span class="text-900 font-medium">{{member.name}}</span>
+                        </div>
+                    </ng-template>
+                </p-autoComplete>
+            </div>
+            <div class="col-12 flex justify-content-end mt-4">
+                <button pButton pRipple class="p-button-outlined w-8rem mr-3" icon="pi pi-times" label="Cancel" (click)="cancelTask()"></button>
+                <button pButton pRipple class="p-button-primary w-8rem" icon="pi pi-check" label="Save" (click)="save()"></button>
+            </div>
+        </div>
+    </div>
+</p-dialog>

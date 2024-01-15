@@ -1,0 +1,72 @@
+<div class="layout-topbar">
+    <div class="topbar-start">
+        <button #menubutton type="button" class="topbar-menubutton p-link p-trigger" (click)="onMenuButtonClick()">
+            <i class="pi pi-bars"></i>
+        </button>
+
+        <app-breadcrumb class="topbar-breadcrumb"></app-breadcrumb>
+    </div>
+    <div class="layout-topbar-menu-section">
+        <app-sidebar></app-sidebar>
+    </div>
+    <div class="topbar-end">
+        <ul class="topbar-menu  ">
+            <li class="hidden lg:block">
+                <div class="topbar-search" [ngClass]="{'topbar-search-active': searchActive}">
+                    <button pButton icon="pi pi-search" class="topbar-searchbutton p-button-text p-button-secondary text-color-secondary p-button-rounded flex-shrink-0" type="button" (click)="activateSearch()"></button>
+                    <div class="search-input-wrapper">
+                        <span class="p-input-icon-right">
+                            <input #searchinput type="text" pInputText placeholder="Search" (blur)="deactivateSearch()" (keydown.escape)="deactivateSearch()"/>
+                            <i class="pi pi-search"></i>
+                        </span>
+                    </div>
+                </div>
+            </li>
+           
+            <li  class="profile-item topbar-item " >
+                <button pButton type="button" icon="pi pi-bell" class="p-button-text p-button-secondary text-color-secondary p-button-rounded flex-shrink-0"></button>
+            </li>
+
+            <li  class="profile-item topbar-item " >
+                <button pButton type="button" icon="pi pi-comment"  class="p-button-text p-button-secondary relative text-color-secondary p-button-rounded flex-shrink-0"></button>
+            </li>
+
+            <li class="ml-3">
+                <button pButton type="button" icon="pi pi-cog" class="p-button-text p-button-secondary text-color-secondary p-button-rounded flex-shrink-0" (click)="onConfigButtonClick()"></button>
+            </li>
+
+            <li #profile class="profile-item topbar-item " >
+                <a pStyleClass="@next" enterFromClass="ng-hidden" enterActiveClass="px-scalein" leaveToClass="ng-hidden" leaveActiveClass="px-fadeout" [hideOnOutsideClick]="true" pRipple class="cursor-pointer">
+                    <img class="border-circle" src="assets/demo/images/avatar/square/avatar-m-1.jpg">
+                </a>
+
+                <ul class="topbar-menu active-topbar-menu p-4 w-15rem z-5 ng-hidden border-round">
+                    <li role="menuitem" class="m-0 mb-3">
+                        <a href="#" class="flex align-items-center hover:text-primary-500 transition-duration-200" pStyleClass="@grandparent" enterFromClass="ng-hidden" enterActiveClass="px-scalein" leaveToClass="ng-hidden" leaveActiveClass="px-fadeout">
+                            <i class="pi pi-fw pi-lock mr-2"></i>
+                            <span>Privacy</span>
+                        </a>
+                    </li>
+                    <li role="menuitem" class="m-0 mb-3">
+                        <a href="#" class="flex align-items-center hover:text-primary-500 transition-duration-200" pStyleClass="@grandparent" enterFromClass="ng-hidden" enterActiveClass="px-scalein" leaveToClass="ng-hidden" leaveActiveClass="px-fadeout">
+                            <i class="pi pi-fw pi-cog mr-2"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li role="menuitem" class="m-0">
+                        <a href="#" class="flex align-items-center hover:text-primary-500 transition-duration-200" pStyleClass="@grandparent" enterFromClass="ng-hidden" enterActiveClass="px-scalein" leaveToClass="ng-hidden" leaveActiveClass="px-fadeout">
+                            <i class="pi pi-fw pi-sign-out mr-2"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+      
+            <li class="right-panel-button relative hidden lg:block">
+                <button pButton  type="button" label="Today" style="width:5.7rem" icon="pi pi-bookmark" 
+                class="layout-rightmenu-button hidden md:block font-normal" styleClass="font-normal" (click)="onSidebarButtonClick()"></button>
+                <button pButton type="button" icon="pi pi-bookmark" styleClass="font-normal" class="layout-rightmenu-button block md:hidden" (click)="onSidebarButtonClick()"></button>
+            </li>
+        </ul>
+    </div>
+</div>

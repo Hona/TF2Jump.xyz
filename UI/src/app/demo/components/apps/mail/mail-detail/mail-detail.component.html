@@ -1,0 +1,27 @@
+<div *ngIf="mail">
+    <div class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-5 pt-5 md:pt-0 gap-4 md:border-top-none border-top-1 surface-border">
+        <div class="flex align-items-center md:justify-content-start">
+            <button pButton pRipple type="button" icon="pi pi-chevron-left" class="p-button-text p-button-plain md:mr-3" (click)="goBack()"></button>
+            <p-avatar *ngIf="mail && mail.image" [image]="'assets/demo/images/avatar/' + mail.image" size="large" shape="circle" styleClass="border-2 surface-border"></p-avatar>
+            <div class="flex flex-column mx-3">
+                <span class="block text-900 font-bold text-lg">{{mail.from}}</span>
+                <span class="block text-900 font-semibold">To: {{mail.email || mail.to}}</span>
+            </div>
+        </div>
+        <div class="flex align-items-center justify-content-end column-gap-3 px-4 md:px-0">
+            <span class="text-900 font-semibold white-space-nowrap mr-auto">{{mail.date}}</span>
+            <button pButton pRipple type="button" icon="pi pi-reply" class="p-button-text p-button-plain flex-shrink-0"></button>
+            <button pButton pRipple type="button" icon="pi pi-ellipsis-v" class="p-button-text p-button-plain flex-shrink-0"></button>
+        </div>
+    </div>
+    <div class="surface-border border-1 border-round p-4">
+            <div class="text-900 font-semibold text-lg mb-3">{{mail.title}}</div>
+            <p class="line-height-3 mt-0 mb-3" [innerHTML]="mail.message"></p>
+            <p-editor [style]="{'height':'250px'}" [(ngModel)]="newMail.message"></p-editor>
+            <div class="flex column-gap-3 justify-content-end mt-3">
+                <button pButton pRipple type="button" class="p-button-outlined" icon="pi pi-image"></button>
+                <button pButton pRipple type="button" class="p-button-outlined" icon="pi pi-paperclip"></button>
+                <button pButton pRipple type="button" class="p-button-primary" icon="pi pi-send" label="Send" (click)="sendMail()"></button>
+            </div>
+    </div>
+</div>
