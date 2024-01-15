@@ -12,6 +12,17 @@ export class AppMenuComponent implements OnInit {
     ngOnInit() {
         this.model = [
             {
+                label: 'Leaderboards',
+                icon: 'pi pi-fw pi-home',
+                items: [
+                    {
+                        label: 'Maps',
+                        icon: 'pi pi-fw pi-flag',
+                        routerLink: ['/leaderboards/maps']
+                    }
+                ]
+            },
+            /*{
                 label: 'Dashboards',
                 icon: 'pi pi-home',
                 items: [
@@ -471,7 +482,7 @@ export class AppMenuComponent implements OnInit {
                         routerLink: ['/documentation']
                     }
                 ]
-            }
+            }*/
         ];
     }
 }

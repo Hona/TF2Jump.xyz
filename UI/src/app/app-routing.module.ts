@@ -10,6 +10,8 @@ const routes: Routes = [
     {
         path: '', component: AppLayoutComponent,
         children: [
+            { path: 'leaderboards', data: { breadcrumb: 'Leaderboards' }, loadChildren: () => import('./tempushub/components/leaderboards/leaderboards.module').then(m => m.LeaderboardsModule) },
+
             { path: '', loadChildren: () => import('./demo/components/dashboards/dashboards.module').then(m => m.DashboardsModule) },
             { path: 'uikit', data: { breadcrumb: 'UI Kit' }, loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
             { path: 'utilities', data: { breadcrumb: 'Utilities' }, loadChildren: () => import('./demo/components/utilities/utilities.module').then(m => m.UtilitiesModule) },

@@ -1,0 +1,36 @@
+.rank-table tbody tr:nth-child(1) {
+    background: var(--primary-color);
+    color: #ffffff;
+}
+
+.rank-table tbody tr:nth-child(n+2):nth-child(-n+10) {
+    background: color-mix(in srgb, var(--primary-color) 20%, transparent);
+    color: #ffffff;
+}
+
+.rank-table tbody tr:nth-child(1) {
+    background: var(--yellow-400);
+    color: #000;
+
+    & .p-progressbar .p-progressbar-value {
+        background: var(--surface-50);
+    }
+}
+
+.rank-table tbody tr:nth-child(2) {
+    background: var(--gray-50) !important;
+    color: #000 !important;
+
+    & .p-progressbar .p-progressbar-value {
+        background: var(--gray-400) !important;
+    }
+}
+
+.rank-table tbody tr:nth-child(3) {
+    background: var(--orange-800) !important;
+    color: #fff !important;
+
+    & .p-progressbar .p-progressbar-value {
+        background: var(--text-color-secondary) !important;
+    }
+}
