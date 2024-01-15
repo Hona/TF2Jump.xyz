@@ -1,12 +1,10 @@
-.rank-table tbody tr:nth-child(1) {
-    background: var(--primary-color);
-    color: #ffffff;
-}
 
-.rank-table tbody tr:nth-child(n+2):nth-child(-n+10) {
+
+.rank-table tbody tr:nth-child(n+4):nth-child(-n+10) {
     background: color-mix(in srgb, var(--primary-color) 20%, transparent);
     color: #ffffff;
 }
+
 
 .rank-table tbody tr:nth-child(1) {
     background: var(--yellow-400);
@@ -34,3 +32,4 @@
         background: var(--text-color-secondary) !important;
     }
 }
+

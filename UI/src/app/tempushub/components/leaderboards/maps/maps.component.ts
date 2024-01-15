@@ -3,6 +3,8 @@ import {MenuModule} from "primeng/menu";
 import {MenuItem} from "primeng/api";
 import {TableModule} from "primeng/table";
 import {ProgressBarModule} from "primeng/progressbar";
+import {DropdownModule} from "primeng/dropdown";
+import {AvatarModule} from "primeng/avatar";
 
 @Component({
   selector: 'app-maps',
@@ -10,7 +12,9 @@ import {ProgressBarModule} from "primeng/progressbar";
     imports: [
         MenuModule,
         TableModule,
-        ProgressBarModule
+        ProgressBarModule,
+        DropdownModule,
+        AvatarModule
     ],
   templateUrl: './maps.component.html',
     styleUrls: ['./maps.component.scss']

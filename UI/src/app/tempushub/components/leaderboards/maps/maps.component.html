@@ -3,31 +3,63 @@
 <div class="flex gap-8">
         <p-menu [model]="zones" styleClass="flex-shrink-0 flex"></p-menu>
 
-        <p-table [value]="soldierRuns" styleClass="flex-grow-1 flex-shrink-1 rank-table">
-            <ng-template pTemplate="caption">
-                <h2 class="m-0 text-white">Soldier</h2>
-            </ng-template>
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>Placing</th>
-                    <th>Time</th>
-                    <th>Player</th>
-                    <th>Date</th>
-                    <th>WR %</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-run>
-                <tr>
-                    <td>{{ run.placing }}</td>
-                    <td>{{ run.duration }}</td>
-                    <td>{{ run.player }}</td>
-                    <td>{{ run.date }}</td>
-                    <td>
-                        <p-progressBar [value]="(calculatePercentage(soldierRuns[0]['duration'], run.duration))" [showValue]="false"></p-progressBar>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
+    <p-table [value]="soldierRuns" styleClass="flex-grow-1 flex-shrink-1 rank-table">
+        <ng-template pTemplate="caption">
+            <h2 class="m-0 text-white">Demoman</h2>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Placing</th>
+                <th>Time</th>
+                <th>Player</th>
+                <th>Date</th>
+                <th>WR %</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-run>
+            <tr>
+                <td class="flex justify-content-center align-items-center">
+                    @switch (run.placing)
+                    {
+                        @case (1)
+                        {
+                            <span class="material-symbols-outlined">
+                                trophy
+                            </span>
+                        }
+                        @case (2)
+                        {
+                            <span class="material-symbols-outlined">
+                                counter_2
+                            </span>
+                        }
+                        @case (3)
+                        {
+                            <span class="material-symbols-outlined">
+                                counter_3
+                            </span>
+                        }
+                        @default
+                        {
+                            <span>{{ run.placing }}</span>
+                        }
+                    }
+                </td>
+                <td>{{ run.duration }}</td>
+                <td class="flex align-items-center">
+                    <p-avatar shape="circle" image="https://avatars.cloudflare.steamstatic.com/fe41ab7218a289ccbb1428930cfffad883bcea14_full.jpg"
+                                class="mr-2">
+                    </p-avatar>
+
+                    {{ run.player }}
+                </td>
+                <td>{{ run.date }}</td>
+                <td>
+                    <p-progressBar [value]="(calculatePercentage(soldierRuns[0]['duration'], run.duration))" [showValue]="false"></p-progressBar>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
 
     <p-table [value]="soldierRuns" styleClass="flex-grow-1 flex-shrink-1 rank-table">
         <ng-template pTemplate="caption">
@@ -44,7 +76,33 @@
         </ng-template>
         <ng-template pTemplate="body" let-run>
             <tr>
-                <td>{{ run.placing }}</td>
+                <td class="flex justify-content-center align-items-center">
+                    @switch (run.placing)
+                    {
+                        @case (1)
+                        {
+                            <span class="material-symbols-outlined">
+                                trophy
+                            </span>
+                        }
+                        @case (2)
+                        {
+                            <span class="material-symbols-outlined">
+                                counter_2
+                            </span>
+                        }
+                        @case (3)
+                        {
+                            <span class="material-symbols-outlined">
+                                counter_3
+                            </span>
+                        }
+                        @default
+                        {
+                            <span>{{ run.placing }}</span>
+                        }
+                    }
+                </td>
                 <td>{{ run.duration }}</td>
                 <td>{{ run.player }}</td>
                 <td>{{ run.date }}</td>
