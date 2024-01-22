@@ -42,7 +42,7 @@ public class BackgroundIngestService(ILogger<BackgroundIngestService> logger, IS
             }
         }
         
-        var ingestService = scope.ServiceProvider.GetRequiredService<IIngestService>();
+        var ingestService = scope.ServiceProvider.GetRequiredService<ITempusApiIngestService>();
         
         await ingestService.IngestTempusApiAsync(cancellationToken);
     }

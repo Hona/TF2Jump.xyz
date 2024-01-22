@@ -3,13 +3,14 @@ using TempusApi;
 using TempusApi.Enums;
 using TempusApi.Models.Activity;
 using TempusApi.Models.DetailedMapList;
+using TempusHub.API.Common.Tempus;
 using TempusHub.API.Features.ZoneRecords;
 
 namespace TempusHub.API.Features.Ingests.Services.Tasks;
 
-public class IngestMapRecordsTask(ITempusClient tempusClient, ILogger<IngestMapRecordsTask> logger, AppDbContext dbContext) : IIngestTask
+public class TempusApiIngestMapRecordsTask(ITempusClient tempusClient, ILogger<TempusApiIngestMapRecordsTask> logger, AppDbContext dbContext) : ITempusApiIngestTask
 {
-    public async Task ExecuteAsync(Ingest ingest, DateOnly triggerDate, CancellationToken cancellationToken = default)
+    public async Task ExecuteAsync(TempusApiIngest tempusApiIngest, DateOnly triggerDate, CancellationToken cancellationToken = default)
         {
             var allMaps = await tempusClient.GetDetailedMapListAsync(cancellationToken);
 

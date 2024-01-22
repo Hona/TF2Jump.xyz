@@ -1,4 +1,4 @@
-﻿using TempusHub.API.Common;
+﻿using TempusHub.API.Common.Feature;
 using TempusHub.API.Features.Ingests.HostedService;
 using TempusHub.API.Features.Ingests.Services;
 using TempusHub.API.Features.Ingests.Services.Tasks;
@@ -10,10 +10,10 @@ public sealed class IngestModule : IModule
     public static void ConfigureServices(IServiceCollection services)
     {
         services.AddScoped<IIngestRepository, IngestRepository>();
-        services.AddScoped<IIngestService, IngestService>();
+        services.AddScoped<ITempusApiIngestService, TempusApiIngestService>();
         services.AddHostedService<BackgroundIngestService>();
         
-        services.AddScoped<IIngestTask, IngestMapsTask>();
-        services.AddScoped<IIngestTask, IngestMapRecordsTask>();
+        services.AddScoped<ITempusApiIngestTask, TempusApiIngestMapsTask>();
+        services.AddScoped<ITempusApiIngestTask, TempusApiIngestMapRecordsTask>();
     }
 }

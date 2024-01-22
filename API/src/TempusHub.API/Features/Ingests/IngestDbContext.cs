@@ -6,5 +6,5 @@ namespace TempusHub.API.Common;
 
 public partial class AppDbContext
 {
-    public DbSet<Ingest> Ingests { get; set; } = null!;
+    public DbSet<TempusApiIngest> Ingests { get; set; } = null!;
 }

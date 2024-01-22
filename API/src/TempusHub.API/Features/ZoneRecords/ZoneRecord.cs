@@ -1,4 +1,5 @@
 ﻿using TempusApi.Enums;
+using TempusHub.API.Common.DataModelling;
 using TempusHub.API.Features.Zones;
 
 namespace TempusHub.API.Features.ZoneRecords;

@@ -1,4 +1,4 @@
-﻿namespace TempusHub.API.Common;
+﻿namespace TempusHub.API.Common.DataModelling;
 
 public abstract class BaseEntity
 {

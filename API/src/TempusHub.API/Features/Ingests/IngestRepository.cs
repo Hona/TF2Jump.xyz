@@ -1,15 +1,13 @@
-﻿using TempusHub.API.Common;
-
-namespace TempusHub.API.Features.Ingests;
+﻿namespace TempusHub.API.Features.Ingests;
 
 public interface IIngestRepository
 {
-    Task<Ingest?> GetLatestAsync(CancellationToken cancellationToken = default);
-    Task<IEnumerable<Ingest>> GetAllAsync(CancellationToken cancellationToken = default);
-    Task<Ingest?> GetByDateAsync(DateOnly date, CancellationToken cancellationToken = default);
-    Task<Ingest> AddAsync(Ingest ingest, CancellationToken cancellationToken = default);
-    Task DeleteAsync(Ingest ingest, CancellationToken cancellationToken = default);
-    Task UpdateAsync(Ingest ingest, CancellationToken cancellationToken = default);
+    Task<TempusApiIngest?> GetLatestAsync(CancellationToken cancellationToken = default);
+    Task<IEnumerable<TempusApiIngest>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<TempusApiIngest?> GetByDateAsync(DateOnly date, CancellationToken cancellationToken = default);
+    Task<TempusApiIngest> AddAsync(TempusApiIngest tempusApiIngest, CancellationToken cancellationToken = default);
+    Task DeleteAsync(TempusApiIngest tempusApiIngest, CancellationToken cancellationToken = default);
+    Task UpdateAsync(TempusApiIngest tempusApiIngest, CancellationToken cancellationToken = default);
 }
 
 public class IngestRepository : IIngestRepository
@@ -21,40 +19,40 @@ public class IngestRepository : IIngestRepository
         _appDbContext = appDbContext;
     }
 
-    public async Task<Ingest?> GetLatestAsync(CancellationToken cancellationToken = default)
+    public async Task<TempusApiIngest?> GetLatestAsync(CancellationToken cancellationToken = default)
     {
         return await _appDbContext.Ingests
             .OrderByDescending(x => x.Date)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<Ingest>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<TempusApiIngest>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         var query = _appDbContext.Ingests.AsQueryable();
         return await query.ToListAsync(cancellationToken);
     }
 
-    public async Task<Ingest?> GetByDateAsync(DateOnly date, CancellationToken cancellationToken = default)
+    public async Task<TempusApiIngest?> GetByDateAsync(DateOnly date, CancellationToken cancellationToken = default)
     {
         return await _appDbContext.Ingests.FirstOrDefaultAsync(x => x.Date == date, cancellationToken);
     }
 
-    public async Task<Ingest> AddAsync(Ingest ingest, CancellationToken cancellationToken = default)
+    public async Task<TempusApiIngest> AddAsync(TempusApiIngest tempusApiIngest, CancellationToken cancellationToken = default)
     {
-        _appDbContext.Ingests.Add(ingest);
+        _appDbContext.Ingests.Add(tempusApiIngest);
         await _appDbContext.SaveChangesAsync(cancellationToken);
-        return ingest;
+        return tempusApiIngest;
     }
 
-    public async Task DeleteAsync(Ingest ingest, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(TempusApiIngest tempusApiIngest, CancellationToken cancellationToken = default)
     {
-        _appDbContext.Ingests.Remove(ingest);
+        _appDbContext.Ingests.Remove(tempusApiIngest);
         await _appDbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task UpdateAsync(Ingest ingest, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(TempusApiIngest tempusApiIngest, CancellationToken cancellationToken = default)
     {
-        _appDbContext.Ingests.Update(ingest);
+        _appDbContext.Ingests.Update(tempusApiIngest);
         await _appDbContext.SaveChangesAsync(cancellationToken);
     }
 }

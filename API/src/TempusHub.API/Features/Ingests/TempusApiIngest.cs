@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Ardalis.Result;
-using TempusHub.API.Common;
+﻿using TempusHub.API.Common.DataModelling;
 
 namespace TempusHub.API.Features.Ingests;
 
-public class Ingest : BaseEntity
+public class TempusApiIngest : BaseEntity
 {
-    public Ingest(DateOnly date) => Date = date;
+    public TempusApiIngest(DateOnly date) => Date = date;
 
     public DateOnly Date { get; init; }
     public int RowsWritten { get; private set; }

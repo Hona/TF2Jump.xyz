@@ -3,16 +3,16 @@ using TempusHub.API.Features.Ingests.Services.Tasks;
 
 namespace TempusHub.API.Features.Ingests.Services;
 
-public interface IIngestService
+public interface ITempusApiIngestService
 {
-    Task<Result<Ingest>> IngestTempusApiAsync(CancellationToken cancellationToken = default);
+    Task<Result<TempusApiIngest>> IngestTempusApiAsync(CancellationToken cancellationToken = default);
 }
 
-public class IngestService(IIngestRepository ingestRepository, ILogger<IngestService> logger, IServiceProvider sp) : IIngestService
+public class TempusApiIngestService(IIngestRepository ingestRepository, ILogger<TempusApiIngestService> logger, IServiceProvider sp) : ITempusApiIngestService
 {
     private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
 
-    public async Task<Result<Ingest>> IngestTempusApiAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<TempusApiIngest>> IngestTempusApiAsync(CancellationToken cancellationToken = default)
     {
         logger.LogInformation("Ingest begun, waiting for lock");
         await _semaphoreSlim.WaitAsync(cancellationToken);
@@ -28,9 +28,9 @@ public class IngestService(IIngestRepository ingestRepository, ILogger<IngestSer
                 return Result.Conflict();
             }
         
-            var ingest = new Ingest(now);
+            var ingest = new TempusApiIngest(now);
 
-            var tasks = sp.GetServices<IIngestTask>();
+            var tasks = sp.GetServices<ITempusApiIngestTask>();
 
             foreach (var task in tasks)
             {

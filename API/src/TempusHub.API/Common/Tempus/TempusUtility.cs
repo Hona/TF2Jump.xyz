@@ -1,4 +1,4 @@
-﻿namespace TempusHub.API.Features.Ingests.Services;
+﻿namespace TempusHub.API.Common.Tempus;
 
 public static class TempusUtility
 {
