@@ -1,4 +1,11 @@
 
+.rank-table .p-datatable-wrapper {
+    border-radius: 0 0 8px 8px;
+}
+
+.rank-table .p-datatable-header {
+    border-radius: 8px 8px 0 0;
+}
 
 .rank-table tbody tr:nth-child(n+4):nth-child(-n+10) {
     background: color-mix(in srgb, var(--primary-color) 20%, transparent);
@@ -33,3 +40,6 @@
     }
 }
 
+.statistic .p-card-content {
+    padding: 0;
+}

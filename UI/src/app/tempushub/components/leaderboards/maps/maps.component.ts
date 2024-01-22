@@ -5,6 +5,10 @@ import {TableModule} from "primeng/table";
 import {ProgressBarModule} from "primeng/progressbar";
 import {DropdownModule} from "primeng/dropdown";
 import {AvatarModule} from "primeng/avatar";
+import {ButtonModule} from "primeng/button";
+import {RippleModule} from "primeng/ripple";
+import {CardModule} from "primeng/card";
+import {ChartModule} from "primeng/chart";
 
 @Component({
   selector: 'app-maps',
@@ -14,7 +18,11 @@ import {AvatarModule} from "primeng/avatar";
         TableModule,
         ProgressBarModule,
         DropdownModule,
-        AvatarModule
+        AvatarModule,
+        ButtonModule,
+        RippleModule,
+        CardModule,
+        ChartModule
     ],
   templateUrl: './maps.component.html',
     styleUrls: ['./maps.component.scss']
@@ -25,7 +33,9 @@ export class MapsComponent {
             label: "Map",
             items: [
                 {
-                    label: "Map"
+                    label: "Map",
+                    badge: "Tier 6",
+                    badgeStyleClass: "ml-auto p-badge p-badge-danger  flex-shrink-0",
                 }
             ]
         },
@@ -34,9 +44,13 @@ export class MapsComponent {
             items: [
                 {
                     label: "Course 1",
+                    badge: "Tier 1",
+                    badgeStyleClass: "ml-auto p-badge p-badge-success flex-shrink-0 text-black",
                 },
                 {
                     label: "Course 2",
+                    badge: "Tier 2",
+                    badgeStyleClass: "ml-auto p-badge p-badge-success text-black flex-shrink-0",
                 }
             ]
         },
@@ -45,9 +59,13 @@ export class MapsComponent {
             items: [
                 {
                     label: "Bonus 1",
+                    badge: "Tier 5",
+                    badgeStyleClass: "ml-auto p-badge p-badge-warning flex-shrink-0",
                 },
                 {
                     label: "Bonus 2",
+                    badge: "Tier 3",
+                    badgeStyleClass: "ml-auto p-badge p-badge-success  text-black flex-shrink-0",
                 }
             ]
         },
@@ -56,9 +74,13 @@ export class MapsComponent {
             items: [
                 {
                     label: "Spooky jump",
+                    badge: "Tier 4",
+                    badgeStyleClass: "ml-auto p-badge p-badge-info flex-shrink-0",
                 },
                 {
                     label: "sync powerbounce 4 rockets",
+                    badge: "Tier 0",
+                    badgeStyleClass: "ml-auto p-badge p-badge-secondary  text-black flex-shrink-0",
                 }
             ]
         }
@@ -163,4 +185,85 @@ export class MapsComponent {
         // Inverting the calculation
         return (worldRecord / target) * 100;
     };
+
+    ngOnInit(){
+        const documentStyle = getComputedStyle(document.documentElement);
+        const textColor = documentStyle.getPropertyValue('--text-color');
+        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+        this.lineData = {
+            datasets: [{
+/*
+                data: [{x: '2016-12-25', y: ''}, {x: '2016-12-26', y: 10}]
+*/
+                data: this.soldierRuns.map((run) => {
+                    return {x: run.date, y: this.getMilliseconds(run.duration)};
+                }).reverse(),
+                borderColor: "#bae755",
+                borderDash: [5, 5],
+                backgroundColor: "#e755ba",
+                pointBackgroundColor: "#55bae7",
+                pointBorderColor: "#55bae7",
+                pointHoverBackgroundColor: "#55bae7",
+                pointHoverBorderColor: "#55bae7",
+            }]
+        };
+
+        this.lineOptions = {
+            plugins: {
+                legend: {
+                    labels: {
+                        fontColor: textColor
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: textColorSecondary,
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false
+                    },
+                },
+                y: {
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false
+                    },
+/*
+                    type: 'time'
+*/
+                },
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+
+        };
+
+    }
+
+    protected lineData: any;
+
+    protected lineOptions: any;
+
+    protected getMilliseconds = (timeString :string) => {
+        // Split the time string by colon and period
+        let parts = timeString.split(':');
+        let secondsParts = parts[2].split('.');
+
+        // Extract hours, minutes, seconds, and milliseconds
+        let hours = parseInt(parts[0], 10);
+        let minutes = parseInt(parts[1], 10);
+        let seconds = parseInt(secondsParts[0], 10);
+        let milliseconds = parseInt(secondsParts[1], 10);
+
+        // Convert everything to milliseconds
+        return (hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds * 1000) + milliseconds;
+    }
 }
