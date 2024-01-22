@@ -2,7 +2,7 @@
 
 namespace TempusHub.API.Features.Ingests.HostedService;
 
-public class BackgroundIngestService(ILogger<BackgroundIngestService> logger, IServiceProvider sp) : BackgroundService
+public class BackgroundTempusApiIngestService(ILogger<BackgroundTempusApiIngestService> logger, IServiceProvider sp) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -29,8 +29,12 @@ public class BackgroundIngestService(ILogger<BackgroundIngestService> logger, IS
     private async Task ExecuteIngestAsync(CancellationToken cancellationToken = default)
     {
         using var scope = sp.CreateScope();
-        var ingestRepository = scope.ServiceProvider.GetRequiredService<IIngestRepository>();
-        var lastIngest = await ingestRepository.GetLatestAsync(cancellationToken);
+
+        await using var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        
+        var lastIngest = await db.Ingests
+            .OrderByDescending(x => x.Date)
+            .FirstOrDefaultAsync(cancellationToken);
 
         // If the last ingest was less than 7 days ago, wait until it's been 7 days
         if (lastIngest is not null)

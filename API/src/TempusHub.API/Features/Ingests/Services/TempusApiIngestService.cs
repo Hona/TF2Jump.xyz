@@ -8,7 +8,7 @@ public interface ITempusApiIngestService
     Task<Result<TempusApiIngest>> IngestTempusApiAsync(CancellationToken cancellationToken = default);
 }
 
-public class TempusApiIngestService(IIngestRepository ingestRepository, ILogger<TempusApiIngestService> logger, IServiceProvider sp) : ITempusApiIngestService
+public class TempusApiIngestService(AppDbContext dbContext, ILogger<TempusApiIngestService> logger, IServiceProvider sp) : ITempusApiIngestService
 {
     private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
 
@@ -20,9 +20,10 @@ public class TempusApiIngestService(IIngestRepository ingestRepository, ILogger<
         {
             logger.LogInformation("Ingest lock acquired");
             var now = DateOnly.FromDateTime(DateTime.UtcNow);
-        
-            var existingIngest = await ingestRepository.GetByDateAsync(now, cancellationToken);
-        
+
+            var existingIngest = await dbContext.Ingests
+                .FirstOrDefaultAsync(x => x.Date == now, cancellationToken);
+            
             if (existingIngest is not null)
             {
                 return Result.Conflict();
@@ -41,7 +42,9 @@ public class TempusApiIngestService(IIngestRepository ingestRepository, ILogger<
             }
         
             ingest.Complete();
-            ingest = await ingestRepository.AddAsync(ingest, cancellationToken);
+            
+            dbContext.Add(ingest);
+            await dbContext.SaveChangesAsync(cancellationToken);
             
             logger.LogInformation("Ingest completed took {IngestDuration}, wrote {IngestRows} rows", ingest.Duration, ingest.RowsWritten);
             
