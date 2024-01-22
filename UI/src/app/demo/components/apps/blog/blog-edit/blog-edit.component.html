@@ -1,0 +1,70 @@
+<div class="card">
+    <span class="block text-900 font-bold text-xl mb-4">Create a new post</span>
+    <div class="grid">
+        <div class="col-12 lg:col-8">
+            <p-fileUpload #fileUploader name="demo[]" url="./upload.php" (onUpload)="onUpload($event)" [customUpload]="true" [multiple]="true" (onSelect)="onUpload($event)" accept="image/*" [showUploadButton]="false" [showCancelButton]="false" [auto]="true" styleClass="border-1 surface-border surface-card p-0 border-round mb-4">
+                <ng-template pTemplate="content">
+                    <div class="h-20rem m-1 border-round">
+                        <div *ngIf="!image" class="flex flex-column w-full h-full justify-content-center align-items-center cursor-pointer" (click)="fileUploader.advancedFileInput.nativeElement.click()">
+                            <i class="pi pi-fw pi-file text-4xl text-primary"></i>
+                            <span class="block font-semibold text-900 text-lg mt-3">Drop or select a cover image</span>
+                        </div>
+                        <div *ngIf="image" class="w-full h-full relative border-round p-0">
+                            <img [src]="image.objectURL" class="w-full h-full border-round" alt="blog cover">
+                            <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-primary text-sm absolute justify-content-center align-items-center" style="top: -10px; right: -10px;" (click)="$event.stopPropagation(); removeImage()"></button>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-fileUpload>
+            <div class="flex flex-column p-fluid">
+                <div class="mb-4">
+                    <input type="text" pInputText placeholder="Title"/>
+                </div>
+                <div class="mb-4">
+                    <textarea rows="6" pInputTextarea placeholder="Content" [autoResize]="true"></textarea>
+                </div>
+                <p-editor [style]="{'height':'250px'}"></p-editor>
+            </div>
+        </div>
+        <div class="col-12 lg:col-4">
+            <div class="border-1 surface-border border-round mb-4">
+                <span class="text-900 font-bold block border-bottom-1 surface-border p-3">Publish</span>
+                <div class="p-3">
+                    <div class="surface-100 p-3 flex align-items-center border-round">
+                        <span class="text-900 font-semibold mr-3">Status:</span>
+                        <span class="font-medium">Draft</span>
+                        <button pButton pRipple type="button" icon="pi pi-fw pi-pencil" class="p-button-rounded p-button-text ml-auto"></button>
+                    </div>
+                </div>
+                <div class="p-3">
+                    <div class="surface-100 p-3 flex align-items-center border-round">
+                        <span class="text-900 font-semibold mr-3">Visibility:</span>
+                        <span class="font-medium">Private</span>
+                        <button pButton pRipple type="button" icon="pi pi-fw pi-pencil" class="p-button-rounded p-button-text ml-auto"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-1 surface-border border-round mb-4">
+                <span class="text-900 font-bold block border-bottom-1 surface-border p-3">Tags</span>
+                <div class="p-3 flex gap-2">
+                    <p-chip *ngFor="let tag of tags; let i = index;" [label]="tag"></p-chip>
+                </div>
+            </div>
+            <div class="border-1 surface-border border-round p-fluid mb-4">
+                <span class="text-900 font-bold block border-bottom-1 surface-border p-3">Meta</span>
+                <div class="p-3">
+                    <div class="mb-4">
+                        <input type="text" pInputText placeholder="Title" />
+                    </div>
+                    <div>
+                        <textarea rows="6" pInputTextarea placeholder="Description" [autoResize]="true"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-content-between gap-3">
+                <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Discard" icon="pi pi-fw pi-trash"></button>
+                <button pButton pRipple class="p-button-primary flex-1" label="Publish" icon="pi pi-fw pi-check"></button>
+            </div>
+        </div>
+    </div>
+</div>

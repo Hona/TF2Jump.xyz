@@ -1,0 +1,185 @@
+
+  
+.landing-container {
+  #header {
+    #menu {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        list-style-type: none;
+    }
+      .header-features {
+          .header-feature-box {
+              background: rgba(0, 0, 0, 0.5);
+              border: 1px solid rgba(0, 0, 0, 0.15);
+              box-sizing: border-box;
+              backdrop-filter: blur(40px);
+              border-radius: 20px;
+              padding: 30px 33px 36px 33px;
+              max-width: 370px;
+
+              .title {
+                  display: block;
+                  font-size: 20px;
+                  line-height: 23px;
+              }
+
+              .content {
+                  font-size: 14px;
+                  line-height: 16px;
+              }
+          }
+      }
+  }
+  .landing-wrapper-back {
+      margin-top: calc(((100vw * 0.09719) * -1) - 300px);
+      padding: calc((100vw * 0.09719) * 4) - ((100vw * 0.09719) - (100vw * 0.09719)) 0 4em;
+  }
+
+  .landing-wrapper {
+      #footer {
+          .newsletter {
+              input {
+                  background: #EFEFFB;
+                  mix-blend-mode: multiply;
+                  opacity: 0.8;
+                  color: #44486D;
+                  border-radius: 8px 0 0 8px;
+                  border-color: transparent;
+                  padding: .714rem 1rem;
+                  min-width: 400px;
+
+                  &::placeholder {
+                      font-weight: 500;
+                      font-size: 14px;
+                      line-height: 17px;
+                      color: #44486D;
+                      mix-blend-mode: multiply;
+                      opacity: 0.25;
+                  }
+              }
+          }
+      }
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .landing-container {
+      #header {
+          .header-features, .header-text {
+              padding: 100px 0 !important;
+              padding-left: 0 !important;
+              padding-right: 0 !important;
+          }
+
+         
+      }
+
+      #meet-atlantis {
+          min-height: 430px !important;
+
+          .ellipsis-1, .ellipsis-2,
+          .ellipsis-3, .ellipsis-4 {
+              display: none;
+          }
+
+         
+      }
+
+      .landing-wrapper-back {
+          display: none;
+      }
+
+      .landing-wrapper {
+          padding: 2.5rem 3rem !important;
+
+          &.clip-path {
+              clip-path: none;
+              margin-top: 0;
+          }
+
+
+          #features {
+              padding-left: 0 !important;
+              padding-right: 0 !important;
+
+              .feature-boxes {
+                  &.feature-boxes-1, &.feature-boxes-2, &.feature-boxes-3 {
+                      margin-bottom: 50px !important;
+                      margin-left: 0px !important;
+                  }
+
+                  &.feature-boxes-3 {
+                      .feature-widgets {
+                          overflow: hidden !important;
+
+                          .progressbar-widget {
+                              max-width: 350px !important;
+                              position: absolute;
+                              right: -150px;
+                              top: -15px;
+                          }
+                      }
+                  }
+              }
+          }
+
+          #pricing {
+              padding-left: 0 !important;
+              padding-right: 0 !important;
+
+              .pricing-content {
+                  .card {
+                      margin-right: 0 !important;
+                  }
+              }
+          }
+
+          #footer {
+              .newsletter {
+                  p, input {
+                      min-width: auto;
+                      max-width: 300px;
+                  }
+              }
+          }
+      }
+  }
+}
+
+.clip-path {
+  position: relative;
+  margin-top: calc(((100vw * 0.09719) * -1) - 300px);
+  padding: calc((100vw * 0.09719) * 4) - ((100vw * 0.09719) - (100vw * 0.09719)) 0 4em;
+  clip-path: polygon(
+          0% 18%,
+          100% 0%,
+          100% 100%,
+          0% 100%);
+  -webkit-clip-path: polygon(
+          0% 18%,
+          100% 0%,
+          100% 100%,
+          0% 100%);
+}
+
+
+@media screen and (min-width: 1960px) {
+    .landing-container{
+        .header-menu-container,
+        .header-text,
+        .header-features,
+        .landing-back,
+        .features,
+        .pricing,
+        .footer
+         {
+            width: 1504px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+    }
+
+    
+   
+}

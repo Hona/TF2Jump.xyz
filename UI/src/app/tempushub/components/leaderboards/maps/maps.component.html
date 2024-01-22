@@ -1,0 +1,130 @@
+<div class="card flex justify-content-between align-items-center" >
+    <div>
+        <h2 class="p-text-secondary flex gap-4">
+            jump_super_silly
+
+            <span class="p-buttonset">
+                <p-button styleClass="p-button-rounded">
+                    <img alt="logo" src="/assets/tempushub/images/Soldier.svg" style="width: 1.5rem"/>
+                    <span class="ml-2 font-bold text-white">Soldier</span>
+                </p-button>
+
+                <p-button styleClass="p-button-rounded p-button-outlined">
+                    <img alt="logo" src="/assets/tempushub/images/Demo.svg" style="width: 1.5rem; fill: white;"/>
+                    <span class="ml-2 font-bold text-white">Demoman</span>
+                </p-button>
+            </span>
+        </h2>
+
+        <div class="mb-4">
+            <div class="flex gap-4">
+                <div class="flex flex-grow-1 flex-shrink-1 flex-column">
+                    <span class="p-text-secondary mb-1">Authored by Seras</span>
+                    <span class="p-text-secondary">7 years old</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex gap-2">
+        <p-card styleClass="statistic surface-card shadow-none p-0">
+            <p class="font-bold text-2xl mb-1">5924</p>
+            <p>Total map completions</p>
+        </p-card>
+
+        <p-card styleClass="statistic surface-card shadow-none p-0">
+            <p class="font-bold text-2xl mb-1">42</p>
+            <p>Unique map WRs</p>
+        </p-card>
+
+        <p-card styleClass="statistic surface-card shadow-none p-0">
+            <p class="font-bold text-2xl mb-1">5924</p>
+            <p>Map WR held for</p>
+        </p-card>
+    </div>
+
+<!--    <div class="flex flex-grow-1 flex-shrink-1 flex-column">
+        <p>Total Map Completions: <span class="font-bold">5924</span></p>
+        <p>Unique Map WRs: <span class="font-bold">42</span></p>
+        <p>Map WR held for: <span class="font-bold">3 days</span></p>
+    </div>-->
+
+</div>
+
+<hr />
+
+<div class="flex gap-8">
+    <p-menu [model]="zones" class="zone-menu" styleClass="flex-shrink-0 flex">
+    </p-menu>
+
+    <p-table [value]="soldierRuns" styleClass="flex-grow-1 flex-shrink-1 rank-table">
+        <ng-template pTemplate="caption">
+            <div class="py-2 px-2 flex gap-2 justify-content-between">
+                <h2 class="m-0 text-white">Soldier</h2>
+
+                <img alt="logo" src="/assets/tempushub/images/Soldier.svg" style="width: 1.5rem"/>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Placing</th>
+                <th>Time</th>
+                <th>Player</th>
+                <th>Date</th>
+                <th>WR %</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-run>
+            <tr>
+                <td [class]="(run.placing <= 3 ? 'flex justify-content-center align-items-center' : 'text-center')">
+                    @switch (run.placing)
+                    {
+                        @case (1)
+                        {
+                            <span class="material-symbols-outlined">
+                                trophy
+                            </span>
+                        }
+                        @case (2)
+                        {
+                            <span class="material-symbols-outlined">
+                                counter_2
+                            </span>
+                        }
+                        @case (3)
+                        {
+                            <span class="material-symbols-outlined">
+                                counter_3
+                            </span>
+                        }
+                        @default
+                        {
+                            <span>
+                                {{ run.placing }}
+                            </span>
+                        }
+                    }
+                </td>
+                <td>{{ run.duration }}</td>
+                <td class="flex align-items-center">
+                    <p-avatar shape="circle" image="https://avatars.cloudflare.steamstatic.com/fe41ab7218a289ccbb1428930cfffad883bcea14_full.jpg"
+                                class="mr-2">
+                    </p-avatar>
+
+                    {{ run.player }}
+                </td>
+                <td>{{ run.date }}</td>
+                <td>
+                    <p-progressBar [value]="(calculatePercentage(soldierRuns[0]['duration'], run.duration))" [showValue]="false"></p-progressBar>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <div class="flex-grow-1 flex-shrink-1">
+        <div class="card" [style]="{}">
+            <h5>World Record History</h5>
+            <p-chart  type="line" [data]="lineData" [options]="lineOptions" width="140" height="400"></p-chart>
+        </div>
+    </div>
+</div>

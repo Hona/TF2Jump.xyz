@@ -1,0 +1,158 @@
+@media screen and (min-width: $breakpoint) {
+    .layout-container {
+        &.layout-slim {
+            .layout-topbar {
+                .topbar-menubutton {
+                    display: none;
+                }
+            }
+
+            .sidebar-header {
+                padding:  1.7rem 0;
+                .app-logo {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    .app-logo-normal {
+                        display: none;
+                        img {
+                            height: 1.714rem;
+                        }
+                    }
+
+                    .app-logo-small {
+                        display: inline;
+                        img {
+                            height: 2.5rem;
+                        }
+                    }
+                }
+            }
+
+            .layout-sidebar {
+                width: 5.857rem;
+                overflow: visible;
+                z-index: 999;
+                .layout-menu-container {
+                    overflow: auto;
+
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+                }
+            }
+
+            .layout-content-wrapper {
+                margin-left: 5.857rem;
+            }
+
+            .layout-menu {
+                padding: 0 1rem;
+                .layout-root-menuitem {
+                    > .layout-menuitem-root-text {
+                        display: none;
+                    }
+
+                    > a {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 12px;
+                        border: none;
+                        cursor: pointer;
+                        outline: none;
+                        transition: background-color var(--transition-duration);
+                        margin: 0px;
+                        padding: 8px;
+                        width: 40px;
+                        height: 40px;
+                        margin: 0 auto 1rem auto;
+
+                        .layout-submenu-toggler {
+                            display: none;
+                        }
+
+                        .layout-menuitem-icon {
+                            font-size: 1.5rem;
+                          
+                        }
+
+                        .layout-menuitem-text {
+                            display: none;
+                        }
+
+                        &:hover {
+                            color: (--primary-color-text);
+                            background-color: var(--primary-color);
+                        }
+                    }
+
+                    > ul {
+                        position: absolute;
+                        left: 5.857rem;
+                        top: 0;
+                        min-width: 15rem;
+                        background: var(--surface-ground);
+                        border-radius: var(--border-radius);
+                        box-shadow: var(--sidebar-shadow);
+                        padding: 0.5rem;
+                        max-height: 20rem;
+                        overflow: auto;
+                        z-index: 999;
+
+                        a {
+                            padding-right: 0.5rem;
+                            color: var(--text-color);
+                            border-radius: var(--border-radius);
+
+                            .layout-menuitem-icon {
+                                color: var(--text-color);
+                            }
+
+                            &:hover {
+                                background-color: var(--root-menu-item-hover-bg);
+                            }
+                        }
+
+                        li {
+                            a {
+                                padding-left: 0.5rem;
+                            }
+
+                            li {
+                                a {
+                                    padding-left: 1rem;
+                                }
+
+                                li {
+                                    a {
+                                        padding-left: 1.5rem;
+                                    }
+
+                                    li {
+                                        a {
+                                            padding-left: 2rem;
+                                        }
+
+                                        li {
+                                            a {
+                                                padding-left: 2.5rem;
+                                            }
+
+                                            li {
+                                                a {
+                                                    padding-left: 3rem;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

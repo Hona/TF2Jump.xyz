@@ -1,0 +1,22 @@
+<p-toast key="fu"></p-toast>
+<div class="card">
+    <p-fileUpload #fileUploader name="demo[]" url="./upload.php" accept="image/*" (onUpload)="onUpload($event)" [customUpload]="true"
+        [multiple]="true" (onSelect)="onUpload($event)" [showUploadButton]="true"
+        [showCancelButton]="false" [auto]="true" class="w-full">
+        <ng-template pTemplate="content">
+            <div class="w-full py-3" style="cursor: copy" (click)="fileUploader.advancedFileInput.nativeElement.click()">
+                <div *ngIf="!uploadedFiles.length" class="h-full flex flex-column justify-content-center align-items-center">
+                    <i class="pi pi-upload text-900 text-2xl mb-3"></i>
+                    <span class="font-bold text-900 text-xl mb-3">Upload Files</span>
+                    <span class="font-medium text-600 text-md text-center">Drop or select files</span>
+                </div>
+                <div class="flex flex-wrap gap-5" *ngIf="uploadedFiles.length">
+                    <div *ngFor="let file of uploadedFiles; let i = index;" class="h-full relative w-7rem h-7rem border-3 border-transparent border-round hover:bg-primary transition-duration-100 cursor-auto" (mouseenter)="onImageMouseOver(file)" (mouseleave)="onImageMouseLeave(file)" style="padding: 1px;">
+                        <img [src]="file.objectURL" [alt]="file.name" class="w-full h-full border-round shadow-2">
+                        <button [id]="file.name" #buttonEl pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-primary text-sm absolute justify-content-center align-items-center cursor-pointer" style="top: -10px; right: -10px; display: none;" (click)="removeImage($event, file)"></button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-fileUpload>
+</div>

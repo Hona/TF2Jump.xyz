@@ -1,0 +1,7 @@
+<div id="kanban-wrapper" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropList($event)" [cdkDropListData]="lists" class="grid grid-nogutter w-full flex-column md:flex-row flex-nowrap gap-5 lg:overflow-y-hidden overflow-x-auto">
+    <app-kanban-list *ngFor="let list of lists; let i = index;" [list]="list" [listIds]="listIds" cdkDrag cdkDragHandle [cdkDragDisabled]="isMobileDevice" class="p-kanban-list"></app-kanban-list>
+    <div class="px-3 py-1 mb-3 md:w-25rem flex-shrink-0">
+        <button pButton pRipple label="New List" icon="pi pi-plus font-semibold" class="py-3 justify-content-center font-semibold w-full border-round" (click)="addList()"></button>
+    </div>
+    <app-kanban-sidebar></app-kanban-sidebar>
+</div>

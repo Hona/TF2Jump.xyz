@@ -1,0 +1,14 @@
+<div class="flex align-items-center mb-4 font-bold">
+    <span class="text-xl text-900 mr-4">Comments</span>
+    <span class="inline-flex align-items-center justify-content-center w-2rem h-2rem border-1 surface-border border-round">{{comments.length}}</span>
+</div>
+<ul class="list-none p-0 m-0">
+    <li *ngFor="let comment of comments" class="flex p-3 mb-3 border-1 surface-border border-round">
+        <img [src]="comment.image" class="w-3rem h-3rem mr-3 flex-shrink-0" />
+        <div>
+            <span class="font-semibold text-900">{{comment.name}}</span>
+            <p class="font-semibold text-600 m-0 text-sm">{{comment.date}}</p>
+            <p class="line-height-3 mb-0 my-3">{{comment.description}}</p>
+        </div>
+    </li>
+</ul>

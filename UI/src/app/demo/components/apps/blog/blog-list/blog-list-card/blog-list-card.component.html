@@ -1,0 +1,28 @@
+<div class="p-3" *ngIf="blog">
+    <div class="surface-100 cursor-pointer z-index border-round" (click)="navigateToDetail()">
+        <div class="relative">
+            <img [src]="blog.coverImage" class="w-full" />
+            <img [src]="blog.profile" class="flex absolute w-4rem h-4rem" style="bottom: -1.5rem; right: 1.5rem">
+        </div>
+        <div class="p-3">
+            <div class="text-900 font-semibold text-xl mb-3">{{blog.title}}</div>
+            <p class="text-700 text-lg mt-0 mb-5">{{blog.description}}</p>
+
+            <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
+                <span class="flex align-items-center text-900">
+                    <i class="pi pi-comment mr-2"></i>
+                    <span class="font-semibold">{{blog.comment}}</span>
+                </span>
+                <span class="flex align-items-center text-900">
+                    <i class="pi pi-share-alt mr-2"></i>
+                    <span class="font-semibold">{{blog.share}}</span>
+                </span>
+                <span class="flex align-items-center text-900">
+                    <i class="pi pi-clock mr-2"></i>
+                    <span class="font-semibold mr-1">{{blog.day}}</span>
+                    <span class="font-semibold">{{blog.month}}</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

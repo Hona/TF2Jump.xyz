@@ -1,0 +1,22 @@
+<div class="card  md:w-25rem  overflow-hidden">
+    <div class="flex justify-content-between align-items-center w-full  h-3rem">
+        <p-inplace #inplace [closable]="true" closeIcon="pi pi-check" styleClass="h-auto" (onActivate)="focus()">
+            <ng-template pTemplate="display">
+                <span class="block text-900 font-semibold mt-4 pl-2 text-lg"  pTooltip="Click to edit" style="word-break: break-word;" tooltipPosition="top">{{list.title}}</span>
+            </ng-template>
+            <ng-template pTemplate="content">
+                <input #inputEl type="text" [value]="list.title" [(ngModel)]="list.title" pInputText class="w-10rem sm:w-15rem h-3rem text-900 text-lg" (keydown.enter)="inplace.deactivate()">
+            </ng-template>
+        </p-inplace>
+        <div>
+            <button pButton pRipple type="button" icon="pi pi-ellipsis-h" class="p-button-rounded p-button-text p-button-secondary" (click)="menu.toggle($event)"></button>
+            <p-menu #menu [model]="menuItems" [popup]="true"></p-menu>
+        </div>
+    </div>
+    <div [id]="list.listId" class="flex flex-column gap-5 overflow-y-auto  mt-4 scrollable kanban-list" cdkDropList (cdkDropListDropped)="dropCard($event)" (cdkDropListEntered)="insertHeight($event)" (cdkDropListExited)="removeHeight($event)" [cdkDropListData]="list.cards" [cdkDropListConnectedTo]="listIds" #listEl style="min-height:2rem">
+        <app-kanban-card *ngFor="let card of list.cards" [card]="card" [listId]="list.listId" (click)="onCardClick($event, card)" cdkDrag cdkDragHandle [cdkDragDisabled]="isMobileDevice"></app-kanban-card>
+    </div>
+    <div class="px-4 mb-3 w-full mt-4 flex">
+        <button pButton pRipple label="New Card" icon="pi pi-plus font-semibold" class="py-3 justify-content-center font-semibold w-full border-round" (click)="insertCard()"></button>
+    </div>
+</div> 
