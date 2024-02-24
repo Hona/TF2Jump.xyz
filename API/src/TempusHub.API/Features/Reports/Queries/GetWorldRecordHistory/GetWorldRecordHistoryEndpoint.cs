@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TempusApi;
 using TempusApi.Enums;
+using TempusHub.API.Common.Feature;
 
 namespace TempusHub.API.Features.Reports.Queries.GetWorldRecordHistory;
 

@@ -2,9 +2,9 @@
 
 namespace TempusHub.API.Features.Ingests;
 
-public class IngestEfConfiguration : IEntityTypeConfiguration<Ingest>
+public class TempusApiIngestEfConfiguration : IEntityTypeConfiguration<TempusApiIngest>
 {
-    public void Configure(EntityTypeBuilder<Ingest> builder)
+    public void Configure(EntityTypeBuilder<TempusApiIngest> builder)
     {
         builder.HasKey(x => x.Date);
         builder.Property(x => x.Date)

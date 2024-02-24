@@ -1,15 +1,15 @@
-﻿using System.Collections.Concurrent;
-using TempusApi;
+﻿using TempusApi;
 using TempusApi.Enums;
 using TempusApi.Models.Responses;
+using TempusHub.API.Common.Tempus;
 using TempusHub.API.Features.Maps;
 using TempusHub.API.Features.Zones;
 
 namespace TempusHub.API.Features.Ingests.Services.Tasks;
 
-public class IngestMapsTask(ITempusClient tempusClient, ILogger<IngestMapsTask> logger, AppDbContext dbContext) : IIngestTask
+public class TempusApiIngestMapsTask(ITempusClient tempusClient, ILogger<TempusApiIngestMapsTask> logger, AppDbContext dbContext) : ITempusApiIngestTask
 {
-    public async Task ExecuteAsync(Ingest ingest, DateOnly triggerDate, CancellationToken cancellationToken = default)
+    public async Task ExecuteAsync(TempusApiIngest tempusApiIngest, DateOnly triggerDate, CancellationToken cancellationToken = default)
     {
         var maps = await tempusClient.GetMapListAsync(cancellationToken);
         

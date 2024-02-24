@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using TempusApi;
-using TempusHub.API.Common;
+using TempusHub.API.Common.Persistence;
 using TempusHub.API.Kernel;
 
 var appAssembly = Assembly.GetExecutingAssembly();

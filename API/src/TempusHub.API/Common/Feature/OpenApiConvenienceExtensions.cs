@@ -1,4 +1,4 @@
-﻿namespace TempusHub.API.Common;
+﻿namespace TempusHub.API.Common.Feature;
 
 public static class OpenApiConvenienceExtensions
 {

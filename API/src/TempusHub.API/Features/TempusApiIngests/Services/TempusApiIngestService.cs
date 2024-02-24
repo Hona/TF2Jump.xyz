@@ -3,16 +3,16 @@ using TempusHub.API.Features.Ingests.Services.Tasks;
 
 namespace TempusHub.API.Features.Ingests.Services;
 
-public interface IIngestService
+public interface ITempusApiIngestService
 {
-    Task<Result<Ingest>> IngestTempusApiAsync(CancellationToken cancellationToken = default);
+    Task<Result<TempusApiIngest>> IngestTempusApiAsync(CancellationToken cancellationToken = default);
 }
 
-public class IngestService(IIngestRepository ingestRepository, ILogger<IngestService> logger, IServiceProvider sp) : IIngestService
+public class TempusApiIngestService(AppDbContext dbContext, ILogger<TempusApiIngestService> logger, IServiceProvider sp) : ITempusApiIngestService
 {
     private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
 
-    public async Task<Result<Ingest>> IngestTempusApiAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<TempusApiIngest>> IngestTempusApiAsync(CancellationToken cancellationToken = default)
     {
         logger.LogInformation("Ingest begun, waiting for lock");
         await _semaphoreSlim.WaitAsync(cancellationToken);
@@ -20,17 +20,18 @@ public class IngestService(IIngestRepository ingestRepository, ILogger<IngestSer
         {
             logger.LogInformation("Ingest lock acquired");
             var now = DateOnly.FromDateTime(DateTime.UtcNow);
-        
-            var existingIngest = await ingestRepository.GetByDateAsync(now, cancellationToken);
-        
+
+            var existingIngest = await dbContext.Ingests
+                .FirstOrDefaultAsync(x => x.Date == now, cancellationToken);
+            
             if (existingIngest is not null)
             {
                 return Result.Conflict();
             }
         
-            var ingest = new Ingest(now);
+            var ingest = new TempusApiIngest(now);
 
-            var tasks = sp.GetServices<IIngestTask>();
+            var tasks = sp.GetServices<ITempusApiIngestTask>();
 
             foreach (var task in tasks)
             {
@@ -41,7 +42,9 @@ public class IngestService(IIngestRepository ingestRepository, ILogger<IngestSer
             }
         
             ingest.Complete();
-            ingest = await ingestRepository.AddAsync(ingest, cancellationToken);
+            
+            dbContext.Add(ingest);
+            await dbContext.SaveChangesAsync(cancellationToken);
             
             logger.LogInformation("Ingest completed took {IngestDuration}, wrote {IngestRows} rows", ingest.Duration, ingest.RowsWritten);
             

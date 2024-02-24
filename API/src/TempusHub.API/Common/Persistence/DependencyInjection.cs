@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace TempusHub.API.Common;
+namespace TempusHub.API.Common.Persistence;
 
 public static class DependencyInjection
 {
