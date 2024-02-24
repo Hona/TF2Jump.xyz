@@ -2,7 +2,7 @@
 
 namespace TempusHub.API.Features.Ingests;
 
-public class IngestEfConfiguration : IEntityTypeConfiguration<TempusApiIngest>
+public class TempusApiIngestEfConfiguration : IEntityTypeConfiguration<TempusApiIngest>
 {
     public void Configure(EntityTypeBuilder<TempusApiIngest> builder)
     {

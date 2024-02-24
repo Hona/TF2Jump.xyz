@@ -5,7 +5,7 @@ using TempusHub.API.Features.Ingests.Services.Tasks;
 
 namespace TempusHub.API.Features.Ingests;
 
-public sealed class IngestModule : IModule
+public sealed class TempusApiIngestModule : IModule
 {
     public static void ConfigureServices(IServiceCollection services)
     {
