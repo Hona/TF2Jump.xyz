@@ -2,11 +2,20 @@
 
 <FluentLayout>
     <FluentHeader>
-        <span>
-            Tempus Hub
+        <span class="site-name">
+            <a href="/">
+                Tempus Hub
+            </a>
         </span>
         
         <NavMenu/>
+        
+        <FluentSpacer />
+        
+        <FluentStack Orientation="Orientation.Horizontal" Class="header-right" Width="fit-content">
+            <Search />
+            <ProfileAvatar />
+        </FluentStack>
     </FluentHeader>
     <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
         <FluentBodyContent Class="body-content">

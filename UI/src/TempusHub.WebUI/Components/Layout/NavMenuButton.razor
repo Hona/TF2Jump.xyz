@@ -2,6 +2,7 @@
 
 <FluentButton Appearance="Appearance.Stealth"
               Id="@_id"
+              IconEnd="@(new Icons.Filled.Size12.ChevronDown())"
               @onclick="@(() => _opened = !_opened)">
     <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="6" VerticalAlignment="VerticalAlignment.Center">
         @if (Icon is not null)
@@ -10,8 +11,8 @@
                         Color="Color.Neutral"/>
         }
         @Text
-        <FluentIcon Value="@(new Icons.Filled.Size12.ChevronDown())"
-                    Color="Color.Neutral"/>
+        @*<FluentIcon Value="@(new Icons.Filled.Size12.ChevronDown())"
+                    Color="Color.Neutral"/>*@
     </FluentStack>
 </FluentButton>
 

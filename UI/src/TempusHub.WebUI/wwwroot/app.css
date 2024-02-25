@@ -12,6 +12,8 @@ body {
     display: none;
 }
 
+
+
 .main {
     min-height: calc(100dvh - 86px);
     color: var(--neutral-foreground-rest);
@@ -135,6 +137,10 @@ code {
     color: #c02d76;
 }
 
+.site-name > a {
+    text-decoration: none !important;
+}
+
 @media (max-width: 600px) {
     .main {
         flex-direction: column !important;
@@ -165,9 +171,17 @@ code {
         #navmenu-toggle ~ nav {
             display: none;
         }
-
+        
+        #navmenu-toggle ~ .header-right {
+            display: none;
+        }
+        
         #navmenu-toggle:checked ~ nav {
-            display: block;
+            display: flex;
+        }
+    
+        #navmenu-toggle:checked ~ .header-right {
+            display: flex;
         }
 
     .navmenu-icon {
@@ -175,10 +189,41 @@ code {
         z-index: 10;
         display: block;
         position: absolute;
-        top: 15px;
-        right: 20px;
+        top: auto;
+        bottom: auto;
+        right: 0;
         width: 20px;
         height: 20px;
         border: none;
+    }
+
+    header {
+        height: min-content !important;
+    }
+    
+    header .header-gutters {
+        flex-direction: column;
+    }
+    
+    .site-name {
+        width: 100%;
+        margin-right: 0.5rem;
+    }
+    
+    nav {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin-top: 1rem;
+    }
+    
+    nav fluent-button {
+        width: min-content;
+    }
+    
+    .header-right {
+        width: min-content !important;
+        align-self: flex-end;
     }
 }

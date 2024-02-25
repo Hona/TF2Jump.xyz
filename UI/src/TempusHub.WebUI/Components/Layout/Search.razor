@@ -1,0 +1,29 @@
+﻿@rendermode InteractiveServer
+
+<div class="search-bar">
+    <FluentButton IconStart="(new Icons.Regular.Size20.Search())" 
+                  Appearance="Appearance.Stealth"
+                  OnClick="@(() => _visible = !_visible)">
+        
+    </FluentButton>
+
+    <FluentOverlay @bind-Visible="@_visible"
+                   Opacity="0.4"
+                   FullScreen="true"
+                   OnClose="HandleOnClose"
+                   PreventScroll>
+        <div @onclick:stopPropagation="true" @onclick:preventDefault="true">
+            <FluentSearch></FluentSearch>
+        </div>
+    </FluentOverlay>
+</div>
+
+@code
+{
+    private bool _visible;
+    
+    private void HandleOnClose()
+    {
+        _visible = false;
+    }
+}
