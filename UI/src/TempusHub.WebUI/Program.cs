@@ -19,7 +19,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// Production is behind a reverse proxy
+// app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
