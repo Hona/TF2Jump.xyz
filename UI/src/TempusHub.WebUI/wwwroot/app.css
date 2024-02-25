@@ -33,24 +33,20 @@ body {
     width: 100dvw;
 }
 
+header.header {
+    background: var(--neutral-fill-stealth-rest) !important;
+}
+header.header span {
+    color: var(--neutral-foreground-rest);
+    margin-right: 1rem;
+}
+
 footer {
-    display: grid;
-    grid-template-columns: 10px auto auto 10px;
     background: var(--neutral-layer-4);
     color: var(--neutral-foreground-rest);
     align-items: center;
     padding: 10px 10px;
 }
-
-    footer .link1 {
-        grid-column: 2;
-        justify-content: start;
-    }
-
-    footer .link2 {
-        grid-column: 3;
-        justify-self: end;
-    }
 
     footer a {
         color: var(--neutral-foreground-rest);

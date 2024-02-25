@@ -1,0 +1,37 @@
+﻿@rendermode InteractiveServer
+
+<FluentButton Appearance="Appearance.Stealth"
+              Id="@_id"
+              @onclick="@(() => _opened = !_opened)">
+    <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="6" VerticalAlignment="VerticalAlignment.Center">
+        @if (Icon is not null)
+        {
+            <FluentIcon Value="@(Icon)"
+                        Color="Color.Neutral"/>
+        }
+        @Text
+        <FluentIcon Value="@(new Icons.Filled.Size12.ChevronDown())"
+                    Color="Color.Neutral"/>
+    </FluentStack>
+</FluentButton>
+
+<FluentMenu Anchor="@_id" 
+            @bind-Open="_opened">
+    @MenuItems
+</FluentMenu>
+
+@code
+{
+    [Parameter]
+    public RenderFragment? MenuItems { get; set; }
+
+    [Parameter, EditorRequired]
+    public required string Text { get; set; }
+
+    [Parameter]
+    public Icon? Icon { get; set; }
+    
+    private bool _opened;
+    
+    private string _id = $"menu-{Guid.NewGuid():N}";
+}

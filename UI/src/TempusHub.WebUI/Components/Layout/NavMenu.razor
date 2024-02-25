@@ -1,19 +1,35 @@
 ﻿@rendermode InteractiveServer
 
-<div class="navmenu">
-    <input type="checkbox" title="Menu expand/collapse toggle" id="navmenu-toggle" class="navmenu-icon" />
-    <label for="navmenu-toggle" class="navmenu-icon"><FluentIcon Value="@(new Icons.Regular.Size20.Navigation())" Color="Color.Fill" /></label>
-    <nav class="sitenav" aria-labelledby="main-menu" onclick="document.getElementById('navmenu-toggle').click();">
-        <FluentNavMenu Id="main-menu" Collapsible="true" Width="250" Title="Navigation menu" @bind-Expanded="expanded">
-            <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Home</FluentNavLink>
-            <FluentNavLink Href="counter" Icon="@(new Icons.Regular.Size20.NumberSymbolSquare())" IconColor="Color.Accent">Counter</FluentNavLink>
-            <FluentNavLink Href="weather" Icon="@(new Icons.Regular.Size20.WeatherPartlyCloudyDay())" IconColor="Color.Accent">Weather</FluentNavLink>
-        </FluentNavMenu>
-    </nav>
-</div>
+@inject NavigationManager NavigationManager
 
-@code {
-    private bool expanded = true;
+<nav>
+    
+    <NavMenuButton Text="Leaderboards"
+                   Icon="@(new Icons.Regular.Size16.Trophy())">
+        <MenuItems>
+            <NavMenuItem Text="Maps"
+                         Icon="@(new Icons.Regular.Size16.Map())"
+                         Href="/leaderboard/maps"/>
+            <NavMenuItem Text="Players"
+                         Icon="@(new Icons.Regular.Size16.Person())"
+                         Href="/leaderboard/players"/>
+        </MenuItems>
+    </NavMenuButton>
 
+    <NavMenuButton Text="Play"
+                   Icon="@(new Icons.Regular.Size16.XboxController())">
+        <MenuItems>
+            <NavMenuItem Text="Servers"
+                         Icon="@(new Icons.Regular.Size16.Server())"
+                         Href="/play/servers"/>
+            <NavMenuItem Text="Top Players Online"
+                         Icon="@(new Icons.Regular.Size16.Person())"
+                         Href="/play/top-players-online"/>
+        </MenuItems>
+    </NavMenuButton>
+</nav>
+
+@code
+{
+    private bool _opened;
 }
-
