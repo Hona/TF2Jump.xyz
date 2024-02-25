@@ -15,7 +15,13 @@ builder.Services.AddFluentUIComponents();
 if (builder.Environment.IsProduction())
 {
     builder.Services.AddDataProtection()
-        .PersistKeysToFileSystem(new DirectoryInfo(@"/data/keys/"));
+        .PersistKeysToFileSystem(new DirectoryInfo(@"/data/keys/"))
+        .UseCryptographicAlgorithms(
+            new AuthenticatedEncryptorConfiguration
+            {
+                EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
+                ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
+            });
 }
 
 var app = builder.Build();
