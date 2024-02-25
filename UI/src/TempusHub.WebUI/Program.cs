@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.FluentUI.AspNetCore.Components;
 using TempusHub.WebUI.Components;
 
@@ -8,6 +11,12 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddFluentUIComponents();
+
+if (builder.Environment.IsProduction())
+{
+    builder.Services.AddDataProtection()
+        .PersistKeysToFileSystem(new DirectoryInfo(@"/data/keys/"));
+}
 
 var app = builder.Build();
 
