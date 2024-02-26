@@ -3,21 +3,24 @@
 @using TempusApi.Models.Responses
 @using TempusApi.Models.Responses
 @using Humanizer
+@using TempusApi.Models.Activity
 @using SortDirection = Microsoft.FluentUI.AspNetCore.Components.SortDirection
 
-<FluentDataGrid Items="@_runs.AsQueryable()"
+@rendermode InteractiveAuto
+
+<FluentDataGrid Items="@Runs.AsQueryable()"
                 GridTemplateColumns="0.3fr 0.6fr 1fr 0.6fr">
-    <PropertyColumn Property="@(p => p.Placing)" Title="" Sortable="true" IsDefaultSortColumn/>
+    <PropertyColumn Property="@(p => p.Rank)" Title="" Sortable="true" IsDefaultSortColumn/>
     <TemplateColumn Title="Time" 
                     Sortable="true"
-                    SortBy="@(GridSort<RunWithPlacing>.ByDescending(x => x.Duration))" 
+                    SortBy="@(GridSort<RecordInfoShort>.ByDescending(x => x.Duration))" 
                     InitialSortDirection="SortDirection.Ascending">
         @context.Duration.ToTimeSpan().ToFormattedDuration()
     </TemplateColumn>
     <PropertyColumn Property="@(p => p.Name)" Sortable="true"/>
     <TemplateColumn Title="Date" 
                     Sortable="true" 
-                    SortBy="@(GridSort<RunWithPlacing>.ByDescending(x => x.Duration))" 
+                    SortBy="@(GridSort<RecordInfoShort>.ByDescending(x => x.Duration))" 
                     InitialSortDirection="SortDirection.Ascending">        
         @context.Date.ToDateTimeOffset().Humanize()
     </TemplateColumn>
@@ -26,30 +29,8 @@
 @code
 {
     [Parameter]
-    public List<Run> Runs { get; set; }
-
-    private List<RunWithPlacing> _runs;
+    public List<RecordInfoShort> Runs { get; set; }
     
     [Parameter] 
     public Class Class { get; set; }
-
-    protected override void OnParametersSet()
-    {
-        _runs = Runs
-            .Select((r, i) => new RunWithPlacing
-        {
-             Steamid = r.Steamid,
-             PlayerInfo = r.PlayerInfo,
-             Id = r.Id,
-             Duration = r.Duration,
-             Date = r.Date,
-             Name = r.Name,
-             Placing = i + 1
-        }).ToList();
-    }
-
-    private class RunWithPlacing : TempusApi.Models.Responses.Run
-    {
-        public int Placing { get; set; }
-    }
 }

@@ -9,7 +9,7 @@
 
 @implements IDisposable
 
-@rendermode InteractiveWebAssembly
+@rendermode InteractiveAuto
 
 <div>
     @if (_loading)
@@ -24,10 +24,21 @@
             <FluentDivider Orientation="Orientation.Horizontal" Role="@DividerRole.Presentation"/>
 
             <FluentStack Orientation="Orientation.Horizontal">
-                <MapZoneSelector Map="_map" @bind-SelectedZone="_selectedZone" />
+                <MapZoneSelector Map="_map" @bind-SelectedZone="_selectedZone" @bind-SelectedZone:after="@AfterSelectedZoneChanged" />
                 
                 <FluentCard Style="padding: 0">
-                    <MapRunsTable Runs="@(_selectedClass is Class.Soldier ? _map.SoldierRuns : _map.DemomanRuns)" Class="_selectedClass"/>
+                    @if (_zoneRunsLoading)
+                    {
+                        <FluentProgressRing />
+                    }
+                    else if (_zoneRuns is null)
+                    {
+                        <i>No runs found</i>
+                    }
+                    else
+                    {
+                        <MapRunsTable Runs="@(_selectedClass is Class.Soldier ? _zoneRuns.Runs.SoldierRuns : _zoneRuns.Runs.DemomanRuns)" Class="_selectedClass"/>
+                    }
                 </FluentCard>
                 
                 <FluentCard Style="padding: 0">
@@ -58,6 +69,7 @@
     private Task Persist()
     {
         ApplicationState.PersistAsJson(nameof(_map), _map);
+        ApplicationState.PersistAsJson(nameof(_zoneRuns), _zoneRuns);
 
         return Task.CompletedTask;
     }
@@ -65,6 +77,25 @@
     void IDisposable.Dispose()
     {
         persistingSubscription.Dispose();
+    }
+
+    private bool _zoneRunsLoading = false;
+    
+    private ZonedRecordsModel? _zoneRuns = null;
+    private async Task AfterSelectedZoneChanged()
+    {
+        if (_selectedZone.Zone != ZoneType.Map)
+        {
+            _zoneRunsLoading = true;
+            try
+            {
+                _zoneRuns = await TempusClient.GetTopZonedTimes(MapName, _selectedZone.Zone, _selectedZone.Index, limit: 50);
+            }
+            finally
+            {
+                _zoneRunsLoading = false;
+            }
+        }
     }
 
     protected override async Task OnParametersSetAsync()
@@ -77,6 +108,9 @@
             _map = !ApplicationState.TryTakeFromJson<FullMapOverview2>(nameof(_map), out var restoredMap) 
                 ? await TempusClient.GetFullMapOverview2Async(MapName) 
                 : restoredMap!;
+            _zoneRuns = !ApplicationState.TryTakeFromJson<ZonedRecordsModel>(nameof(_zoneRuns), out var restoredZoneRuns) 
+                ? await TempusClient.GetTopZonedTimes(MapName, ZoneType.Map, 1, limit: 50) 
+                : restoredZoneRuns!;
         }
         finally
         {
