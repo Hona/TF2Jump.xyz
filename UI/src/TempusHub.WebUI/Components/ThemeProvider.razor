@@ -25,6 +25,8 @@
             // Set to dark mode
             await BaseLayerLuminance.WithDefault(StandardLuminance.DarkMode.GetLuminanceValue());
 
+            await AccentBaseColor.WithDefault("#873EFE".ToSwatch());
+            
             StateHasChanged();
         }
 
