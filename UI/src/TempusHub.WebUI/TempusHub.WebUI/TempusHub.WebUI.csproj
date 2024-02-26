@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +19,12 @@
     <AdditionalFiles Include="Components\Layout\NavMenuItem.razor" />
     <AdditionalFiles Include="Components\Layout\ProfileAvatar.razor" />
     <AdditionalFiles Include="Components\Layout\Search.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\..\..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
   </ItemGroup>
   
 </Project>
