@@ -1,0 +1,42 @@
+﻿@rendermode InteractiveWebAssembly
+
+@inject NavigationManager NavigationManager
+
+<input type="checkbox" title="Menu expand/collapse toggle" id="navmenu-toggle" class="navmenu-icon" />
+<label for="navmenu-toggle" class="navmenu-icon">
+    <FluentIcon Value="@(new Icons.Regular.Size20.Navigation())" Color="Color.Neutral"/>
+</label>
+
+<nav>
+    <NavMenuButton Text="Dashboard"
+                   Icon="@(new Icons.Regular.Size16.Grid())">
+        <MenuItems>
+            <NavMenuItem Text="Overview"
+                         Icon="@(new Icons.Regular.Size16.Flowchart())"
+                         Href="/dashboard"/>
+        </MenuItems>
+    </NavMenuButton>
+    <NavMenuButton Text="Leaderboards"
+                   Icon="@(new Icons.Regular.Size16.Trophy())">
+        <MenuItems>
+            <NavMenuItem Text="Maps"
+                         Icon="@(new Icons.Regular.Size16.Map())"
+                         Href="/leaderboard/maps"/>
+            <NavMenuItem Text="Players"
+                         Icon="@(new Icons.Regular.Size16.Person())"
+                         Href="/leaderboard/players"/>
+        </MenuItems>
+    </NavMenuButton>
+
+    <NavMenuButton Text="Play"
+                   Icon="@(new Icons.Regular.Size16.XboxController())">
+        <MenuItems>
+            <NavMenuItem Text="Servers"
+                         Icon="@(new Icons.Regular.Size16.Server())"
+                         Href="/play/servers"/>
+            <NavMenuItem Text="Top Players Online"
+                         Icon="@(new Icons.Regular.Size16.Person())"
+                         Href="/play/top-players-online"/>
+        </MenuItems>
+    </NavMenuButton>
+</nav>

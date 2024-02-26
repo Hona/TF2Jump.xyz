@@ -1,0 +1,7 @@
+::deep fluent-option::part(content) {
+    width: 100%;
+}
+
+::deep div:has(.map-zone-selector) {
+    min-width: fit-content;
+}

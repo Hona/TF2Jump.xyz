@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TempusHub.WebUI.Client\TempusHub.WebUI.Client.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="Components\Layout\MainLayout.razor" />
+    <AdditionalFiles Include="Components\Layout\NavMenu.razor" />
+    <AdditionalFiles Include="Components\Layout\NavMenuButton.razor" />
+    <AdditionalFiles Include="Components\Layout\NavMenuItem.razor" />
+    <AdditionalFiles Include="Components\Layout\ProfileAvatar.razor" />
+    <AdditionalFiles Include="Components\Layout\Search.razor" />
+  </ItemGroup>
+  
+</Project>

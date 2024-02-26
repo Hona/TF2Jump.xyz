@@ -1,5 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Solution Items", "00 Solution Items", "{7F35C213-4A69-4C5C-8A54-A8180D5DA8F3}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
@@ -16,13 +19,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F7CB527A-E10
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{10571D67-9D1D-490A-B327-504F411ACF6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempusHub.API", "API\src\TempusHub.API\TempusHub.API.csproj", "{09E046A5-4048-4B19-8923-A0254D9345BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TempusHub.API", "API\src\TempusHub.API\TempusHub.API.csproj", "{09E046A5-4048-4B19-8923-A0254D9345BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempusHub.API.Unit.Tests", "API\tests\TempusHub.API.Unit.Tests\TempusHub.API.Unit.Tests.csproj", "{73CA88AC-7DD1-4B68-BF55-A59D0E01B229}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TempusHub.API.Unit.Tests", "API\tests\TempusHub.API.Unit.Tests\TempusHub.API.Unit.Tests.csproj", "{73CA88AC-7DD1-4B68-BF55-A59D0E01B229}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7A202239-2D92-4896-BBCE-961020FE42ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempusHub.WebUI", "UI\src\TempusHub.WebUI\TempusHub.WebUI.csproj", "{8CCF5D3D-1C9A-4E5C-8098-60164CB7749A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempusHub.WebUI", "UI\src\TempusHub.WebUI\TempusHub.WebUI\TempusHub.WebUI.csproj", "{CF70E98A-45AA-4833-9ED7-04E9868692C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempusHub.WebUI.Client", "UI\src\TempusHub.WebUI\TempusHub.WebUI.Client\TempusHub.WebUI.Client.csproj", "{583164A8-AEC0-4A2E-ADCF-B8C3ADD89321}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,10 +43,17 @@ Global
 		{73CA88AC-7DD1-4B68-BF55-A59D0E01B229}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73CA88AC-7DD1-4B68-BF55-A59D0E01B229}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73CA88AC-7DD1-4B68-BF55-A59D0E01B229}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8CCF5D3D-1C9A-4E5C-8098-60164CB7749A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8CCF5D3D-1C9A-4E5C-8098-60164CB7749A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8CCF5D3D-1C9A-4E5C-8098-60164CB7749A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8CCF5D3D-1C9A-4E5C-8098-60164CB7749A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF70E98A-45AA-4833-9ED7-04E9868692C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF70E98A-45AA-4833-9ED7-04E9868692C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF70E98A-45AA-4833-9ED7-04E9868692C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF70E98A-45AA-4833-9ED7-04E9868692C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{583164A8-AEC0-4A2E-ADCF-B8C3ADD89321}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{583164A8-AEC0-4A2E-ADCF-B8C3ADD89321}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{583164A8-AEC0-4A2E-ADCF-B8C3ADD89321}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{583164A8-AEC0-4A2E-ADCF-B8C3ADD89321}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F7CB527A-E10A-44A2-AC1C-142AD4331315} = {3F604B3A-6C71-4B2C-AFFC-55785440EAB9}
@@ -49,6 +61,10 @@ Global
 		{09E046A5-4048-4B19-8923-A0254D9345BF} = {F7CB527A-E10A-44A2-AC1C-142AD4331315}
 		{73CA88AC-7DD1-4B68-BF55-A59D0E01B229} = {10571D67-9D1D-490A-B327-504F411ACF6F}
 		{7A202239-2D92-4896-BBCE-961020FE42ED} = {39D2EE17-F8FB-4704-9D54-C150BB9B7E57}
-		{8CCF5D3D-1C9A-4E5C-8098-60164CB7749A} = {7A202239-2D92-4896-BBCE-961020FE42ED}
+		{CF70E98A-45AA-4833-9ED7-04E9868692C0} = {7A202239-2D92-4896-BBCE-961020FE42ED}
+		{583164A8-AEC0-4A2E-ADCF-B8C3ADD89321} = {7A202239-2D92-4896-BBCE-961020FE42ED}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {75CB3B00-9C65-4FAF-A128-A001D15AD911}
 	EndGlobalSection
 EndGlobal

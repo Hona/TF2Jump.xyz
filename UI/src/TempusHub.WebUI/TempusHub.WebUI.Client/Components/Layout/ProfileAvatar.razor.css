@@ -1,0 +1,7 @@
+﻿::deep .fluent-persona .name {
+    display: none;
+}
+
+::deep > fluent-button::part(control){
+    padding: 0;
+} 

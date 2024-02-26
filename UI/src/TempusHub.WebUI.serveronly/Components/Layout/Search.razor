@@ -1,0 +1,234 @@
+﻿@rendermode InteractiveWebAssembly
+@using System.Timers;
+@using TempusApi.Models
+@using TempusApi.Models.Responses
+
+@inject ITempusClient TempusClient
+@inject NavigationManager NavigationManager
+
+@implements IDisposable
+
+<div class="search-bar">
+    <FluentButton IconStart="(new Icons.Regular.Size20.Search())" 
+                  Appearance="Appearance.Stealth"
+                  OnClick="@(() => _visible = !_visible)">
+        
+    </FluentButton>
+
+    <FluentOverlay @bind-Visible="@_visible"
+                   Opacity="0.4"
+                   FullScreen="true"
+                   OnClose="HandleOnClose"
+                   PreventScroll>
+        <div @onclick:stopPropagation="true" @onclick:preventDefault="true">
+            <FluentSearch @ref=searchTest
+                          @bind-Value="SearchValue"
+                          @bind-Value:after="HandleClear"
+                          @oninput="@(e => SearchValue = e.Value?.ToString())"
+                          Placeholder="Search everything"
+                          Autofocus />
+            @if (_searchLoading)
+            {
+                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center">
+                    <FluentProgressRing Style="margin-top: 0.5rem"/>
+                </FluentStack>
+            }
+            else if (searchResults is not null && searchResults.Any())
+            {
+                <br />
+                <FluentListbox aria-label="search results"
+                               Items=@searchResults
+                               TOption="OneOf<ServerPlayerModel, MapInfo>"
+                               SelectedOptionChanged="@(HandleSelectedOptionChanged)">
+                    <OptionTemplate>
+                        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+                            @switch (context.Value)
+                            {
+                                case ServerPlayerModel player:
+                                    var steamProfile = steamProfiles[ConvertToSteamID64(player.SteamId)];
+                                    <FluentPersona Image="@steamProfile.Avatars.SmallUrl" ImageSize="24px"/>
+
+                                    @player.Name
+                                    break;
+
+                                case MapInfo map:
+                                    <FluentIcon Value="@(new Icons.Regular.Size16.Map())"/>
+                                    @map.Name
+                                    break;
+                            }
+                        </FluentStack>
+                    </OptionTemplate>
+                </FluentListbox>
+            }
+            else if (searchResults is not null && searchResults.Count == 0)
+            {
+                <br />
+                <p>No results found</p>
+            }
+        </div>
+    </FluentOverlay>
+</div>
+
+@code
+{
+    private bool _visible;
+    
+    private void HandleOnClose()
+    {
+        _visible = false;
+        HandleClear();
+    }
+    
+    private Timer? timer = null;
+
+    private FluentSearch? searchTest;
+
+    private string? searchValue = null;
+
+    private string? SearchValue
+    {
+        get => searchValue;
+        set
+        {
+            if (value != searchValue)
+            {
+                searchValue = value;
+                DisposeTimer();
+                //ShowMessageBar the debounce time in ms to the timer below
+                timer = new Timer(400);
+                timer.Elapsed += TimerElapsed_TickAsync;
+                timer.Enabled = true;
+                timer.Start();
+            }
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        searchResults = defaultResults;
+        
+        base.OnInitialized();
+    }
+
+    private List<OneOf<ServerPlayerModel, MapInfo>>? searchResults;
+
+    private List<OneOf<ServerPlayerModel, MapInfo>>? defaultResults => null;
+    
+    private Dictionary<long, SteamProfile>? steamProfiles = new();
+
+    private bool _searchLoading;
+
+    private async void TimerElapsed_TickAsync(object? sender, EventArgs e)
+    {
+        DisposeTimer();
+        await InvokeAsync(OnSearchAsync);
+    }
+
+    private void DisposeTimer()
+    {
+        if (timer != null)
+        {
+            timer.Enabled = false;
+            timer.Elapsed -= TimerElapsed_TickAsync;
+            timer.Dispose();
+            timer = null;
+        }
+    }
+
+    private async Task OnSearchAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(SearchValue))
+        {
+            _searchLoading = true;
+            StateHasChanged();
+            
+            var results = await TempusClient.GetSearchResultAsync(SearchValue);
+            var resultsCount = results.Maps.Count + results.Players.Count;
+            
+            if (resultsCount > 0)
+            {
+                searchResults = results.Maps.Select(OneOf<ServerPlayerModel, MapInfo>.FromT1)
+                    .Concat(results.Players.Select(OneOf<ServerPlayerModel, MapInfo>.FromT0))
+                    .ToList();
+
+                if (results.Players.Any())
+                {
+                    var tempusPlayerIds = results.Players
+                        .Where(x => x.SteamId is not null)
+                        .Select(x => ConvertToSteamID64(x.SteamId))
+                        .ToArray();
+                    
+                    // Convert from STEAM_0:0:98857228 to 76561198293007521
+                    
+                    steamProfiles = await TempusClient.GetSteamProfilesAsync(tempusPlayerIds);
+                }
+                
+                _searchLoading = false;
+            }
+            else
+            {
+                searchResults = defaultResults;
+            }
+            StateHasChanged();
+        }
+        else
+        {
+            searchResults = defaultResults;
+            StateHasChanged();
+        }
+    }
+
+    private void HandleClear()
+    {
+        if (string.IsNullOrWhiteSpace(SearchValue))
+            return;
+
+        DisposeTimer();
+        searchResults = defaultResults;
+        SearchValue = string.Empty;
+        StateHasChanged();
+    }
+    
+    private void HandleSelectedOptionChanged(OneOf<ServerPlayerModel, MapInfo> selectedOption)
+    {
+        string href;
+        if (selectedOption.IsT0)
+        {
+            var player = selectedOption.AsT0;
+
+            href = $"/leaderboard/players/{player.Id}";
+        }
+        else
+        {
+            var map = selectedOption.AsT1;
+            
+            href = $"/leaderboard/maps/{map.Name}";
+        }
+        
+        HandleOnClose();
+        NavigationManager.NavigateTo(href);
+    }
+    
+    private static long ConvertToSteamID64(string steamId)
+    {
+        const long steamId64Identifier = 76561197960265728; // SteamID64 identifier for accounts
+        string[] parts = steamId.Replace("STEAM_0:", "").Split(':');
+        
+        if(parts.Length < 2)
+        {
+            throw new ArgumentException("Invalid SteamID format", nameof(steamId));
+        }
+
+        if(!long.TryParse(parts[0], out long x) || !long.TryParse(parts[1], out long y))
+        {
+            throw new ArgumentException("SteamID contains invalid numbers", nameof(steamId));
+        }
+
+        return (y * 2) + steamId64Identifier + x;
+    }
+    
+    public void Dispose()
+    {
+        DisposeTimer();
+    }
+}

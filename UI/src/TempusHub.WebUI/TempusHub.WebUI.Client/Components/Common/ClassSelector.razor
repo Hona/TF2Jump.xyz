@@ -1,0 +1,35 @@
+﻿@using TempusApi.Enums
+
+@rendermode InteractiveWebAssembly
+
+<div>
+    <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="0" Width="fit-content">
+        @ClassButton(Class.Soldier, "button-group-left")
+        @ClassButton(Class.Demoman, "button-group-right")
+    </FluentStack>
+</div>
+
+@code {
+
+    [Parameter] public Class SelectedClass { get; set; } = Class.Soldier;
+    
+    [Parameter]
+    public EventCallback<Class> SelectedClassChanged { get; set; }
+
+    private RenderFragment ClassButton(Class @class, string buttonClass) =>
+        @<FluentButton Appearance="@(SelectedClass == @class ? Appearance.Accent : Appearance.Outline)" 
+                       Class="@buttonClass"
+                       OnClick="@(() => OnSelectedClassChanged(@class))">
+            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center"
+                         HorizontalGap="4">
+                <ClassIcon Class="@(@class)" />
+                @(@class is Class.Demoman ? "Demoman" : "Soldier")
+            </FluentStack>
+        </FluentButton>;
+
+    private Task OnSelectedClassChanged(Class @class)
+    {
+        SelectedClass = @class;
+        return SelectedClassChanged.InvokeAsync(@class);
+    } 
+}

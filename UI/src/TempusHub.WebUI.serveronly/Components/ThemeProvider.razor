@@ -1,0 +1,34 @@
+﻿@using Microsoft.FluentUI.AspNetCore.Components.DesignTokens
+
+@rendermode InteractiveWebAssembly
+
+@code {
+    [Inject]
+    private BaseLayerLuminance BaseLayerLuminance { get; set; } = default!;
+
+    [Inject]
+    private AccentBaseColor AccentBaseColor { get; set; } = default!;
+
+    [Inject]
+    private BodyFont BodyFont { get; set; } = default!;
+
+    [Inject]
+    private StrokeWidth StrokeWidth { get; set; } = default!;
+
+    [Inject]
+    private ControlCornerRadius ControlCornerRadius { get; set; } = default!;
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Set to dark mode
+            await BaseLayerLuminance.WithDefault(StandardLuminance.DarkMode.GetLuminanceValue());
+
+            await AccentBaseColor.WithDefault("#873EFE".ToSwatch());
+            
+            StateHasChanged();
+        }
+
+    }
+}
