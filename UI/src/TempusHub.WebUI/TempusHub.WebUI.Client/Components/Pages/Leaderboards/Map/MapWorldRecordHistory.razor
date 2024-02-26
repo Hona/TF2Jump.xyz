@@ -2,7 +2,7 @@
 
 @rendermode InteractiveAuto
 
-<div style="margin-top: 0.5rem">
+<div style="padding-top: 0.5rem; background: rgb(66, 66, 66)">
 <ApexChart TItem="Order"
            Title="World Record History"
            Options="@options">
@@ -32,6 +32,10 @@
                 },
                 ForeColor = "#fff",
                 FontFamily = "inherit",
+            },
+            Theme = new Theme()
+            {
+                Mode = Mode.Dark
             }
         };
     }
