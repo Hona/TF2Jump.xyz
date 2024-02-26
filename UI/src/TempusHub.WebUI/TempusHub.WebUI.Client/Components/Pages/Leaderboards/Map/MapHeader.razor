@@ -2,6 +2,7 @@
 @using Humanizer
 @using Humanizer.Localisation
 @using TempusApi.Enums
+@using TempusApi.Models.Activity
 
 @rendermode InteractiveAuto
 
@@ -10,18 +11,21 @@
             
         <FluentStack Orientation="Orientation.Vertical" Style="margin-right: 1rem" Width="fit-content">
             <h3>
-                @Map.MapInfo.Name
+                @Map?.MapInfo.Name
             </h3>
                 
             <div>
                 <FluentStack HorizontalGap="2" Wrap>
-                    <span style="padding-right: 0.125rem">Authored by</span> 
+                    <span style="padding-right: 0.125rem">Authored by</span>
 
-                    @foreach (var author in Map.Authors)
+                    @if (Map != null)
                     {
-                        <a href="/leaderboard/players/@author.PlayerInfo.Id">
-                            @author.Name
-                        </a>
+                        foreach (var author in Map.Authors)
+                        {
+                            <a href="/leaderboard/players/@author.PlayerInfo.Id">
+                                @author.Name
+                            </a>
+                        }
                     }
                 </FluentStack>
                 
@@ -34,12 +38,12 @@
         <FluentSpacer />
         
         <FluentStack Orientation="Orientation.Horizontal" Width="fit-content">
+            <Statistic Value="@(Class is Class.Soldier ? ZonedRuns?.CompletionInfo.SoldierCount.ToString() : ZonedRuns?.CompletionInfo.DemomanCount.ToString())" 
+                       Label="Total completions" />
             <Statistic Value="??" 
-                       Label="Total map completions" />
-            <Statistic Value="??" 
-                       Label="Unique map WRs" />
+                       Label="Unique WRs" />
             <Statistic Value="@GetMapWrHeldDuration()" 
-                       Label="Map WR held for" />
+                       Label="WR held for" />
         </FluentStack>
     </FluentStack>
 </FluentCard>
@@ -47,17 +51,20 @@
 @code
 {
     [Parameter]
-    public FullMapOverview2 Map { get; set; }
+    public FullMapOverview2? Map { get; set; }
     
     [Parameter] public Class Class { get; set; }
     [Parameter] public EventCallback<Class> ClassChanged { get; set; }
+    
+    [Parameter]
+    public ZonedRecordsModel? ZonedRuns { get; set; }
 
     private string GetMapWrHeldDuration()
     {
         var timestamp = Class switch
         {
-            Class.Soldier => Map.SoldierRuns.FirstOrDefault()?.Date,
-            Class.Demoman => Map.DemomanRuns.FirstOrDefault()?.Date,
+            Class.Soldier => ZonedRuns?.Runs.SoldierRuns.MinBy(x => x.Rank)?.Date,
+            Class.Demoman => ZonedRuns?.Runs.SoldierRuns.MinBy(x => x.Rank)?.Date,
             _ => throw new ArgumentOutOfRangeException()
         };
         

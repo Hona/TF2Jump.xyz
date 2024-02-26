@@ -10,7 +10,13 @@
 
 <FluentDataGrid Items="@Runs.AsQueryable()"
                 GridTemplateColumns="0.3fr 0.6fr 1fr 0.6fr">
-    <PropertyColumn Property="@(p => p.Rank)" Title="" Sortable="true" IsDefaultSortColumn/>
+    <TemplateColumn Title="" 
+                    Sortable="true"
+                    IsDefaultSortColumn="true"
+                    SortBy="@(GridSort<RecordInfoShort>.ByAscending(x => x.Rank))" 
+                    InitialSortDirection="SortDirection.Ascending">
+            @context.Rank
+        </TemplateColumn>
     <TemplateColumn Title="Time" 
                     Sortable="true"
                     SortBy="@(GridSort<RecordInfoShort>.ByDescending(x => x.Duration))" 
