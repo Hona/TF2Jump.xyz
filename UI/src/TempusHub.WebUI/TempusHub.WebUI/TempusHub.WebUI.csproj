@@ -11,16 +11,7 @@
     <ProjectReference Include="..\TempusHub.WebUI.Client\TempusHub.WebUI.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.2" />
   </ItemGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="Components\Layout\MainLayout.razor" />
-    <AdditionalFiles Include="Components\Layout\NavMenu.razor" />
-    <AdditionalFiles Include="Components\Layout\NavMenuButton.razor" />
-    <AdditionalFiles Include="Components\Layout\NavMenuItem.razor" />
-    <AdditionalFiles Include="Components\Layout\ProfileAvatar.razor" />
-    <AdditionalFiles Include="Components\Layout\Search.razor" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <Content Include="..\..\..\..\.dockerignore">
       <Link>.dockerignore</Link>
