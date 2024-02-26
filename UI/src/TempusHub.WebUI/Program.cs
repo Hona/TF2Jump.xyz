@@ -1,8 +1,10 @@
+using System.Net;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.FluentUI.AspNetCore.Components;
+using TempusApi;
 using TempusHub.WebUI.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +26,9 @@ if (builder.Environment.IsProduction())
                 ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
             });
 }
+
+builder.Services.AddHttpClient<ITempusClient, TempusClient>();
+builder.Services.AddSingleton<ITempusClient, TempusClient>();
 
 var app = builder.Build();
 
