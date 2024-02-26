@@ -1,5 +1,6 @@
 ﻿@using TempusApi.Models.Responses
 @using TempusApi.Enums
+@using Humanizer
 
 @rendermode InteractiveAuto
 
@@ -14,7 +15,7 @@
 @if (zoneType is not ZoneType.Map)
 {
     <FluentOption TOption="string" Style="margin-top: 0.5rem; background: none; opacity: 0.5;" Value="_" Disabled>
-        @(zoneType.ToString())s
+        @(zoneType.ToString().Pluralize())
     </FluentOption>
 }
 
