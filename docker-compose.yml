@@ -4,6 +4,9 @@ services:
     env_file:
       - ./secrets/db.env
     environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__DefaultConnection=host=host.docker.internal;port=5432;database=${POSTGRES_DB};username=${POSTGRES_USER};password=${POSTGRES_PASSWORD}
