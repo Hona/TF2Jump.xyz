@@ -20,6 +20,8 @@ services:
       - ASPNETCORE_URLS=http://+:80
     ports:
       - 6002:80
+    volumes:
+      - ./data/keys:/data/keys:rw
     depends_on:
       - webapi
     networks:

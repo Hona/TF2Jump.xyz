@@ -1,4 +1,6 @@
 ./postgres-data
+./secrets
+./data
 
 # Defaults below
 # Created by https://www.gitignore.io/api/csharp
