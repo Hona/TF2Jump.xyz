@@ -18,6 +18,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
+    user: "${UID}:${GID}"
     ports:
       - 6002:80
     volumes:
