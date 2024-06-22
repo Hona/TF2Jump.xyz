@@ -43,7 +43,7 @@ jobs:
         script_stop: true # Stop on failure
         script: |
           cd /root/repos/TF2Jump.xyz
-          git fetch
+          git fetch origin ${{ github.sha }}
           git checkout ${{ github.sha }}
           dotnet publish ./API/src/TempusHub.API --os linux --arch x64 /t:PublishContainer
           dotnet publish ./UI/src/TempusHub.WebUI --os linux --arch x64 /t:PublishContainer
