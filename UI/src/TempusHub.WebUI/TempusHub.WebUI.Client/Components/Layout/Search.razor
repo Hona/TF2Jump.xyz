@@ -21,50 +21,30 @@
                    OnClose="HandleOnClose"
                    PreventScroll>
         <div @onclick:stopPropagation="true" @onclick:preventDefault="true">
-            <FluentSearch @ref=searchTest
-                          @bind-Value="SearchValue"
-                          @bind-Value:after="HandleClear"
-                          @oninput="@(e => SearchValue = e.Value?.ToString())"
-                          Placeholder="Search everything"
-                          Autofocus />
-            @if (_searchLoading)
-            {
-                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center">
-                    <FluentProgressRing Style="margin-top: 0.5rem"/>
-                </FluentStack>
-            }
-            else if (searchResults is not null && searchResults.Any())
-            {
-                <br />
-                <FluentListbox aria-label="search results"
-                               Items=@searchResults
-                               TOption="OneOf<ServerPlayerModel, MapInfo>"
-                               SelectedOptionChanged="@(HandleSelectedOptionChanged)">
-                    <OptionTemplate>
-                        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
-                            @switch (context.Value)
-                            {
-                                case ServerPlayerModel player:
-                                    var steamProfile = steamProfiles[ConvertToSteamID64(player.SteamId)];
-                                    <FluentPersona Image="@steamProfile.Avatars.SmallUrl" ImageSize="24px"/>
+            <FluentAutocomplete TOption="OneOf<ServerPlayerModel, MapInfo>"
+                                Placeholder="Search everything"
+                                OnOptionsSearch="HandleOptionsSearch"
+                                SelectedOptionsChanged="() => HandleClear()"
+                                Items="searchResults">
+                <OptionTemplate>
+                    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+                        @switch (context.Value)
+                        {
+                            case ServerPlayerModel player:
+                                var steamProfile = steamProfiles[ConvertToSteamID64(player.SteamId)];
+                                <FluentPersona Image="@steamProfile.Avatars.SmallUrl" ImageSize="24px"/>
 
-                                    @player.Name
-                                    break;
+                                @player.Name
+                                break;
 
-                                case MapInfo map:
-                                    <FluentIcon Value="@(new Icons.Regular.Size16.Map())"/>
-                                    @map.Name
-                                    break;
-                            }
-                        </FluentStack>
-                    </OptionTemplate>
-                </FluentListbox>
-            }
-            else if (searchResults is not null && searchResults.Count == 0)
-            {
-                <br />
-                <p>No results found</p>
-            }
+                            case MapInfo map:
+                                <FluentIcon Value="@(new Icons.Regular.Size16.Map())"/>
+                                @map.Name
+                                break;
+                        }
+                    </FluentStack>
+                </OptionTemplate>
+            </FluentAutocomplete>
         </div>
     </FluentOverlay>
 </div>
@@ -92,6 +72,7 @@
         {
             if (value != searchValue)
             {
+                searchResults = defaultResults;
                 searchValue = value;
                 DisposeTimer();
                 //ShowMessageBar the debounce time in ms to the timer below
@@ -140,7 +121,7 @@
         if (!string.IsNullOrWhiteSpace(SearchValue))
         {
             _searchLoading = true;
-            StateHasChanged();
+            await InvokeAsync(StateHasChanged);
             
             var results = await TempusClient.GetSearchResultAsync(SearchValue);
             var resultsCount = results.Maps.Count + results.Players.Count;
@@ -169,13 +150,18 @@
             {
                 searchResults = defaultResults;
             }
-            StateHasChanged();
+            await InvokeAsync(StateHasChanged);
         }
         else
         {
             searchResults = defaultResults;
-            StateHasChanged();
+            await InvokeAsync(StateHasChanged);
         }
+        
+        _searchLoading = false;
+        if (_searchContext != null) _searchContext.Items = searchResults;
+        await InvokeAsync(StateHasChanged);
+
     }
 
     private void HandleClear()
@@ -186,6 +172,8 @@
         DisposeTimer();
         searchResults = defaultResults;
         SearchValue = string.Empty;
+        _visible = false;
+        
         StateHasChanged();
     }
     
@@ -230,5 +218,13 @@
     public void Dispose()
     {
         DisposeTimer();
+    }
+
+    private OptionsSearchEventArgs<OneOf<ServerPlayerModel, MapInfo>>? _searchContext;
+
+    private void HandleOptionsSearch(OptionsSearchEventArgs<OneOf<ServerPlayerModel, MapInfo>> e)
+    {
+        _searchContext = e;
+        SearchValue = e.Text;
     }
 }
