@@ -6,7 +6,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__DefaultConnection=host=host.docker.internal;port=5432;database=${env.POSTGRES_DB};username=${env.POSTGRES_USER};password=${env.POSTGRES_PASSWORD}
+      - ConnectionStrings__DefaultConnection=host=host.docker.internal;port=5432;database=${POSTGRES_DB};username=${POSTGRES_USER};password=${POSTGRES_PASSWORD}
     ports:
       - 6001:80
     depends_on:
