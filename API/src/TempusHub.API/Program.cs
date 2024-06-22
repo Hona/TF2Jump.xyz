@@ -19,7 +19,7 @@ builder.Services.AddExceptionHandler<ExceptionHandler.KnownExceptionsHandler>();
 
 builder.Services.AddHostedService<MigrationHostedService>();
 
-builder.Services.ConfigureModules(appAssembly);
+// builder.Services.ConfigureModules(appAssembly);
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -40,6 +40,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseProductionExceptionHandler();
 
-app.RegisterEndpoints(appAssembly);
+// app.RegisterEndpoints(appAssembly);
 
 app.Run();
