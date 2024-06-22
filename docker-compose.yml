@@ -2,11 +2,11 @@ services:
   webapi:
     image: tf2jumpxyz-webapi:latest
     env_file:
-      - ./db.env
+      - ./secrets/db.env
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__DefaultConnection=host=host.docker.internal;port=5432;database=tf2jumpdb;username=tf2jumpuser;password=${TF2JUMP_POSTGRES_PASSWORD}
+      - ConnectionStrings__DefaultConnection=host=host.docker.internal;port=5432;database=${TF2JUMP_POSTGRES_DB};username=${TF2JUMP_POSTGRES_USER};password=${TF2JUMP_POSTGRES_PASSWORD}
     ports:
       - 6001:80
     depends_on:
@@ -30,18 +30,16 @@ services:
     shm_size: 128mb
     volumes:
      - ./postgres-data:/var/lib/postgresql/data
+    env_file:
+      - ./secrets/db.env
     environment:
-      POSTGRES_PASSWORD_FILE: /run/secrets/tf2jump_postgres_password
-      POSTGRES_DB: tf2jumpdb
-      POSTGRES_USER: tf2jumpuser
+      POSTGRES_PASSWORD: ${TF2JUMP_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${TF2JUMP_POSTGRES_DB}
+      POSTGRES_USER: ${TF2JUMP_POSTGRES_USER}
     secrets:
       - tf2jump_postgres_password
     networks:
       - internal
-
-secrets:
-  tf2jump_postgres_password:
-    file: ./secrets/tf2jump_postgres_password.txt
 
 networks:
   internal:
