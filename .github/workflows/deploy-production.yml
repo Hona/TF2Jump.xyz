@@ -28,7 +28,7 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     
     - name: Test
-      run: dotnet test
+      run: dotnet test --configuration Release --no-restore --no-build
 
   deploy:
     runs-on: ubuntu-latest
