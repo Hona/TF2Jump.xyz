@@ -36,8 +36,6 @@ services:
       POSTGRES_PASSWORD: ${TF2JUMP_POSTGRES_PASSWORD}
       POSTGRES_DB: ${TF2JUMP_POSTGRES_DB}
       POSTGRES_USER: ${TF2JUMP_POSTGRES_USER}
-    secrets:
-      - tf2jump_postgres_password
     networks:
       - internal
 
