@@ -47,4 +47,4 @@ jobs:
           git checkout ${{ github.sha }}
           dotnet publish ./API/src/TempusHub.API --os linux --arch x64 /t:PublishContainer
           dotnet publish ./UI/src/TempusHub.WebUI/TempusHub.WebUI --os linux --arch x64 /t:PublishContainer
-          docker compose up -d
+          docker compose --env-file ./secrets/db.env up -d
