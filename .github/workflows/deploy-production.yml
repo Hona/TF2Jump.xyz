@@ -40,8 +40,9 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
+        script_stop: true # Stop on failure
         script: |
-          cd /repos/TF2Jump.xyz
+          cd /root/repos/TF2Jump.xyz
           git fetch
           git checkout ${{ github.sha }}
           dotnet publish ./API/src/TempusHub.API --os linux --arch x64 /t:PublishContainer
