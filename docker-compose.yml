@@ -32,10 +32,6 @@ services:
      - ./postgres-data:/var/lib/postgresql/data
     env_file:
       - ./secrets/db.env
-    environment:
-      POSTGRES_PASSWORD: ${TF2JUMP_POSTGRES_PASSWORD}
-      POSTGRES_DB: ${TF2JUMP_POSTGRES_DB}
-      POSTGRES_USER: ${TF2JUMP_POSTGRES_USER}
     networks:
       - internal
 
