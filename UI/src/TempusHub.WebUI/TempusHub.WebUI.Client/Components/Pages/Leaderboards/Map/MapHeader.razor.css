@@ -1,0 +1,13 @@
+﻿::deep .statistic-cards-grid-item {
+    max-width: none !important;
+}
+
+@media (max-width: 960px) {
+    ::deep .statistic-cards-grid-item {
+        max-width: fit-content !important;
+    }
+    
+    ::deep .statistic-cards-grid-item > .stack-horizontal {
+        justify-content: flex-start !important;
+    }
+}

@@ -1,6 +1,8 @@
 ﻿@rendermode InteractiveWebAssembly
 
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+@implements IDisposable
 
 <input type="checkbox" title="Menu expand/collapse toggle" id="navmenu-toggle" class="navmenu-icon" />
 <label for="navmenu-toggle" class="navmenu-icon">
@@ -40,3 +42,21 @@
         </MenuItems>
     </NavMenuButton>
 </nav>
+
+@code{
+
+    protected override void OnInitialized()
+    {
+        NavigationManager.LocationChanged += HandleLocationChanged;
+    }
+    
+    public void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        JS.InvokeVoidAsync("collapseNavMenu");
+    }
+    
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
+    }
+}

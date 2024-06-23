@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationM
 using Microsoft.FluentUI.AspNetCore.Components;
 using TempusApi;
 using TempusHub.WebUI.Components;
+using TempusHub.WebUI.Utilities.Humanizer;
 
 var builder = WebApplication.CreateBuilder(args);
+
+StandardDateFormatter.Register();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

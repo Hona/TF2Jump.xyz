@@ -1,4 +1,5 @@
-﻿@rendermode InteractiveWebAssembly
+﻿@rendermode InteractiveAuto
+
 @using System.Timers;
 @using TempusApi.Models
 @using TempusApi.Models.Responses
@@ -9,10 +10,10 @@
 @implements IDisposable
 
 <div class="search-bar">
-    <FluentButton IconStart="(new Icons.Regular.Size20.Search())" 
+    <FluentButton IconStart="(new Icons.Regular.Size20.Search())"
                   Appearance="Appearance.Stealth"
                   OnClick="@(() => _visible = !_visible)">
-        
+
     </FluentButton>
 
     <FluentOverlay @bind-Visible="@_visible"
@@ -21,44 +22,57 @@
                    OnClose="HandleOnClose"
                    PreventScroll>
         <div @onclick:stopPropagation="true" @onclick:preventDefault="true">
-            <FluentAutocomplete TOption="OneOf<ServerPlayerModel, MapInfo>"
-                                Placeholder="Search everything"
-                                OnOptionsSearch="HandleOptionsSearch"
-                                SelectedOptionsChanged="() => HandleClear()"
-                                Items="searchResults">
-                <OptionTemplate>
-                    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
-                        @switch (context.Value)
-                        {
-                            case ServerPlayerModel player:
-                                var steamProfile = steamProfiles[ConvertToSteamID64(player.SteamId)];
-                                <FluentPersona Image="@steamProfile.Avatars.SmallUrl" ImageSize="24px"/>
 
-                                @player.Name
-                                break;
+            <FluentCard MinimalStyle Height="450px" Width="300px">
+                <FluentStack Width="100%">
+                    <h3>Search Everything</h3>
+                    <FluentSpacer />
+                    <FluentButton Appearance="Appearance.Stealth" IconStart="new Icons.Filled.Size12.Dismiss()" OnClick="HandleOnClose"/>
+                </FluentStack>
+                <FluentAutocomplete TOption="OneOf<ServerPlayerModel, MapInfo>"
+                                    Placeholder="Search everything"
+                                    OnOptionsSearch="HandleOptionsSearch"
+                                    SelectedOptionChanged="HandleSelectedOptionChanged"
+                                    SelectedOptionsChanged="(x) => HandleSelectedOptionChanged(x.Single())"
+                                    ShowOverlayOnEmptyResults="true"
+                                    Autofocus
+                                    Width="200px"
+                                    Items="searchResults">
+                    <OptionTemplate>
+                        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+                            @switch (context.Value)
+                            {
+                                case ServerPlayerModel player:
+                                    var steamProfile = _steamProfiles[SteamUtilities.ConvertToSteamId64(player.SteamId)];
+                                    <FluentPersona Image="@steamProfile.Avatars.SmallUrl" ImageSize="24px"/>
 
-                            case MapInfo map:
-                                <FluentIcon Value="@(new Icons.Regular.Size16.Map())"/>
-                                @map.Name
-                                break;
-                        }
-                    </FluentStack>
-                </OptionTemplate>
-            </FluentAutocomplete>
+                                    @player.Name
+                                    break;
+
+                                case MapInfo map:
+                                    <FluentIcon Value="@(new Icons.Regular.Size16.Map())"/>
+                                    @map.Name
+                                    break;
+                            }
+                        </FluentStack>
+                    </OptionTemplate>
+                </FluentAutocomplete>
+            </FluentCard>
         </div>
     </FluentOverlay>
+
 </div>
 
 @code
 {
     private bool _visible;
-    
+
     private void HandleOnClose()
     {
         _visible = false;
         HandleClear();
     }
-    
+
     private Timer? timer = null;
 
     private FluentSearch? searchTest;
@@ -87,15 +101,15 @@
     protected override void OnInitialized()
     {
         searchResults = defaultResults;
-        
+
         base.OnInitialized();
     }
 
     private List<OneOf<ServerPlayerModel, MapInfo>>? searchResults;
 
     private List<OneOf<ServerPlayerModel, MapInfo>>? defaultResults => null;
-    
-    private Dictionary<long, SteamProfile>? steamProfiles = new();
+
+    private Dictionary<long, SteamProfile> _steamProfiles = new();
 
     private bool _searchLoading;
 
@@ -122,10 +136,10 @@
         {
             _searchLoading = true;
             await InvokeAsync(StateHasChanged);
-            
+
             var results = await TempusClient.GetSearchResultAsync(SearchValue);
             var resultsCount = results.Maps.Count + results.Players.Count;
-            
+
             if (resultsCount > 0)
             {
                 searchResults = results.Maps.Select(OneOf<ServerPlayerModel, MapInfo>.FromT1)
@@ -136,20 +150,21 @@
                 {
                     var tempusPlayerIds = results.Players
                         .Where(x => x.SteamId is not null)
-                        .Select(x => ConvertToSteamID64(x.SteamId))
+                        .Select(x => SteamUtilities.ConvertToSteamId64(x.SteamId))
                         .ToArray();
-                    
+
                     // Convert from STEAM_0:0:98857228 to 76561198293007521
-                    
-                    steamProfiles = await TempusClient.GetSteamProfilesAsync(tempusPlayerIds);
+
+                    _steamProfiles = await TempusClient.GetSteamProfilesAsync(tempusPlayerIds);
                 }
-                
+
                 _searchLoading = false;
             }
             else
             {
                 searchResults = defaultResults;
             }
+
             await InvokeAsync(StateHasChanged);
         }
         else
@@ -157,11 +172,10 @@
             searchResults = defaultResults;
             await InvokeAsync(StateHasChanged);
         }
-        
+
         _searchLoading = false;
         if (_searchContext != null) _searchContext.Items = searchResults;
         await InvokeAsync(StateHasChanged);
-
     }
 
     private void HandleClear()
@@ -173,10 +187,10 @@
         searchResults = defaultResults;
         SearchValue = string.Empty;
         _visible = false;
-        
+
         StateHasChanged();
     }
-    
+
     private void HandleSelectedOptionChanged(OneOf<ServerPlayerModel, MapInfo> selectedOption)
     {
         string href;
@@ -189,32 +203,15 @@
         else
         {
             var map = selectedOption.AsT1;
-            
+
             href = $"/leaderboard/maps/{map.Name}";
         }
-        
+
         HandleOnClose();
         NavigationManager.NavigateTo(href);
     }
     
-    private static long ConvertToSteamID64(string steamId)
-    {
-        const long steamId64Identifier = 76561197960265728; // SteamID64 identifier for accounts
-        string[] parts = steamId.Replace("STEAM_0:", "").Split(':');
-        
-        if(parts.Length < 2)
-        {
-            throw new ArgumentException("Invalid SteamID format", nameof(steamId));
-        }
 
-        if(!long.TryParse(parts[0], out long x) || !long.TryParse(parts[1], out long y))
-        {
-            throw new ArgumentException("SteamID contains invalid numbers", nameof(steamId));
-        }
-
-        return (y * 2) + steamId64Identifier + x;
-    }
-    
     public void Dispose()
     {
         DisposeTimer();
