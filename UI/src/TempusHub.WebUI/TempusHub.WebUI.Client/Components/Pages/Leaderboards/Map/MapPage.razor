@@ -24,28 +24,32 @@
 
             <FluentDivider Orientation="Orientation.Horizontal" Role="@DividerRole.Presentation"/>
 
-            <FluentStack Orientation="Orientation.Horizontal">
-                <MapZoneSelector Map="_map" @bind-SelectedZone="_selectedZone" @bind-SelectedZone:after="@AfterSelectedZoneChanged" />
-                
-                <FluentCard Style="padding: 0">
-                    @if (_zoneRunsLoading)
-                    {
-                        <FluentProgressRing />
-                    }
-                    else if (_zoneRuns is null)
-                    {
-                        <i>No runs found</i>
-                    }
-                    else
-                    {
-                        <MapRunsTable Runs="ClassZoneRunes" Class="_selectedClass"/>
-                    }
-                </FluentCard>
-                
-                <FluentCard Style="padding: 0">
-                    <MapWorldRecordHistory />
-                </FluentCard>
-            </FluentStack>
+            <FluentGrid>
+                <FluentGridItem xs="12" sm="12" md="0">
+                    <MapZoneSelector Map="_map" @bind-SelectedZone="_selectedZone" @bind-SelectedZone:after="@AfterSelectedZoneChanged"/>
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="0">
+                    <FluentCard Style="padding: 0">
+                        @if (_zoneRunsLoading)
+                        {
+                            <FluentProgressRing/>
+                        }
+                        else if (_zoneRuns is null)
+                        {
+                            <i>No runs found</i>
+                        }
+                        else
+                        {
+                            <MapRunsTable Runs="ClassZoneRunes" Class="_selectedClass"/>
+                        }
+                    </FluentCard>
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="12" lg="0">
+                    <FluentCard MinimalStyle Style="padding: 0; height: fit-content">
+                        <MapWorldRecordHistory/>
+                    </FluentCard>
+                </FluentGridItem>
+            </FluentGrid>
         </FluentStack>
     }
 </div>
@@ -53,20 +57,21 @@
 @code
 {
     [Parameter] public required string MapName { get; set; }
-    
+
     private bool _loading;
 
     private FullMapOverview2? _map;
 
     private Class _selectedClass = Class.Soldier;
     private SelectedZone _selectedZone = new(ZoneType.Map, 1);
-    
+
     private PersistingComponentStateSubscription _persistingSubscription;
+
     protected override void OnInitialized()
     {
         _persistingSubscription = ApplicationState.RegisterOnPersisting(Persist);
     }
-    
+
     private Task Persist()
     {
         ApplicationState.PersistAsJson(nameof(_map), _map);
@@ -81,9 +86,10 @@
     }
 
     private bool _zoneRunsLoading = false;
-    
+
     private ZonedRecordsModel? _zoneRuns = null;
     private List<RecordInfoShort>? ClassZoneRunes => _selectedClass is Class.Soldier ? _zoneRuns?.Runs.SoldierRuns : _zoneRuns?.Runs.DemomanRuns;
+
     private async Task AfterSelectedZoneChanged()
     {
         _zoneRunsLoading = true;
@@ -104,11 +110,11 @@
 
         try
         {
-            _map = !ApplicationState.TryTakeFromJson<FullMapOverview2>(nameof(_map), out var restoredMap) 
-                ? await TempusClient.GetFullMapOverview2Async(MapName) 
+            _map = !ApplicationState.TryTakeFromJson<FullMapOverview2>(nameof(_map), out var restoredMap)
+                ? await TempusClient.GetFullMapOverview2Async(MapName)
                 : restoredMap!;
-            _zoneRuns = !ApplicationState.TryTakeFromJson<ZonedRecordsModel>(nameof(_zoneRuns), out var restoredZoneRuns) 
-                ? await TempusClient.GetTopZonedTimes(MapName, ZoneType.Map, limit: 50) 
+            _zoneRuns = !ApplicationState.TryTakeFromJson<ZonedRecordsModel>(nameof(_zoneRuns), out var restoredZoneRuns)
+                ? await TempusClient.GetTopZonedTimes(MapName, ZoneType.Map, limit: 50)
                 : restoredZoneRuns!;
         }
         finally

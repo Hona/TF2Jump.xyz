@@ -2,19 +2,21 @@
 
 @rendermode InteractiveAuto
 
-<div style="padding-top: 0.5rem; background: rgb(66, 66, 66)">
-<ApexChart TItem="Order"
-           Title="World Record History"
-           Options="@options">
-    <ApexPointSeries TItem="Order"
-                     Items="Orders"
-                     Name="Gross Value"
-                     SeriesType="SeriesType.Line"
-                     XValue="@(e => e.Country)"
-                     YAggregate="@(e => e.Sum(e => e.GrossValue))"
-                     OrderByDescending="e=>e.Y"
-                     Stroke="@(new ApexCharts.SeriesStroke { Color = "var(--accent-fill-rest)", DashSpace = 0, Width = 2 })" />
-</ApexChart>
+<div style="padding-top: 0.5rem; background: #3D3D3D">
+    <h4 style="margin-left: 0.5rem; margin-bottom: 0">World Record History</h4>
+
+    <WipFeatureMessage />
+    @*<ApexChart TItem="Order"
+               Options="@options">
+        <ApexPointSeries TItem="Order"
+                         Items="Orders"
+                         Name="Gross Value"
+                         SeriesType="SeriesType.Line"
+                         XValue="@(e => e.Country)"
+                         YAggregate="@(e => e.Sum(e => e.GrossValue))"
+                         OrderByDescending="e => e.Y"
+                         Stroke="@(new ApexCharts.SeriesStroke { Color = "var(--accent-fill-rest)", DashSpace = 0, Width = 2 })"/>
+    </ApexChart>*@
 </div>
 @code {
     private List<Order> Orders { get; set; } = GetOrders();
@@ -31,6 +33,7 @@
                     Show = false
                 },
                 ForeColor = "#fff",
+                Background = "#3D3D3D",
                 FontFamily = "inherit",
             },
             Theme = new Theme()
