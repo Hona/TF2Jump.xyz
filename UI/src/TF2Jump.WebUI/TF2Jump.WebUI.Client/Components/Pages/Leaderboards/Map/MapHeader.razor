@@ -2,53 +2,52 @@
 @using Humanizer
 @using Humanizer.Localisation
 @using TempusApi.Enums
-@using TempusApi.Models.Activity
 
 @rendermode InteractiveAuto
 
 <div style="width: 100%; height: fit-content">
-<FluentCard Width="100%" Height="fit-content">
-    <FluentGrid>
-        <FluentGridItem xs="12" sm="12" md="0">
-            <FluentStack Orientation="Orientation.Vertical" Style="margin-right: 1rem" Width="fit-content">
-                <h3>
-                    @Map?.MapInfo.Name
-                </h3>
+    <FluentCard Width="100%" Height="fit-content">
+        <FluentGrid>
+            <FluentGridItem xs="12" sm="12" md="0">
+                <FluentStack Orientation="Orientation.Vertical" Style="margin-right: 1rem" Width="fit-content">
+                    <h3>
+                        @Map?.MapInfo.Name
+                    </h3>
 
-                <div>
-                    <FluentStack HorizontalGap="2" Wrap>
-                        <span style="padding-right: 0.125rem">Authored by</span>
+                    <div>
+                        <FluentStack HorizontalGap="2" Wrap>
+                            <span style="padding-right: 0.125rem">Authored by</span>
 
-                        @if (Map != null)
-                        {
-                            foreach (var author in Map.Authors)
+                            @if (Map != null)
                             {
-                                <a href="/leaderboard/players/@author.PlayerInfo.Id">
-                                    @author.Name
-                                </a>
+                                foreach (var author in Map.Authors)
+                                {
+                                    <a href="/leaderboard/players/@author.PlayerInfo.Id">
+                                        @author.Name
+                                    </a>
+                                }
                             }
-                        }
-                    </FluentStack>
+                        </FluentStack>
 
-                    @((DateTimeOffset.UtcNow - Map.MapInfo.DateAdded.ToDateTimeOffset()).Humanize(maxUnit: TimeUnit.Year)) old
-                </div>
-            </FluentStack>
-        </FluentGridItem>
-        <FluentGridItem xs="12" sm="12" md="0">
-            <ClassSelector SelectedClass="Class" SelectedClassChanged="ClassChanged"/>
-        </FluentGridItem>
-        <FluentGridItem xs="12" sm="12" md="0" Style="flex-grow: 1" Class="statistic-cards-grid-item">
-            <FluentStack Wrap Orientation="Orientation.Horizontal" Width="100%" HorizontalAlignment="HorizontalAlignment.Right">
-                <Statistic Value="@(Class is Class.Soldier ? ZonedRuns?.CompletionInfo.SoldierCount.ToString() : ZonedRuns?.CompletionInfo.DemomanCount.ToString())"
-                           Label="Total completions"/>
-                <Statistic Value="??"
-                           Label="Unique WRs"/>
-                <Statistic Value="@GetMapWrHeldDuration()"
-                           Label="WR held for"/>
-            </FluentStack>
-        </FluentGridItem>
-    </FluentGrid>
-</FluentCard>
+                        @((DateTimeOffset.UtcNow - Map.MapInfo.DateAdded.ToDateTimeOffset()).Humanize(maxUnit: TimeUnit.Year)) old
+                    </div>
+                </FluentStack>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12" md="0">
+                <ClassSelector SelectedClass="Class" SelectedClassChanged="ClassChanged"/>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12" md="0" Style="flex-grow: 1" Class="statistic-cards-grid-item">
+                <FluentStack Wrap Orientation="Orientation.Horizontal" Width="100%" HorizontalAlignment="HorizontalAlignment.Right">
+                    <Statistic Value="@(Class is Class.Soldier ? ZonedRuns?.CompletionInfo.SoldierCount.ToString() : ZonedRuns?.CompletionInfo.DemomanCount.ToString())"
+                               Label="Total completions"/>
+                    <Statistic Value="??"
+                               Label="Unique WRs"/>
+                    <Statistic Value="@GetMapWrHeldDuration()"
+                               Label="WR held for"/>
+                </FluentStack>
+            </FluentGridItem>
+        </FluentGrid>
+    </FluentCard>
 </div>
 
 @code
