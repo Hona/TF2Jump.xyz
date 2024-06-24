@@ -1,0 +1,125 @@
+﻿@page "/leaderboard/maps/{MapName}"
+
+@using TempusApi.Models.Responses
+@using TempusApi.Enums
+@using TempusApi.Models.Activity
+@using TF2Jump.WebUI.Components.Pages.Leaderboards.Map
+
+@inject ITempusClient TempusClient
+@inject PersistentComponentState ApplicationState
+
+@implements IDisposable
+
+@rendermode InteractiveAuto
+
+<div>
+    @if (_loading)
+    {
+        <FluentProgressRing/>
+    }
+    else
+    {
+        <FluentStack Orientation="Orientation.Vertical" VerticalGap="6">
+            <MapHeader Map="_map" @bind-Class="_selectedClass" ZonedRuns="_zoneRuns"/>
+
+            <FluentDivider Orientation="Orientation.Horizontal" Role="@DividerRole.Presentation"/>
+
+            <FluentGrid>
+                <FluentGridItem xs="12" sm="12" md="0">
+                    <MapZoneSelector Map="_map" @bind-SelectedZone="_selectedZone" @bind-SelectedZone:after="@AfterSelectedZoneChanged"/>
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="0">
+                    <FluentCard Style="padding: 0">
+                        @if (_zoneRunsLoading)
+                        {
+                            <FluentProgressRing/>
+                        }
+                        else if (_zoneRuns is null)
+                        {
+                            <i>No runs found</i>
+                        }
+                        else
+                        {
+                            <MapRunsTable Runs="ClassZoneRunes" Class="_selectedClass"/>
+                        }
+                    </FluentCard>
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="12" lg="0">
+                    <FluentCard MinimalStyle Style="padding: 0; height: fit-content">
+                        <MapWorldRecordHistory/>
+                    </FluentCard>
+                </FluentGridItem>
+            </FluentGrid>
+        </FluentStack>
+    }
+</div>
+
+@code
+{
+    [Parameter] public required string MapName { get; set; }
+
+    private bool _loading;
+
+    private FullMapOverview2? _map;
+
+    private Class _selectedClass = Class.Soldier;
+    private SelectedZone _selectedZone = new(ZoneType.Map, 1);
+
+    private PersistingComponentStateSubscription _persistingSubscription;
+
+    protected override void OnInitialized()
+    {
+        _persistingSubscription = ApplicationState.RegisterOnPersisting(Persist);
+    }
+
+    private Task Persist()
+    {
+        ApplicationState.PersistAsJson(nameof(_map), _map);
+        ApplicationState.PersistAsJson(nameof(_zoneRuns), _zoneRuns);
+
+        return Task.CompletedTask;
+    }
+
+    void IDisposable.Dispose()
+    {
+        _persistingSubscription.Dispose();
+    }
+
+    private bool _zoneRunsLoading = false;
+
+    private ZonedRecordsModel? _zoneRuns = null;
+    private List<RecordInfoShort>? ClassZoneRunes => _selectedClass is Class.Soldier ? _zoneRuns?.Runs.SoldierRuns : _zoneRuns?.Runs.DemomanRuns;
+
+    private async Task AfterSelectedZoneChanged()
+    {
+        _zoneRunsLoading = true;
+        try
+        {
+            _zoneRuns = await TempusClient.GetTopZonedTimes(MapName, _selectedZone.Zone, _selectedZone.Index, limit: 50);
+        }
+        finally
+        {
+            _zoneRunsLoading = false;
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _map = null;
+        _loading = true;
+
+        try
+        {
+            _map = !ApplicationState.TryTakeFromJson<FullMapOverview2>(nameof(_map), out var restoredMap)
+                ? await TempusClient.GetFullMapOverview2Async(MapName)
+                : restoredMap!;
+            _zoneRuns = !ApplicationState.TryTakeFromJson<ZonedRecordsModel>(nameof(_zoneRuns), out var restoredZoneRuns)
+                ? await TempusClient.GetTopZonedTimes(MapName, ZoneType.Map, limit: 50)
+                : restoredZoneRuns!;
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+}
