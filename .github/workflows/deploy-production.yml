@@ -31,6 +31,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    environment: 
+      name: production
+      url: https://tf2jump.xyz
     steps:
     - name: SSH Deploy
       uses: appleboy/ssh-action@master
