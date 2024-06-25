@@ -1,0 +1,23 @@
+{
+  "name": "tf_demo_parser",
+  "collaborators": [
+    "Robin Appelman <robin@icewind.nl>"
+  ],
+  "description": "parser for tf2 demo files",
+  "version": "0.5.1",
+  "license": "MIT OR Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/demostf/parser"
+  },
+  "files": [
+    "tf_demo_parser_bg.wasm",
+    "tf_demo_parser.js",
+    "tf_demo_parser.d.ts"
+  ],
+  "module": "tf_demo_parser.js",
+  "types": "tf_demo_parser.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

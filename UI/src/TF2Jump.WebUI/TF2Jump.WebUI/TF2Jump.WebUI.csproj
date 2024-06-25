@@ -21,4 +21,19 @@
     </Content>
   </ItemGroup>
   
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\pkg\.gitignore" />
+    <_ContentIncludedByDefault Remove="wwwroot\pkg\package.json" />
+    <_ContentIncludedByDefault Remove="wwwroot\pkg\README.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\pkg\tf_demo_parser.d.ts" />
+    <_ContentIncludedByDefault Remove="wwwroot\pkg\tf_demo_parser.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\pkg\tf_demo_parser_bg.wasm" />
+    <_ContentIncludedByDefault Remove="wwwroot\pkg\tf_demo_parser_bg.wasm.d.ts" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\pkg\tf_demo_parser.d.ts" />
+    <TypeScriptCompile Include="wwwroot\pkg\tf_demo_parser_bg.wasm.d.ts" />
+  </ItemGroup>
+  
 </Project>
