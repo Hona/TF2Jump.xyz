@@ -3,7 +3,6 @@
 @using TempusApi.Models
 @using TempusApi.Models.Activity
 
-@rendermode InteractiveAuto
 @inject ITempusClient TempusClient
 @inject NavigationManager NavigationManager
 
@@ -11,13 +10,14 @@
     <FluentDataGrid Items="@Runs.AsQueryable()"
                     ShowHover
                     OnRowClick="@((FluentDataGridRow<RecordInfoShort> context) => NavigationManager.NavigateTo($"/leaderboard/records/{context.Item?.Id}"))"
-                    GridTemplateColumns="minmax(50px, auto) 1fr 1fr 1fr">
+                    GridTemplateColumns="minmax(50px, auto) 1fr 1fr 1fr"
+                    RowClass="@(x => x.Rank is 1 ? "wr-highlight" : "")">
         <TemplateColumn Title="Rank" Style="min-width: 50px; text-align: center" Class="no-shrink">
             @(context.Rank is 1 ? "WR" : context.Rank)
         </TemplateColumn>
         <TemplateColumn Title="Time" Class="no-shrink">
             @context.Duration.ToTimeSpan().ToFormattedDuration()
-            
+
             <div class="wr-split">
                 @if (context.Rank is not 1)
                 {
@@ -31,19 +31,19 @@
             @{
                 _ = _steamProfiles.TryGetValue(SteamUtilities.ConvertToSteamId64(context.PlayerInfo.SteamId), out var steamProfile);
             }
-            
-            <a href="/leaderboard/players/@context.PlayerInfo.Id">
-            <FluentStack Orientation="Orientation.Horizontal">
-                @if (steamProfile != null)
-                {
-                    <FluentPersona Image="@steamProfile.Avatars.SmallUrl" ImageSize="24px"/>
-                }
 
-                @context.Name
-            </FluentStack>
+            <a href="/leaderboard/players/@context.PlayerInfo.Id">
+                <FluentStack Orientation="Orientation.Horizontal">
+                    @if (steamProfile != null)
+                    {
+                        <FluentPersona Image="@steamProfile.Avatars.SmallUrl" ImageSize="24px"/>
+                    }
+
+                    @context.Name
+                </FluentStack>
             </a>
         </TemplateColumn>
-        <TemplateColumn Title="Date" Class="no-shrink">        
+        <TemplateColumn Title="Date" Class="no-shrink">
             @context.Date.ToDateTimeOffset().Humanize()
         </TemplateColumn>
     </FluentDataGrid>

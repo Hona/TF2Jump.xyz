@@ -1,0 +1,8 @@
+﻿::deep .map-card-grid .fluent-card-minimal-style {
+    padding: 0;
+    background: #333333;
+}
+
+::deep .map-card-grid .fluent-card-minimal-style .map-header {
+    padding: calc(var(--design-unit)* 5px);
+}

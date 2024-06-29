@@ -3,8 +3,6 @@
 @using Humanizer.Localisation
 @using TempusApi.Enums
 
-@rendermode InteractiveAuto
-
 <div style="width: 100%; height: fit-content">
     <FluentCard Width="100%" Height="fit-content">
         <FluentGrid>
@@ -64,7 +62,7 @@
         var timestamp = Class switch
         {
             Class.Soldier => ZonedRuns?.Runs.SoldierRuns.MinBy(x => x.Rank)?.Date,
-            Class.Demoman => ZonedRuns?.Runs.SoldierRuns.MinBy(x => x.Rank)?.Date,
+            Class.Demoman => ZonedRuns?.Runs.DemomanRuns.MinBy(x => x.Rank)?.Date,
             _ => throw new ArgumentOutOfRangeException()
         };
 
