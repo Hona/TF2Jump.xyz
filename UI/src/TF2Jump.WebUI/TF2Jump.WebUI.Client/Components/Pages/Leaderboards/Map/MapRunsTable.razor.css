@@ -1,3 +1,8 @@
 ﻿::deep .no-shrink {
     min-width: fit-content;
 }
+
+::deep .wr-highlight {
+    background:
+            color-mix(in srgb, var(--accent-fill-rest), 80% #333333);
+}

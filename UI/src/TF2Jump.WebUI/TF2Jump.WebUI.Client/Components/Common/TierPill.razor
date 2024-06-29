@@ -1,4 +1,7 @@
-﻿<FluentBadge Style="@Style">
+﻿<FluentBadge Style="@Style"
+             BackgroundColor="@GetBackgroundColor()" 
+             Color="@GetColor()"
+             Fill="tier">
     Tier @Tier
 </FluentBadge>
 
@@ -9,4 +12,22 @@
 
     [Parameter]
     public string Style { get; set; }
+    
+    private string GetBackgroundColor() => Tier switch
+    {
+        "4" => "#ff9800",
+        "3" => "#ffeb3b",
+        "2" => "#4caf50",
+        "1" => "#2196f3",
+        "5" => "#9c27b0",
+        "6" => "#f44336",
+
+        _ => "#9e9e9e"
+    };
+    
+    private string GetColor() => Tier switch
+    {
+        "3" => "black",
+        _ => "white"
+    };
 }
