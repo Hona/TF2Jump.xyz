@@ -46,7 +46,12 @@
                                 <TierPill Tier="@(tier.ToString())"></TierPill>
                             </div>
 
-                            <img src="@imageUrl" height="128" style="width: 100%;" onerror="this.style.display='none'"/>
+                            <img src="@imageUrl" height="128" 
+                                 role="presentation"
+                                 alt="@map.Name screenshot"
+                                 style="width: 100%;"
+                                 loading="lazy"
+                                 onerror="this.style.display='none'"/>
                         </FluentCard>
                     </FluentGridItem>
                 }

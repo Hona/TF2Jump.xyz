@@ -14,7 +14,7 @@ body {
 }
 
 .body-content {
-    overflow: hidden;
+    overflow: hidden !important;
 }
 
 .main {
