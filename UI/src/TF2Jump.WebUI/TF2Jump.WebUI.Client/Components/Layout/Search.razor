@@ -28,6 +28,7 @@
                     <FluentButton Appearance="Appearance.Stealth" IconStart="new Icons.Filled.Size12.Dismiss()" OnClick="HandleOnClose"/>
                 </FluentStack>
                 <FluentAutocomplete TOption="OneOf<ServerPlayerModel, MapInfo>"
+                                    OptionValue="@(x => x.Match(x => x?.Id.ToString(), x=> x?.Name))"
                                     Placeholder="Search everything"
                                     OnOptionsSearch="HandleOptionsSearch"
                                     SelectedOptionChanged="HandleSelectedOptionChanged"
