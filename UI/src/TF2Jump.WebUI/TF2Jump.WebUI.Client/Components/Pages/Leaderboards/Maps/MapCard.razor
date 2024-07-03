@@ -1,0 +1,36 @@
+﻿@using TempusApi.Enums
+@using TempusApi.Models.DetailedMapList
+
+<FluentCard MinimalStyle>
+    <div class="map-header">
+        <a href="/leaderboard/maps/@Map.Name">
+            <h5>
+                @Map.Name
+            </h5>
+        </a>
+
+        @{
+            var tier = SelectedClass switch
+            {
+                Class.Soldier => Map.TierInfo.Soldier,
+                Class.Demoman => Map.TierInfo.Demoman,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
+        <TierPill Tier="@(tier.ToString())"></TierPill>
+    </div>
+
+    <img src="@ImageUrl" height="128"
+         role="presentation"
+         alt="@Map.Name screenshot"
+         style="width: 100%;"
+         loading="lazy"
+         onerror="this.style.display='none'"/>
+</FluentCard>
+
+@code {
+    [Parameter, EditorRequired] public required DetailedMapOverviewModel Map { get; set; }
+    [Parameter] public Class SelectedClass { get; set; }
+
+    private string ImageUrl => $"https://static.tempus2.xyz/web/screenshots/raw/{Map.Name}_320p.jpeg";
+}
