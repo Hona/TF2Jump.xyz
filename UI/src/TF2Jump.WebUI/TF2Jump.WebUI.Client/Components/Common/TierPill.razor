@@ -1,4 +1,4 @@
-﻿<FluentBadge Style="@Style"
+﻿<FluentBadge Style="@GetStyle()"
              BackgroundColor="@GetBackgroundColor()"
              Color="@GetColor()"
              Fill="tier">
@@ -12,21 +12,33 @@
 
     [Parameter]
     public string Style { get; set; }
+
+    private string GetStyle()
+    {
+        if (Tier is "0")
+        {
+            return Style + "; border: 1px solid #C6C6D5; border-radius: 4px";
+        }
+
+        return Style;
+    }
     
     private string GetBackgroundColor() => Tier switch
     {
-        "1" => "#845EC2",
-        "2" => "#D65DB1",
-        "3" => "#FF6F91",
-        "4" => "#FF9671",
-        "5" => "#FFC75F",
-        "6" => "#F9F871",
-        _ => "#120056"
+        "1" => "#547855",
+        "2" => "#3D686E",
+        "3" => "#5176A1",
+        "4" => "#5A4F9D",
+        "5" => "#954392",
+        "6" => "#FA6491",
+        "0" => /*transparent*/ "#333333",
+        _ => "#E2E2EB"
     };
     
     private string GetColor() => Tier switch
     {
-        "3" or "4" or "5" or "6" => "black",
+        "6" => "black",
+        "0" => "#C6C6D5",
         _ => "white"
     };
 }
