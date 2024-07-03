@@ -17,6 +17,11 @@
     }
     else
     {
+        <PageTitle>@_map!.MapInfo.Name Leaderboard | TF2 Jump</PageTitle>
+        <HeadContent>
+            <meta name="description" content="Leaderboard data for @_map.MapInfo.Name (released @_map.MapInfo.DateAdded.ToDateTimeOffset().ToString("yyyy-MM-dd")), like WR history, the fastest times on map, course, bonus and even trick zones."/>
+        </HeadContent>
+        
         <FluentStack Orientation="Orientation.Vertical" VerticalGap="6">
             <MapHeader Map="_map" @bind-Class="_selectedClass" ZonedRuns="_zoneRuns"/>
 
