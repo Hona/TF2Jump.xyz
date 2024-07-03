@@ -6,6 +6,10 @@
 
 @inject ITempusClient TempusClient
 
+@inject PersistentComponentState ApplicationState
+
+@implements IDisposable
+
 <div>
     @if (_loading)
     {
@@ -160,8 +164,13 @@
         };
     }
 
+    private PersistingComponentStateSubscription persistingSubscription;
+
     protected override async Task OnInitializedAsync()
     {
+        persistingSubscription = 
+            ApplicationState.RegisterOnPersisting(PersistData);
+        
         try
         {
             _loading = true;
@@ -171,13 +180,28 @@
             {
                 _tierFilters[i] = true;
             }
-
-            _maps = await TempusClient.GetDetailedMapListAsync();
+            
+            if (!ApplicationState.TryTakeFromJson<List<DetailedMapOverviewModel>?>(
+                nameof(_maps), out var restored))
+            {
+                _maps = await TempusClient.GetDetailedMapListAsync();
+            }
+            else
+            {
+                _maps = restored!;
+            }
         }
         finally
         {
             _loading = false;
         }
+    }
+    
+    private Task PersistData()
+    {
+        ApplicationState.PersistAsJson(nameof(_maps), _maps);
+
+        return Task.CompletedTask;
     }
 
     private void ToggleFilter()
@@ -185,5 +209,10 @@
         _filterVisible = !_filterVisible;
 
         _searchText = "";
+    }
+    
+    void IDisposable.Dispose()
+    {
+        persistingSubscription.Dispose();
     }
 }
