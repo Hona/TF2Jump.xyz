@@ -3,9 +3,10 @@
 @using System.Linq.Expressions
 @using TempusApi.Enums
 @using TempusApi.Models.DetailedMapList
+@using TF2Jump.WebUI.Client.Utilities
 
 @inject ITempusClient TempusClient
-
+@inject HttpClient HttpClient
 @inject PersistentComponentState ApplicationState
 
 @implements IDisposable
@@ -80,6 +81,7 @@
 {
     private bool _loading;
     private List<DetailedMapOverviewModel>? _maps;
+    private Dictionary<string, IntendedClasses>? _intendedClasses;
     private Class _selectedClass = Class.Soldier;
     private bool _filterVisible;
     private string _searchText = "";
@@ -117,14 +119,24 @@
     private IEnumerable<DetailedMapOverviewModel> GetMapsToDisplay()
     {
         var output = _maps ?? [];
-
-        if (!_filterVisible)
-        {
-            return output;
-        }
-
+        
         var query = output.AsQueryable();
 
+        var selectedIntendedClass = _selectedClass switch
+        {
+            Class.Soldier => IntendedClasses.Soldier,
+            Class.Demoman => IntendedClasses.Demoman,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+        
+        query = query.Where(map => _intendedClasses![map.Name]
+            .HasFlag(selectedIntendedClass));
+        
+        if (!_filterVisible)
+        {
+            return query;
+        }
+        
         if (string.IsNullOrWhiteSpace(_searchText))
         {
             query = query.Where(map => map.Name.Contains(_searchText, StringComparison.OrdinalIgnoreCase)
@@ -164,11 +176,11 @@
         };
     }
 
-    private PersistingComponentStateSubscription persistingSubscription;
+    private PersistingComponentStateSubscription _persistingSubscription;
 
     protected override async Task OnInitializedAsync()
     {
-        persistingSubscription = 
+        _persistingSubscription = 
             ApplicationState.RegisterOnPersisting(PersistData);
         
         try
@@ -190,6 +202,16 @@
             {
                 _maps = restored!;
             }
+
+            if (!ApplicationState.TryTakeFromJson<Dictionary<string, IntendedClasses>?>(
+                nameof(_intendedClasses), out var restoredIntendedClasses))
+            {
+                _intendedClasses = await HttpClient.GetIntendedClassMapListAsync();
+            }
+            else
+            {
+                _intendedClasses = restoredIntendedClasses!;
+            }
         }
         finally
         {
@@ -200,6 +222,7 @@
     private Task PersistData()
     {
         ApplicationState.PersistAsJson(nameof(_maps), _maps);
+        ApplicationState.PersistAsJson(nameof(_intendedClasses), _intendedClasses);
 
         return Task.CompletedTask;
     }
@@ -213,6 +236,6 @@
     
     void IDisposable.Dispose()
     {
-        persistingSubscription.Dispose();
+        _persistingSubscription.Dispose();
     }
 }
