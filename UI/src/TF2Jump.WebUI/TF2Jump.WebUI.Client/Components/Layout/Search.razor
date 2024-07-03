@@ -42,8 +42,12 @@
                             @switch (context.Value)
                             {
                                 case ServerPlayerModel player:
-                                    var steamProfile = _steamProfiles[SteamUtilities.ConvertToSteamId64(player.SteamId)];
-                                    <FluentPersona Image="@steamProfile.Avatars.SmallUrl" ImageSize="24px"/>
+                                    _ = _steamProfiles.TryGetValue(SteamUtilities.ConvertToSteamId64(player.SteamId), out var steamProfile);
+
+                                    if (steamProfile is not null)
+                                    {
+                                        <FluentPersona Image="@steamProfile.Avatars.SmallUrl" ImageSize="24px"/>
+                                    }
 
                                     @player.Name
                                     break;
