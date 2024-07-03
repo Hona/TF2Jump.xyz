@@ -51,8 +51,8 @@
 
 @code
 {
-    [Parameter]
-    public List<RecordInfoShort> Runs { get; set; }
+    [Parameter, EditorRequired]
+    public required List<RecordInfoShort> Runs { get; set; }
     
     [Parameter] 
     public Class Class { get; set; }

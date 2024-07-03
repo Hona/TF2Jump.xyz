@@ -28,7 +28,7 @@
                     <FluentButton Appearance="Appearance.Stealth" IconStart="new Icons.Filled.Size12.Dismiss()" OnClick="HandleOnClose"/>
                 </FluentStack>
                 <FluentAutocomplete TOption="OneOf<ServerPlayerModel, MapInfo>"
-                                    OptionValue="@(x => x.Match(x => x?.Id.ToString(), x=> x?.Name))"
+                                    OptionValue="@(x => x.Match(x => x?.Id.ToString(), x => x?.Name))"
                                     Placeholder="Search everything"
                                     OnOptionsSearch="HandleOptionsSearch"
                                     SelectedOptionChanged="HandleSelectedOptionChanged"
@@ -73,9 +73,7 @@
     }
 
     private Timer? timer = null;
-
-    private FluentSearch? searchTest;
-
+    
     private string? searchValue = null;
 
     private string? SearchValue
@@ -109,9 +107,7 @@
     private List<OneOf<ServerPlayerModel, MapInfo>>? defaultResults => null;
 
     private Dictionary<long, SteamProfile> _steamProfiles = new();
-
-    private bool _searchLoading;
-
+    
     private async void TimerElapsed_TickAsync(object? sender, EventArgs e)
     {
         DisposeTimer();
@@ -133,7 +129,6 @@
     {
         if (!string.IsNullOrWhiteSpace(SearchValue))
         {
-            _searchLoading = true;
             await InvokeAsync(StateHasChanged);
 
             var results = await TempusClient.GetSearchResultAsync(SearchValue);
@@ -156,8 +151,6 @@
 
                     _steamProfiles = await TempusClient.GetSteamProfilesAsync(tempusPlayerIds);
                 }
-
-                _searchLoading = false;
             }
             else
             {
@@ -172,7 +165,6 @@
             await InvokeAsync(StateHasChanged);
         }
 
-        _searchLoading = false;
         if (_searchContext != null) _searchContext.Items = searchResults;
         await InvokeAsync(StateHasChanged);
     }
