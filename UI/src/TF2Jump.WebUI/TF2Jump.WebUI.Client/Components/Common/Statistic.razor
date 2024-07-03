@@ -7,9 +7,9 @@
 </FluentCard>
 
 @code {
-    [Parameter]
-    public string Value { get; set; }
+    [Parameter, EditorRequired]
+    public required string Value { get; set; }
 
-    [Parameter]
-    public string Label { get; set; }
+    [Parameter, EditorRequired]
+    public required string Label { get; set; }
 }

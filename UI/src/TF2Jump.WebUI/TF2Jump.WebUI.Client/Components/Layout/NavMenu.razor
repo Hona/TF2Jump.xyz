@@ -48,7 +48,7 @@
         NavigationManager.LocationChanged += HandleLocationChanged;
     }
     
-    public void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    public void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         JS.InvokeVoidAsync("collapseNavMenu");
     }

@@ -56,11 +56,11 @@
     </FluentOption>
 }
 @code {
-    [Parameter]
-    public List<ZoneInfo> Zones { get; set; }
+    [Parameter, EditorRequired]
+    public required List<ZoneInfo> Zones { get; set; }
     
-    [Parameter]
-    public FullMapOverview2 Map { get; set; }
+    [Parameter, EditorRequired]
+    public required FullMapOverview2 Map { get; set; }
     
     [Parameter] public Class SelectedClass { get; set; }
 }

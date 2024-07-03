@@ -18,11 +18,11 @@
 </div>
 @code {
     private List<Order> Orders { get; set; } = GetOrders();
-    private ApexChartOptions<Order> options;
+    private ApexChartOptions<Order> _options = null!;
 
     protected override void OnInitialized()
     {
-        options = new ApexChartOptions<Order>
+        _options = new ApexChartOptions<Order>
         {
             Chart = new Chart
             {
@@ -87,8 +87,8 @@ public static List<Order> GetOrders()
     public class Order
     {
         public Guid OrderId { get; set; } = Guid.NewGuid();
-        public string CustomerName { get; set; }
-        public string Country { get; set; }
+        public string? CustomerName { get; set; }
+        public string? Country { get; set; }
         public DateTimeOffset OrderDate { get; set; }
         public OrderType OrderType { get; set; }
         public decimal GrossValue { get; set; }

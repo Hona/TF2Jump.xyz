@@ -13,8 +13,8 @@
 
 @code
 {
-    [Parameter]
-    public FullMapOverview2 Map { get; set; }
+    [Parameter, EditorRequired]
+    public required FullMapOverview2 Map { get; set; }
 
     [Parameter] public SelectedZone? SelectedZone { get; set; } = new(ZoneType.Map, 1);
     [Parameter] public EventCallback<SelectedZone?> SelectedZoneChanged { get; set; }
