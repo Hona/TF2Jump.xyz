@@ -1,5 +1,7 @@
 # [TF2Jump.xyz](https://tf2jump.xyz/)
 
+[![Join the discord](https://img.shields.io/badge/Join%20the%20discord-discord?logo=discord&logoColor=white&color=%235865F2)](https://discord.com/invite/5rT4Qn4mKJ)
+
 > [!NOTE]
 > This site is in early stage development, however it is my first priority given my free time 
 
