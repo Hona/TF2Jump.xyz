@@ -122,7 +122,15 @@
         
         var query = output.AsQueryable();
 
-        query = query.Where(map => _intendedClasses![map.Name].HasFlag(_selectedClass));
+        var selectedIntendedClass = _selectedClass switch
+        {
+            Class.Soldier => IntendedClasses.Soldier,
+            Class.Demoman => IntendedClasses.Demoman,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+        
+        query = query.Where(map => _intendedClasses![map.Name]
+            .HasFlag(selectedIntendedClass));
         
         if (!_filterVisible)
         {

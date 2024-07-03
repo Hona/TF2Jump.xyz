@@ -3,7 +3,7 @@
 public static class TF2JumpExtensions
 {
     public const string MapClassesUrl =
-        "https://raw.githubusercontent.com/Hona/TF2Jump.xyz/feat-indended-classes/Utilities/TF2Jump.Utilities.IntendedMapList/MapClasses.csv";
+        "https://raw.githubusercontent.com/Hona/TF2Jump.xyz/main/Utilities/TF2Jump.Utilities.IntendedMapList/MapClasses.csv";
 
     
     public static async Task<Dictionary<string, IntendedClasses>> GetIntendedClassMapListAsync(this HttpClient client)
@@ -26,6 +26,7 @@ public static class TF2JumpExtensions
 [Flags]
 public enum IntendedClasses
 {
-    Soldier,
-    Demoman
+    None = 0,
+    Soldier = 1 << 0,
+    Demoman = 1 << 1
 }

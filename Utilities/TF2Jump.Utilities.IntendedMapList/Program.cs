@@ -63,6 +63,7 @@ record MapClass(IntendedClass Class, string Map);
 [Flags]
 enum IntendedClass
 {
-    Soldier,
-    Demoman
+    None = 0,
+    Soldier = 1 << 0,
+    Demoman = 1 << 1
 }
