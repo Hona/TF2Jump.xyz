@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TF2Jump.WebUI", "UI\src\TF2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TF2Jump.WebUI.Client", "UI\src\TF2Jump.WebUI\TF2Jump.WebUI.Client\TF2Jump.WebUI.Client.csproj", "{D82C37DD-CD5E-4040-B416-31375971C556}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{E4354419-E2A4-4412-9420-4F7C4940841D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TF2Jump.Utilities.IntendedMapList", "Utilities\TF2Jump.Utilities.IntendedMapList\TF2Jump.Utilities.IntendedMapList.csproj", "{1A56387D-6048-4D64-B776-5B650710047F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,10 @@ Global
 		{D82C37DD-CD5E-4040-B416-31375971C556}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D82C37DD-CD5E-4040-B416-31375971C556}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D82C37DD-CD5E-4040-B416-31375971C556}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A56387D-6048-4D64-B776-5B650710047F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A56387D-6048-4D64-B776-5B650710047F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A56387D-6048-4D64-B776-5B650710047F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A56387D-6048-4D64-B776-5B650710047F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +71,7 @@ Global
 		{7A202239-2D92-4896-BBCE-961020FE42ED} = {39D2EE17-F8FB-4704-9D54-C150BB9B7E57}
 		{50CF38D3-618B-419D-B58D-E24CD408F900} = {7A202239-2D92-4896-BBCE-961020FE42ED}
 		{D82C37DD-CD5E-4040-B416-31375971C556} = {7A202239-2D92-4896-BBCE-961020FE42ED}
+		{1A56387D-6048-4D64-B776-5B650710047F} = {E4354419-E2A4-4412-9420-4F7C4940841D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {75CB3B00-9C65-4FAF-A128-A001D15AD911}
