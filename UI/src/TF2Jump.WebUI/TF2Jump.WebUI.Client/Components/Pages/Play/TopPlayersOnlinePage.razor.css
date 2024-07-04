@@ -1,0 +1,13 @@
+﻿::deep .fluent-persona {
+    width: 100%;
+}
+
+::deep .fluent-persona .name {
+    width: 100%;
+}
+
+::deep .top-player-card {
+    
+    flex: 1 0 auto;
+    
+}

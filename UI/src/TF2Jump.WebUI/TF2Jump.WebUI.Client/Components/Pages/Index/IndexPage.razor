@@ -5,9 +5,13 @@
     <meta name="description" content="The premiere website for everything rocket jump and sticky jump related. This is a massive data driven site, utilising a complex ELT pipeline. Data sources include the Tempus2.xyz API, Tempus STV demo files (.dem), Tempus Archive on YouTube and much more."/>
 </HeadContent>
 
-<FluentMessageBar 
-                  Class="dark"
-                  Intent="MessageIntent.Warning"
-                  AllowDismiss="false">
-    TF2 Jump is currently in development, and is not fully functional.
-</FluentMessageBar>
+<div>
+    <FluentGrid>
+        <FluentGridItem>
+            <RecentRecordsWidget />
+        </FluentGridItem>
+        <FluentGridItem>
+            <PopularServersWidget />
+        </FluentGridItem>
+    </FluentGrid>
+</div>

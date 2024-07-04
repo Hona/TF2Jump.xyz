@@ -1,0 +1,63 @@
+﻿@using Humanizer
+@using TempusApi.Models.Responses
+
+@implements IDisposable
+
+<FluentCard>
+    <h3>
+        <FluentStack>
+            Recent Records
+            <FluentSpacer/>
+            <FluentAnchor Href="/leaderboards/activity"
+                          IconEnd="@(new Icons.Regular.Size16.ArrowRight())">
+                More
+            </FluentAnchor>
+        </FluentStack>
+    </h3>
+    @if (_activity is not null)
+    {
+        <FluentStack Orientation="@Orientation.Vertical" VerticalGap="8">
+            @foreach (var wr in _activity.MapRecords.Take(7))
+            {
+                <FluentMessageBar Title="Map WR"
+                                  Icon="@(new Icons.Regular.Size16.Trophy())"
+                                  Intent="MessageIntent.Custom"
+                                  AllowDismiss="false">
+                    @wr.PlayerInfo.Name broke @wr.MapInfo.Name @wr.RecordInfo.Date.ToDateTimeOffset().Humanize()
+                    <br/>
+                    WR @wr.RecordInfo.Duration.ToTimeSpan().ToFormattedDuration()
+
+                </FluentMessageBar>
+            }
+        </FluentStack>
+    }
+</FluentCard>
+
+@code {
+    [Inject] public required ITempusClient TempusClient { get; set; }
+    [Inject] public required PersistentComponentState ApplicationState { get; set; }
+    
+    private RecentActivityModel? _activity;
+    private PersistingComponentStateSubscription _persistSubscription;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _persistSubscription = ApplicationState.RegisterOnPersisting(PersistData);
+        
+        _activity = ApplicationState.TryTakeFromJson<RecentActivityModel>(nameof(_activity), out var restored)
+            ? restored
+            : await TempusClient.GetRecentActivityAsync();
+    }
+
+    private Task PersistData()
+    {
+        ApplicationState.PersistAsJson(nameof(_activity), _activity);
+
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        _persistSubscription.Dispose();
+    }
+}

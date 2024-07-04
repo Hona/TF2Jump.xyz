@@ -1,0 +1,90 @@
+﻿@using System.Net
+@using System.Text.Json.Serialization
+@using TempusApi.Models
+@using TempusApi.Models.Responses
+@using TF2Jump.WebUI.Client.Services
+
+@implements IDisposable
+
+<FluentCard>
+    <FluentStack>
+        <h3>
+            Popular Servers
+        </h3>
+        <FluentSpacer/>
+        <FluentAnchor Href="/play/servers"
+                      IconEnd="@(new Icons.Regular.Size16.ArrowRight())">
+            More
+        </FluentAnchor>
+    </FluentStack>
+    @if (_filteredServers is not null)
+    {
+        <FluentStack Orientation="@Orientation.Vertical" VerticalGap="8">
+            @foreach (var server in _filteredServers)
+            {
+                <FluentMessageBar Title="@server.ServerInfo.Name"
+                                  Icon="@(new Icons.Regular.Size16.Server())"
+                                  Intent="MessageIntent.Custom"
+                                  AllowDismiss="false">
+                    <FluentSpacer/>
+                    @server.GameInfo.PlayerCount/@server.GameInfo.MaxPlayers online on @server.GameInfo.CurrentMap
+                    <br/>
+
+                    <a href="@ServerResolver.GetConnectUri(server, _dnsLookups)">Join</a>
+                </FluentMessageBar>
+            }
+        </FluentStack>
+    }
+</FluentCard>
+
+@code {
+    private List<ServerStatusModel>? _servers;
+    private List<ServerStatusModel>? _filteredServers;
+    private Dictionary<long, IPAddress> _dnsLookups = [];
+    private PersistingComponentStateSubscription _persistSubscription;
+
+    [Inject] public required ITempusClient TempusClient { get; set; }
+    [Inject] public required HttpClient HttpClient { get; set; }
+    [Inject] public required PersistentComponentState ApplicationState { get; set; }
+    [Inject] public required ServerResolver ServerResolver { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _persistSubscription = ApplicationState.RegisterOnPersisting(PersistData);
+        
+        _servers = ApplicationState.TryTakeFromJson<List<ServerStatusModel>>(nameof(_servers), out var servers) 
+            ? servers : await TempusClient.GetServersStatusesAsync();
+
+        if (_servers == null)
+        {
+            throw new Exception("Failed to load server statuses");
+        }
+        
+        _filteredServers = _servers.Where(x => x.GameInfo is not null)
+            .OrderByDescending(x => x.GameInfo.PlayerCount)
+            .Take(5)
+            .ToList();
+        
+        _dnsLookups = (ApplicationState.TryTakeFromJson<Dictionary<long, IPAddress>>(nameof(_dnsLookups), out var lookups) 
+            ? lookups : []) ?? throw new InvalidOperationException();
+
+        if (lookups is null)
+        {
+            _dnsLookups = await ServerResolver.HydrateDnsLookups(_filteredServers);
+        }
+    }
+
+    private Task PersistData()
+    {
+        ApplicationState.PersistAsJson(nameof(_servers), _servers);
+        ApplicationState.PersistAsJson(nameof(_dnsLookups), _dnsLookups);
+        
+        return Task.CompletedTask;
+    }
+    
+
+    public void Dispose()
+    {
+        _persistSubscription.Dispose();
+    }
+}
