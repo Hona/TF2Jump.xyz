@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.FluentUI.AspNetCore.Components;
 using TempusApi;
+using TF2Jump.WebUI.Client.Services;
 using TF2Jump.WebUI.Components;
 using TF2Jump.WebUI.Utilities.Humanizer;
 
@@ -12,9 +13,7 @@ StandardDateFormatter.Register();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
-
 
 builder.Services.AddFluentUIComponents();
 
@@ -32,6 +31,7 @@ if (builder.Environment.IsProduction())
 
 builder.Services.AddHttpClient<ITempusClient, TempusClient>();
 builder.Services.AddSingleton<ITempusClient, TempusClient>();
+builder.Services.AddSingleton<ServerResolver>();
 
 var app = builder.Build();
 

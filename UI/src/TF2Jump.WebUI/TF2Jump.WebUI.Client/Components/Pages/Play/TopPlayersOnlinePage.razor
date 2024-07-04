@@ -1,1 +1,126 @@
 ﻿@page "/play/top-players-online"
+@using System.Net
+@using System.Text.Json.Serialization
+@using TempusApi.Enums
+@using TF2Jump.WebUI.Client.Services
+@using TempusApi.Models
+
+<PageTitle>Top Players Online</PageTitle>
+<HeadContent>
+    <meta name="description" content="Find players to spectate or chat with, that are currently online on Tempus"/>
+</HeadContent>
+
+<div>
+    <FluentStack Wrap 
+                 VerticalAlignment="VerticalAlignment.Center" 
+                 HorizontalAlignment="HorizontalAlignment.Start"
+                 HorizontalGap="16" 
+                 VerticalGap="16">
+    @foreach(var topPlayer in _topPlayersOnline ?? [])
+    {
+        <FluentCard Width="fit-content" MinimalStyle Class="top-player-card">
+            <FluentStack >
+                <FluentStack HorizontalGap="8" VerticalAlignment="VerticalAlignment.Center" Orientation="Orientation.Vertical">
+                    <FluentPersona Style="width: 100%"
+                                   Status="PresenceStatus.Available"
+                                   StatusSize="PresenceBadgeSize.Small"
+                                   Image="@(GetSteamProfilePicture(topPlayer.TempusId ?? 0))"
+                                   ImageSize="50px">
+                        <FluentStack VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Center">
+                            @(topPlayer.RealName ?? topPlayer.SteamName)
+
+                            <FluentSpacer/>
+                            
+                            <a href="@ServerResolver.GetConnectUri(new TempusApi.Models.ServerInfo() { Id = topPlayer.ServerInfo.Id??0, Addr = topPlayer.ServerInfo.IpAddress.Split(":")[0], Port = int.Parse(topPlayer.ServerInfo.IpAddress.Split(":")[1])}, _dnsLookups)" style="margin-left: 16px">
+                                Join
+                            </a>
+                        </FluentStack>
+
+                        
+                    </FluentPersona>
+                    <FluentStack VerticalAlignment="VerticalAlignment.Center">
+                        <ClassIcon Color="white" Size="24" Class="@(@topPlayer.RankClass is 4 ? Class.Demoman : Class.Soldier)"/>
+                        Rank @topPlayer.Rank on @topPlayer.ServerInfo.CurrentMap
+                        
+                    </FluentStack>
+                    <FluentStack VerticalAlignment="VerticalAlignment.Center">
+                        <FluentIcon Value="@(new Icons.Filled.Size20.Server())" Color="Color.Neutral"/>
+                        @topPlayer.ServerInfo.Alias
+                    </FluentStack>
+                </FluentStack>
+                
+            </FluentStack>
+        </FluentCard>
+    }
+</FluentStack>
+</div>
+
+@code
+{
+    private TopPlayerOnlineResult[]? _topPlayersOnline;
+    [Inject] public required HttpClient HttpClient { get; set; }
+    [Inject] public required ITempusClient TempusClient { get; set; }
+    [Inject] public required ServerResolver ServerResolver { get; set; }
+
+    private Dictionary<long, SteamProfile> _steamProfilePictures = [];
+    private Dictionary<long, IPAddress> _dnsLookups =[];
+
+    private string GetSteamProfilePicture(long tempusId)
+    {
+        if (_steamProfilePictures.TryGetValue(tempusId, out var profile))
+        {
+            return profile.Avatars.LargeUrl;
+        }
+       
+        return "";
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        // TODO: Call our own API to get the top players online
+        // but API work is in a few weeks
+        _topPlayersOnline = await HttpClient.GetFromJsonAsync<TopPlayerOnlineResult[]>("https://tempushub.xyz/api/TopPlayersOnline");
+
+        if (_topPlayersOnline != null)
+        {
+            var tempusPlayerIds = _topPlayersOnline
+                .Select(x => x.TempusId)
+                .Where(x => x is not null)
+                .Cast<long>();
+            
+            _steamProfilePictures = await TempusClient.GetSteamProfilesAsync(tempusPlayerIds);
+        }
+
+        var servers = _topPlayersOnline
+            .Select(x => new TempusApi.Models.ServerInfo()
+            {
+                Id = x.ServerInfo.Id??0,
+                Addr = x.ServerInfo.IpAddress.Split(":")[0],
+                Name = x.ServerInfo.Name,
+                Port = int.Parse(x.ServerInfo.IpAddress.Split(":")[1])
+            })
+            .DistinctBy(x => x.Id)
+            .ToList();
+        
+        _dnsLookups = await ServerResolver.HydrateDnsLookups(servers);
+    }
+
+    public record TopPlayerOnlineResult(
+        [property: JsonPropertyName("steamName")] string SteamName,
+        [property: JsonPropertyName("realName")] string RealName,
+        [property: JsonPropertyName("serverInfo")] ServerInfo ServerInfo,
+        [property: JsonPropertyName("tempusId")] long? TempusId,
+        [property: JsonPropertyName("rank")] int? Rank,
+        [property: JsonPropertyName("rankClass")] int? RankClass
+    );
+
+    public record ServerInfo(
+        [property: JsonPropertyName("alias")] string Alias,
+        [property: JsonPropertyName("name")] string Name,
+        [property: JsonPropertyName("currentPlayers")] int? CurrentPlayers,
+        [property: JsonPropertyName("maxPlayers")] int? MaxPlayers,
+        [property: JsonPropertyName("currentMap")] string CurrentMap,
+        [property: JsonPropertyName("ipAddress")] string IpAddress,
+        [property: JsonPropertyName("id")] long? Id
+    );
+}
