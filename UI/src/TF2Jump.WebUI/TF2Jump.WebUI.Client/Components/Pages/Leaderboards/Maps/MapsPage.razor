@@ -78,6 +78,28 @@
                     </FluentGridItem>
                 }
             </FluentGrid>
+            
+            @{
+                var missingIntendedData = _maps!
+                    .Where(map => !_intendedClasses!.ContainsKey(map.Name))
+                    .ToList();
+            }
+            
+            @if (missingIntendedData.Any())
+            {
+                <FluentAccordion Style="width: 100%">
+                    <FluentAccordionItem Heading="Maps missing intended class data" Expanded="false">
+                        <FluentGrid Class="map-card-grid">
+                            @foreach (var map in missingIntendedData)
+                            {
+                                <FluentGridItem xs="12" sm="6" md="4" lg="3">
+                                    <MapCard Map="map" SelectedClass="_selectedClass" @key="map"/>
+                                </FluentGridItem>
+                            }
+                        </FluentGrid>
+                    </FluentAccordionItem>
+                </FluentAccordion>
+            }
         </FluentStack>
     }
 </div>
@@ -123,6 +145,11 @@
 
     private IEnumerable<DetailedMapOverviewModel> GetMapsToDisplay()
     {
+        if (_intendedClasses is null)
+        {
+            throw new InvalidOperationException("Intended classes not loaded");
+        }
+        
         var output = _maps ?? [];
         
         var query = output.AsQueryable();
@@ -134,8 +161,8 @@
             _ => throw new ArgumentOutOfRangeException()
         };
         
-        query = query.Where(map => _intendedClasses![map.Name]
-            .HasFlag(selectedIntendedClass));
+        query = query
+            .Where(map => _intendedClasses.ContainsKey(map.Name) && _intendedClasses[map.Name].HasFlag(selectedIntendedClass));
         
         if (!_filterVisible)
         {
